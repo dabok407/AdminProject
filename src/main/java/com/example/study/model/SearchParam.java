@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SearchParam {
 
-    public String account;
+    private String account;
     private String email;
     private int page;
 }

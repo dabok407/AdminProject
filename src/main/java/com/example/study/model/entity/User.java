@@ -2,12 +2,14 @@ package com.example.study.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 //@Table(name = "user") // DB테이블명과 클래스명이 동일 하다면 설정 하지 않아도 됨.
 public class User {
@@ -24,10 +26,10 @@ public class User {
 
     private LocalDateTime createdAt;
 
-    private  String createBy;
+    private  String createdBy;
 
     private LocalDateTime updatedAt;
 
-    private  String updateBy;
+    private  String updatedBy;
 
 }
