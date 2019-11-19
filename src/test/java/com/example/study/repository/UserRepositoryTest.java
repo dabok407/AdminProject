@@ -2,6 +2,7 @@ package com.example.study.repository;
 
 import com.example.study.StudyApplicationTests;
 import com.example.study.model.entity.User;
+import lombok.Builder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.*;
@@ -18,11 +19,11 @@ public class UserRepositoryTest extends StudyApplicationTests{
     @Test
     public void create(){
 
-        String account = "Test01";
-        String password = "Test01";
+        String account = "Test03";
+        String password = "Test03";
         String status = "REGISTERD";
         String email = "Test01@gmail.com";
-        String phoneNumber = "010-1111-2222";
+        String phoneNumber = "010-3333-3333";
         LocalDateTime registeredAt = LocalDateTime.now();
         LocalDateTime createdAt = LocalDateTime.now();
         String createdBy = "AdminServer";
@@ -34,8 +35,16 @@ public class UserRepositoryTest extends StudyApplicationTests{
         user.setEmail(email);
         user.setPhoneNumber(phoneNumber);
         user.setRegisteredAt(registeredAt);
-        user.setCreatedAt(createdAt);
-        user.setCreatedBy(createdBy);
+        //user.setCreatedAt(createdAt);
+        //user.setCreatedBy(createdBy);
+
+        // User 클래스의 @Builder 어노테이션을 통한 생성자 생성.
+        User builderUser = User.builder()
+                                .account(account)
+                                    .password(password)
+                                        .status(status)
+                                            .email(email).build();
+
 
         User resultUser = userRepository.save(user);
         Assert.assertNotNull(resultUser);
@@ -55,6 +64,26 @@ public class UserRepositoryTest extends StudyApplicationTests{
     public void read(){
 
         User user = userRepository.findFirstByPhoneNumberOrderByIdDesc("010-1111-2222");
+
+        //User Class의 @Accessors(chain = true)
+        user.setEmail("testEmail")
+                .setPhoneNumber("testPhoneNumber")
+                    .setStatus("testStatus");
+
+        User u = new User().setAccount("TestAccount").setEmail("TestEmail").setPassword("TestPassword");
+
+        user.getOrderGroupList().stream().forEach(orderGroup -> {
+            System.out.println("수령인 : "+orderGroup.getRevName());
+
+            orderGroup.getOrderDetailList().forEach(orderDetail -> {
+                System.out.println("주문상태 : "+orderDetail.getStatus());
+                System.out.println("고객센터 번호 : "+orderDetail.getItem().getPartner().getCallCenter());
+                System.out.println("주문상품 : "+orderDetail.getItem().getName());
+                System.out.println("파트너사 이름 : "+orderDetail.getItem().getPartner().getName());
+                System.out.println("파트너사 카테고리 : "+orderDetail.getItem().getPartner().getCategory().getTitle());
+            });
+        });
+
         Assert.assertNotNull(user);
 
         //Optional<User> user = userRepository.findById(1L);
