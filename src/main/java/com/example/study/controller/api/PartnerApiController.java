@@ -11,5 +11,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/partner")
 public class PartnerApiController extends CrudController<PartnerApiRequest, PartnerApiResponse, Partner> {
-
 }

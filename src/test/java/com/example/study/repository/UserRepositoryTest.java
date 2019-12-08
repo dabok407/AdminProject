@@ -1,32 +1,34 @@
 package com.example.study.repository;
 
 import com.example.study.StudyApplicationTests;
+import com.example.study.model.entity.Item;
 import com.example.study.model.entity.User;
-import lombok.Builder;
-import org.junit.jupiter.api.Test;
+import com.example.study.model.enumclass.UserStatus;
+import org.junit.Assert;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.junit.*;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class UserRepositoryTest extends StudyApplicationTests{
+public class UserRepositoryTest extends StudyApplicationTests {
 
-    @Autowired // DI Singleton Pattern
+    // Dependency Injection (DI)
+    @Autowired
     private UserRepository userRepository;
 
     @Test
     public void create(){
-
         String account = "Test03";
         String password = "Test03";
-        String status = "REGISTERD";
+        UserStatus status = UserStatus.REGISTERED;
         String email = "Test01@gmail.com";
-        String phoneNumber = "010-3333-3333";
+        String phoneNumber = "010-1111-3333";
         LocalDateTime registeredAt = LocalDateTime.now();
         LocalDateTime createdAt = LocalDateTime.now();
         String createdBy = "AdminServer";
+
 
         User user = new User();
         user.setAccount(account);
@@ -35,74 +37,60 @@ public class UserRepositoryTest extends StudyApplicationTests{
         user.setEmail(email);
         user.setPhoneNumber(phoneNumber);
         user.setRegisteredAt(registeredAt);
-        //user.setCreatedAt(createdAt);
-        //user.setCreatedBy(createdBy);
 
-        // User 클래스의 @Builder 어노테이션을 통한 생성자 생성.
-        User builderUser = User.builder()
-                                .account(account)
-                                    .password(password)
-                                        .status(status)
-                                            .email(email).build();
+        User u = User.builder()
+                .account(account)
+                .password(password)
+                .status(status)
+                .email(email)
+                .build();
 
 
-        User resultUser = userRepository.save(user);
-        Assert.assertNotNull(resultUser);
 
-        /*User user = new User();
-        user.setAccount("TestUser03");
-        user.setEmail("TestUser@test.com");
-        user.setPhoneNumber("010-3333-3333");
-        user.setCreatedBy("admin");
-        user.setCreatedAt(LocalDateTime.now());
-
-        User newUser = userRepository.save(user);*/
+        User newUser = userRepository.save(user);
+        Assert.assertNotNull(newUser);
     }
 
     @Test
     @Transactional
     public void read(){
-
         User user = userRepository.findFirstByPhoneNumberOrderByIdDesc("010-1111-2222");
 
-        //User Class의 @Accessors(chain = true)
-        user.setEmail("testEmail")
-                .setPhoneNumber("testPhoneNumber")
-                    .setStatus("testStatus");
 
-        User u = new User().setAccount("TestAccount").setEmail("TestEmail").setPassword("TestPassword");
+        if(user != null){
+            user.getOrderGroupList().stream().forEach(orderGroup -> {
 
-        user.getOrderGroupList().stream().forEach(orderGroup -> {
-            System.out.println("수령인 : "+orderGroup.getRevName());
+                System.out.println("-----------------주문묶음-----------------");
+                System.out.println("수령인 : "+orderGroup.getRevName());
+                System.out.println("수령지 : "+orderGroup.getRevAddress());
+                System.out.println("총금액 : "+orderGroup.getTotalPrice());
+                System.out.println("총수량 : "+orderGroup.getTotalQuantity());
 
-            orderGroup.getOrderDetailList().forEach(orderDetail -> {
-                System.out.println("주문상태 : "+orderDetail.getStatus());
-                System.out.println("고객센터 번호 : "+orderDetail.getItem().getPartner().getCallCenter());
-                System.out.println("주문상품 : "+orderDetail.getItem().getName());
-                System.out.println("파트너사 이름 : "+orderDetail.getItem().getPartner().getName());
-                System.out.println("파트너사 카테고리 : "+orderDetail.getItem().getPartner().getCategory().getTitle());
+                System.out.println("-----------------주문상세-----------------");
+
+                orderGroup.getOrderDetailList().forEach(orderDetail -> {
+                    System.out.println("파트너사 이름 : "+orderDetail.getItem().getPartner().getName());
+                    System.out.println("파트너사 카테고리 : "+orderDetail.getItem().getPartner().getCategory().getTitle());
+                    System.out.println("주문 상품 : "+orderDetail.getItem().getName());
+                    System.out.println("고객센터 번호 : "+orderDetail.getItem().getPartner().getCallCenter());
+                    System.out.println("주문의 상태 : "+orderDetail.getStatus());
+                    System.out.println("도착예정일자 : "+orderDetail.getArrivalDate());
+                });
+
             });
-        });
+        }
 
         Assert.assertNotNull(user);
-
-        //Optional<User> user = userRepository.findById(1L);
-        //Optional<User> user = userRepository.findByAccount("TestUser03");
-        //Optional<User> user = userRepository.findByAccountAndEmail("TestUser03", "test@test.com");
-
-        /*user.ifPresent(selectUser ->{
-            //selectUser.getOrderDetailList().stream().forEach(orderDetail -> {
-                //System.out.println(orderDetail.getItem());
-            });
-        });*/
     }
 
     @Test
+    @Transactional
     public void update(){
+
         Optional<User> user = userRepository.findById(2L);
 
         user.ifPresent(selectUser ->{
-            selectUser.setAccount("pppp");
+            selectUser.setAccount("PPPP");
             selectUser.setUpdatedAt(LocalDateTime.now());
             selectUser.setUpdatedBy("update method()");
 
@@ -115,15 +103,16 @@ public class UserRepositoryTest extends StudyApplicationTests{
     public void delete(){
         Optional<User> user = userRepository.findById(3L);
 
-        Assert.assertTrue(user.isPresent()); // true
+        Assert.assertTrue(user.isPresent());    // false
 
-        user.ifPresent(selectUser ->{
+
+        user.ifPresent(selectUser->{
             userRepository.delete(selectUser);
         });
 
-        Optional<User> resultUser = userRepository.findById(3L);
+        Optional<User> deleteUser = userRepository.findById(3L);
 
-        Assert.assertFalse(resultUser.isPresent()); // false
+        Assert.assertFalse(deleteUser.isPresent()); // false
     }
 
 }

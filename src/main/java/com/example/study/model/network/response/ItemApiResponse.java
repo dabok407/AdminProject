@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class ItemApiResponse {
 
@@ -31,8 +31,7 @@ public class ItemApiResponse {
 
     private LocalDateTime registeredAt;
 
-    private LocalDateTime unRegisteredAt;
+    private LocalDateTime unregisteredAt;
 
     private Long partnerId;
-
 }

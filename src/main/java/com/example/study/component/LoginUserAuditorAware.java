@@ -12,5 +12,4 @@ public class LoginUserAuditorAware implements AuditorAware<String> {
     public Optional<String> getCurrentAuditor() {
         return Optional.of("AdminServer");
     }
-
 }

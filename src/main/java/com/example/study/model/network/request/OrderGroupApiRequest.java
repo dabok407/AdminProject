@@ -1,13 +1,10 @@
 package com.example.study.model.network.request;
 
-import com.example.study.model.enumclass.OrderStatus;
 import com.example.study.model.enumclass.OrderType;
-import com.example.study.model.enumclass.PaymentType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.tomcat.jni.Local;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,7 +17,7 @@ public class OrderGroupApiRequest {
 
     private Long id;
 
-    private OrderStatus status;
+    private String status;
 
     private OrderType orderType;
 
@@ -28,7 +25,7 @@ public class OrderGroupApiRequest {
 
     private String revName;
 
-    private PaymentType paymentType;
+    private String paymentType;
 
     private BigDecimal totalPrice;
 
@@ -39,4 +36,7 @@ public class OrderGroupApiRequest {
     private LocalDateTime arrivalDate;
 
     private Long userId;
+
+
+
 }

@@ -1,6 +1,5 @@
 package com.example.study.model.network.request;
 
-
 import com.example.study.model.enumclass.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,5 +28,6 @@ public class UserApiRequest {
 
     private LocalDateTime registeredAt;
 
-    private LocalDateTime unRegisteredAt;
+    private LocalDateTime unregisteredAt;
+
 }

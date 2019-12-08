@@ -3,7 +3,7 @@ package com.example.study.repository;
 import com.example.study.StudyApplicationTests;
 import com.example.study.model.entity.Partner;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
@@ -17,15 +17,15 @@ public class PartnerRepositoryTest extends StudyApplicationTests {
     public void create(){
         String name = "Partner01";
         String status = "REGISTERED";
-        String address = "서울시 송파구";
+        String address = "서울시 강남구";
         String callCenter = "070-1111-2222";
         String partnerNumber = "010-1111-2222";
         String businessNumber = "1234567890123";
-        String ceoName = "황민국";
+        String ceoName = "홍길동";
         LocalDateTime registeredAt = LocalDateTime.now();
         LocalDateTime createdAt = LocalDateTime.now();
         String createdBy = "AdminServer";
-        Long categoryId = 2L;
+        Long categoryId = 1L;
 
         Partner partner = new Partner();
         partner.setName(name);
@@ -40,14 +40,9 @@ public class PartnerRepositoryTest extends StudyApplicationTests {
         partner.setCreatedBy(createdBy);
         //partner.setCategoryId(categoryId);
 
-        Partner resultPartner = partnerRepository.save(partner);
-        Assert.assertNotNull(resultPartner);
-        Assert.assertEquals(resultPartner.getName(), name);
-    }
-
-    @Test
-    public void read(){
-
+        Partner newPartner = partnerRepository.save(partner);
+        Assert.assertNotNull(newPartner);
+        Assert.assertEquals(newPartner.getName(), name);
     }
 
 }

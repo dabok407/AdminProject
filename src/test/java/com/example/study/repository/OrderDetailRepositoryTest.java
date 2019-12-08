@@ -2,8 +2,9 @@ package com.example.study.repository;
 
 import com.example.study.StudyApplicationTests;
 import com.example.study.model.entity.OrderDetail;
+import org.aspectj.weaver.ast.Or;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -22,13 +23,18 @@ public class OrderDetailRepositoryTest extends StudyApplicationTests {
         orderDetail.setArrivalDate(LocalDateTime.now().plusDays(2));
         orderDetail.setQuantity(1);
         orderDetail.setTotalPrice(BigDecimal.valueOf(900000));
-        //orderDetail.setOrderGroupId(1L);
-        //orderDetail.setItemId(1L);
+
+
+        //orderDetail.setOrderGroupId(1L); // Long -> OrderGroup    // 어떠한 장바구니에
+        //orderDetail.setItemId(1L);          // 어떠한 상품
+
+
         orderDetail.setCreatedAt(LocalDateTime.now());
         orderDetail.setCreatedBy("AdminServer");
 
-
-        OrderDetail resultOrderDetail = orderDetailRepository.save(orderDetail);
-        Assert.assertNotNull(resultOrderDetail);
+        OrderDetail newOrderDetail = orderDetailRepository.save(orderDetail);
+        Assert.assertNotNull(newOrderDetail);
     }
+
+
 }

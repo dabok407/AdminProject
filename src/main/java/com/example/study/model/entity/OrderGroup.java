@@ -1,8 +1,6 @@
 package com.example.study.model.entity;
 
-import com.example.study.model.enumclass.OrderStatus;
 import com.example.study.model.enumclass.OrderType;
-import com.example.study.model.enumclass.PaymentType;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
@@ -20,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Entity
-@ToString(exclude = {"user", "orderDetailList"})
+@ToString(exclude = {"user","orderDetailList"})
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Accessors(chain = true)
@@ -30,18 +28,16 @@ public class OrderGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private String status;
 
     @Enumerated(EnumType.STRING)
-    private OrderType orderType; // 주문의 형태 - 일괄 / 개별
+    private OrderType orderType;   // 주문의 형태 - 일괄 / 개별
 
     private String revAddress;
 
     private String revName;
 
-    @Enumerated(EnumType.STRING)
-    private PaymentType paymentType;
+    private String paymentType; // 카드 / 현금
 
     private BigDecimal totalPrice;
 
@@ -66,6 +62,7 @@ public class OrderGroup {
     // OrderGroup N : 1 User
     @ManyToOne
     private User user;
+
 
     // OrderGroup 1 : N OrderDetail
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderGroup")

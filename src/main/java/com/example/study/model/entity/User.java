@@ -3,7 +3,6 @@ package com.example.study.model.entity;
 import com.example.study.model.enumclass.UserStatus;
 import lombok.*;
 import lombok.experimental.Accessors;
-import org.hibernate.criterion.Order;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -18,23 +17,22 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@ToString(exclude = {"orderGroup"})
+@ToString(exclude = {"orderGroupList"})
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Accessors(chain = true)
-//@Table(name = "user") // DB테이블명과 클래스명이 동일 하다면 설정 하지 않아도 됨.
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //@Column(name = "account") DB컬럼명과 동일 하다면 설정 하지 않아도 됨.
+
     private String account;
 
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private UserStatus status;
+    private UserStatus status;  // REGISTERED / UNREGISTERED/ WAITING /
 
     private String email;
 
@@ -60,6 +58,4 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<OrderGroup> orderGroupList;
 
-    /*@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<OrderDetail> orderDetailList;*/
 }

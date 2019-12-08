@@ -14,94 +14,84 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
-public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest, OrderGroupApiResponse, OrderGroup> {
-
-   /* @Autowired
-    private OrderGroupRepository orderGroupRepository;*/
+public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest, OrderGroupApiResponse,OrderGroup> {
 
     @Autowired
     private UserRepository userRepository;
 
-
     @Override
     public Header<OrderGroupApiResponse> create(Header<OrderGroupApiRequest> request) {
 
-        OrderGroupApiRequest body = request.getData();
-        OrderGroup orderGroup = OrderGroup.builder()
-                .status(body.getStatus())
-                .orderType(body.getOrderType())
-                .revAddress(body.getRevAddress())
-                .revName(body.getRevName())
-                .paymentType(body.getPaymentType())
-                .totalPrice(body.getTotalPrice())
-                .totalQuantity(body.getTotalQuantity())
-                .orderAt(LocalDateTime.now())
-                .user(userRepository.getOne(body.getUserId()))
-                .build();
+        return Optional.ofNullable(request.getData())
+                .map(body ->{
+                    OrderGroup orderGroup = OrderGroup.builder()
+                            .status(body.getStatus())
+                            .orderType(body.getOrderType())
+                            .revAddress(body.getRevAddress())
+                            .revName(body.getRevName())
+                            .paymentType(body.getPaymentType())
+                            .totalPrice(body.getTotalPrice())
+                            .totalQuantity(body.getTotalQuantity())
+                            .orderAt(LocalDateTime.now())
+                            .user(userRepository.getOne(body.getUserId()))
+                            .build();
 
-        /*OrderGroup newOrderGroup = orderGroupRepository.save(orderGroup);*/
-        OrderGroup newOrderGroup = baseRepository.save(orderGroup);
-
-        return response(newOrderGroup);
+                    return orderGroup;
+                })
+                .map(newOrderGroup -> baseRepository.save(newOrderGroup))
+                .map(newOrderGroup -> response(newOrderGroup))
+                .orElseGet(()->Header.ERROR("데이터 없음"));
     }
 
     @Override
     public Header<OrderGroupApiResponse> read(Long id) {
-
-        /*return orderGroupRepository.findById(id)*/
         return baseRepository.findById(id)
-                /*.map(this::response)*/
-                /*.map(orderGroup -> response(orderGroup))*/
-                .map(orderGroup -> {
-                    return response(orderGroup);
-                })
+                .map(this::response)
                 .orElseGet(()->Header.ERROR("데이터 없음"));
     }
 
     @Override
     public Header<OrderGroupApiResponse> update(Header<OrderGroupApiRequest> request) {
 
-        OrderGroupApiRequest body = request.getData();
-
-        /*return orderGroupRepository.findById(body.getId())*/
-        return baseRepository.findById(body.getId())
-                .map(orderGroup -> {
-                    orderGroup.setStatus(body.getStatus())
-                            .setOrderType(body.getOrderType())
-                            .setRevAddress(body.getRevAddress())
-                            .setRevName(body.getRevName())
-                            .setPaymentType(body.getPaymentType())
-                            .setTotalPrice(body.getTotalPrice())
-                            .setTotalQuantity(body.getTotalQuantity())
-                            .setOrderAt(body.getOrderAt())
-                            .setArrivalDate(body.getArrivalDate())
-                            .setUser(userRepository.getOne(body.getUserId()));
-
-                    return orderGroup;
+        return Optional.ofNullable(request.getData())
+                .map(body ->{
+                    return baseRepository.findById(body.getId())
+                        .map(orderGroup -> {
+                            orderGroup
+                                    .setStatus(body.getStatus())
+                                    .setOrderType(body.getOrderType())
+                                    .setRevAddress(body.getRevAddress())
+                                    .setRevName(body.getRevName())
+                                    .setPaymentType(body.getPaymentType())
+                                    .setTotalPrice(body.getTotalPrice())
+                                    .setTotalQuantity(body.getTotalQuantity())
+                                    .setOrderAt(body.getOrderAt())
+                                    .setArrivalDate(body.getArrivalDate())
+                                    .setUser(userRepository.getOne(body.getUserId()))
+                            ;
+                            return orderGroup;
+                        })
+                        .map(changeOrderGroup -> baseRepository.save(changeOrderGroup))
+                        .map(this::response)
+                        .orElseGet(()->Header.ERROR("데이터 없음"));
                 })
-                /*.map(changeOrderGroup -> orderGroupRepository.save(changeOrderGroup))*/
-                .map(changeOrderGroup -> baseRepository.save(changeOrderGroup))
-                .map(newOrderGroup -> response(newOrderGroup))
-                .orElseGet(() -> Header.ERROR("데이터 없음"));
+                .orElseGet(()->Header.ERROR("데이터 없음"));
     }
 
     @Override
     public Header delete(Long id) {
-        // 1. id -> repository -> user
-        /*Optional<OrderGroup> optional = orderGroupRepository.findById(id);*/
-        Optional<OrderGroup> optional = baseRepository.findById(id);
-        // 2. repository -> delete
-        return optional.map(item -> {
-            /*orderGroupRepository.delete(item);*/
-            baseRepository.delete(item);
-            return Header.OK();
-        }).orElseGet(() -> Header.ERROR("데이터 없읍."));
+
+        return baseRepository.findById(id)
+                .map(orderGroup -> {
+                    baseRepository.delete(orderGroup);
+                    return Header.OK();
+                })
+                .orElseGet(()->Header.ERROR("데이터 없음"));
     }
 
-    private Header<OrderGroupApiResponse> response(OrderGroup orderGroup){
+    public Header<OrderGroupApiResponse> response(OrderGroup orderGroup){
 
-        // user -> userApiResponse
-        OrderGroupApiResponse orderGroupApiResponse = OrderGroupApiResponse.builder()
+        OrderGroupApiResponse body = OrderGroupApiResponse.builder()
                 .id(orderGroup.getId())
                 .status(orderGroup.getStatus())
                 .orderType(orderGroup.getOrderType())
@@ -114,9 +104,7 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
                 .arrivalDate(orderGroup.getArrivalDate())
                 .userId(orderGroup.getUser().getId())
                 .build();
-        // Header + data return
-        return Header.OK(orderGroupApiResponse);
+
+        return Header.OK(body);
     }
-
-
 }

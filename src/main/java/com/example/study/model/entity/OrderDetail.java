@@ -1,7 +1,6 @@
 package com.example.study.model.entity;
 
 import lombok.*;
-import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -13,13 +12,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@ToString(exclude = {"orderGroup", "item"})
+@ToString(exclude = {"orderGroup","item"})
 @EntityListeners(AuditingEntityListener.class)
 @Builder
-@Accessors(chain = true)
 public class OrderDetail {
 
     @Id
@@ -46,18 +44,14 @@ public class OrderDetail {
     @LastModifiedBy
     private String updatedBy;
 
-    @ManyToOne
-    private OrderGroup orderGroup;
 
+    // OrderDetail N : 1 Item
     @ManyToOne
     private Item item;
 
-    // N : 1
-    //@ManyToOne
-    //private User user;
 
-    // N : 1
-    //@ManyToOne
-    //private Item item;
+    // OrderDetail N : 1 OrderGroup
+    @ManyToOne
+    private OrderGroup orderGroup;
 
 }

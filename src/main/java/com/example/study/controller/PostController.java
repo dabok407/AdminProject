@@ -3,26 +3,28 @@ package com.example.study.controller;
 import com.example.study.model.SearchParam;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
-@RequestMapping("/api") // class의 RequestMapping이 동일하여도 정상 구동 됨.
+@RequestMapping("/api")
 public class PostController {
 
+    // HTML <Form>
+    // ajax 검색
     // http post body -> data
-    // json, xml, multipart-form, text ...
+    //  json, xml, multipart-form / text-plain
+
     @PostMapping(value = "/postMethod")
     public SearchParam postMethod(@RequestBody SearchParam searchParam){
-
         return searchParam;
     }
 
-    /*@PutMapping
+    @PutMapping("/putMethod")
     public void put(){
 
-    }*/
+    }
 
-    /*@PatchMapping
+    @PatchMapping("/patchMethod")
     public void patch(){
 
-    }*/
-
+    }
 }
