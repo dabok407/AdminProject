@@ -156,7 +156,7 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest , UserA
         List<OrderGroup> orderGroupList = user.getOrderGroupList();
         List<OrderGroupApiResponse> orderGroupApiResponseList = orderGroupList.stream()
                 .map(orderGroup -> {
-                    OrderGroupApiResponse orderGroupApiResponse = orderGroupApiLogicService.response(orderGroup).getData();
+                    OrderGroupApiResponse orderGroupApiResponse = orderGroupApiLogicService.response(orderGroup);
 
                     // item api response
                     List<ItemApiResponse> itemApiResponseList = orderGroup.getOrderDetailList().stream()

@@ -28,7 +28,7 @@ public class OrderGroupApiResponse {
 
     private String paymentType;
 
-    private BigDecimal totalPrice;
+    private String totalPrice;
 
     private Integer totalQuantity;
 
@@ -37,6 +37,8 @@ public class OrderGroupApiResponse {
     private LocalDateTime arrivalDate;
 
     private Long userId;
+
+    private String userAccount;
 
     private List<ItemApiResponse> itemApiResponseList;
 
