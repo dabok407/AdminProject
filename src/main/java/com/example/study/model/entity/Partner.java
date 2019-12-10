@@ -1,6 +1,7 @@
 package com.example.study.model.entity;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -18,6 +19,7 @@ import java.util.List;
 @ToString(exclude = {"itemList","category"})
 @EntityListeners(AuditingEntityListener.class)
 @Builder
+@Accessors(chain = true)
 public class Partner {
 
     @Id
