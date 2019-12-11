@@ -26,11 +26,11 @@
         <section class="content-header">
             <h1>
                 사용자 관리
-                <small>파트너 관리</small>
+                <small>주문 관리</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> 사용자 관리</a></li>
-                <li class="active">파트너 관리</li>
+                <li class="active">주문 관리</li>
             </ol>
         </section>
 
@@ -94,42 +94,50 @@
                                                     id
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                    파트너
+                                                    주문자
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                    대표이사명
+                                                    상태
+                                                </th>
+                                                <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                                    주문형태
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
                                                     주소
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                    전화번호
+                                                    이름
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                    파트너 번호
+                                                    구매형태
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                    사업자 번호
+                                                    총 가격
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                    가입일
+                                                    수량
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                    해지일
+                                                    주문일
+                                                </th>
+                                                <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                                    배송일
                                                 </th>
                                             </tr>
                                             </thead>
                                             <tbody id="itemList">
                                             <tr role="row" class="odd" v-for="dto in itemList">
                                                 <td class="text-center">{{dto.id}}</td>
-                                                <td class="text-center">{{dto.name}}</td>
-                                                <td class="text-center">{{dto.ceo_name}}</td>
-                                                <td class="text-center">{{dto.address}}</td>
-                                                <td class="text-center">{{dto.call_center}}</td>
-                                                <td class="text-center">{{dto.partner_number}}</td>
-                                                <td class="text-center">{{dto.business_number}}</td>
-                                                <td class="text-center">{{dto.registered_at}}</td>
-                                                <td class="text-center">{{dto.unregistered_at}}</td>
+                                                <td class="text-center">{{dto.user_account}}</td>
+                                                <td class="text-center">{{dto.status}}</td>
+                                                <td class="text-center">{{dto.order_type}}</td>
+                                                <td class="text-center">{{dto.rev_address}}</td>
+                                                <td class="text-center">{{dto.rev_name}}</td>
+                                                <td class="text-center">{{dto.payment_type}}</td>
+                                                <td class="text-right">{{dto.total_price}}</td>
+                                                <td class="text-right">{{dto.total_quantity}}</td>
+                                                <td class="text-center">{{dto.order_at}}</td>
+                                                <td class="text-center">{{dto.arrival_date}}</td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -182,6 +190,6 @@
 </div>
 
 
-<script src="/app/partner.js"></script>
+<script src="/app/order/orderGroup.js"></script>
 </body>
 </html>

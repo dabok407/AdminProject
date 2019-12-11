@@ -1,4 +1,4 @@
-package com.example.study.commonModule;
+package com.example.study.common;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;

@@ -26,11 +26,11 @@
         <section class="content-header">
             <h1>
                 사용자 관리
-                <small>회원 관리</small>
+                <small>관리자 관리</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> 사용자 관리</a></li>
-                <li class="active">회원 관리</li>
+                <li class="active">관리자 관리</li>
             </ol>
         </section>
 
@@ -100,10 +100,13 @@
                                                     상태
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                    e-mail
+                                                    권한
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                    전화번호
+                                                    최근접속일
+                                                </th>
+                                                <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                                    로그인 실패 횟수
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
                                                     가입일
@@ -118,8 +121,9 @@
                                                 <td class="text-center">{{dto.id}}</td>
                                                 <td class="text-center">{{dto.account}}</td>
                                                 <td class="text-center">{{dto.status}}</td>
-                                                <td class="text-center">{{dto.email}}</td>
-                                                <td class="text-center">{{dto.phone_number}}</td>
+                                                <td class="text-center">{{dto.role}}</td>
+                                                <td class="text-center">{{dto.last_login_at}}</td>
+                                                <td class="text-center">{{dto.login_fail_count}}</td>
                                                 <td class="text-center">{{dto.registered_at}}</td>
                                                 <td class="text-center">{{dto.unregistered_at}}</td>
                                             </tr>
@@ -174,6 +178,6 @@
 </div>
 
 
-<script src="/app/user.js"></script>
+<script src="/app/admin/adminUser.js"></script>
 </body>
 </html>

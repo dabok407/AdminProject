@@ -26,11 +26,11 @@
         <section class="content-header">
             <h1>
                 사용자 관리
-                <small>관리자 관리</small>
+                <small>파트너 관리</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> 사용자 관리</a></li>
-                <li class="active">관리자 관리</li>
+                <li class="active">파트너 관리</li>
             </ol>
         </section>
 
@@ -94,19 +94,22 @@
                                                     id
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                    계정
+                                                    파트너
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                    상태
+                                                    대표이사명
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                    권한
+                                                    주소
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                    최근접속일
+                                                    전화번호
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                    로그인 실패 횟수
+                                                    파트너 번호
+                                                </th>
+                                                <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                                    사업자 번호
                                                 </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
                                                     가입일
@@ -119,11 +122,12 @@
                                             <tbody id="itemList">
                                             <tr role="row" class="odd" v-for="dto in itemList">
                                                 <td class="text-center">{{dto.id}}</td>
-                                                <td class="text-center">{{dto.account}}</td>
-                                                <td class="text-center">{{dto.status}}</td>
-                                                <td class="text-center">{{dto.role}}</td>
-                                                <td class="text-center">{{dto.last_login_at}}</td>
-                                                <td class="text-center">{{dto.login_fail_count}}</td>
+                                                <td class="text-center">{{dto.name}}</td>
+                                                <td class="text-center">{{dto.ceo_name}}</td>
+                                                <td class="text-center">{{dto.address}}</td>
+                                                <td class="text-center">{{dto.call_center}}</td>
+                                                <td class="text-center">{{dto.partner_number}}</td>
+                                                <td class="text-center">{{dto.business_number}}</td>
                                                 <td class="text-center">{{dto.registered_at}}</td>
                                                 <td class="text-center">{{dto.unregistered_at}}</td>
                                             </tr>
@@ -178,6 +182,6 @@
 </div>
 
 
-<script src="/app/adminUser.js"></script>
+<script src="/app/partner/partner.js"></script>
 </body>
 </html>

@@ -13,6 +13,21 @@ public class PageController {
     @Autowired
     private AdminMenuService adminMenuService;
 
+    @RequestMapping("/login")
+    public String login() {
+        return "/pages/login/login";
+    }
+
+    @RequestMapping("/loginSuccess")
+    public String loginSuccess() {
+        return "/pages/login/loginSuccess";
+    }
+
+    @RequestMapping("/logout")
+    public String logout() {
+        return "/pages/login/logout";
+    }
+
     @RequestMapping(path = {""})
     public ModelAndView index() {
         return new ModelAndView("/pages/main")
@@ -23,7 +38,7 @@ public class PageController {
 
     @RequestMapping("/user")
     public ModelAndView user() {
-        return new ModelAndView("/pages/user")
+        return new ModelAndView("/pages/user/user")
                 .addObject("menuList", adminMenuService.getAdminMenu())
                 .addObject("code", "user")
                 ;
@@ -31,7 +46,7 @@ public class PageController {
 
     @RequestMapping("/partner")
     public ModelAndView partner() {
-        return new ModelAndView("/pages/partner")
+        return new ModelAndView("/pages/partner/partner")
                 .addObject("menuList", adminMenuService.getAdminMenu())
                 .addObject("code", "partner")
                 ;
@@ -39,7 +54,7 @@ public class PageController {
 
     @RequestMapping("/adminUser")
     public ModelAndView adminUser() {
-        return new ModelAndView("/pages/adminUser")
+        return new ModelAndView("/pages/admin/adminUser")
                 .addObject("menuList", adminMenuService.getAdminMenu())
                 .addObject("code", "adminUser")
                 ;
@@ -47,7 +62,7 @@ public class PageController {
 
     @RequestMapping("/orderGroup")
     public ModelAndView order() {
-        return new ModelAndView("/pages/orderGroup")
+        return new ModelAndView("/pages/order/orderGroup")
                 .addObject("menuList", adminMenuService.getAdminMenu())
                 .addObject("code", "orderGroup")
                 ;
