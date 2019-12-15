@@ -18,4 +18,4 @@ body  {font-family:'notoSansR','Malgun Gothic', '맑은 고딕'; background:#586
 .login-form-box .checkforms {padding:10px 0 0 22px; text-align:left;}
 .login-form-box .checkforms .idcheck label {display:inline-block;margin-left:5px;  font-size:14px; color:#333; vertical-align:bottom; }
 .login-form-box .submit {min-width:125px; height:34px;  margin-top:23px; color:#fff; border-radius:20px; border:0;  background:#409ee8;}
-.login-form-box .submin-disabled {min-width:125px; height:34px;  margin-top:23px; color:#fff; border-radius:20px; border:0;}
+.login-form-box .submit-disabled {min-width:125px; height:34px;  margin-top:23px; color:#fff; border-radius:20px; border:0;}

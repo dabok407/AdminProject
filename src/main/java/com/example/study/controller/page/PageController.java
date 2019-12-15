@@ -15,17 +15,17 @@ public class PageController {
 
     @RequestMapping("/login")
     public String login() {
-        return "/pages/login/login";
+        return "pages/login/login";
     }
 
     @RequestMapping("/loginSuccess")
     public String loginSuccess() {
-        return "/pages/login/loginSuccess";
+        return "pages/login/loginSuccess";
     }
 
     @RequestMapping("/logout")
     public String logout() {
-        return "/pages/login/logout";
+        return "pages/login/logout";
     }
 
     @RequestMapping(path = {""})
