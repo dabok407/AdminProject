@@ -1,5 +1,6 @@
 package com.example.study.service;
 
+import com.example.study.common.ValidCustomException;
 import com.example.study.ifs.CrudInterface;
 import com.example.study.model.entity.AdminUser;
 import com.example.study.model.entity.OrderGroup;
@@ -43,7 +44,10 @@ public class AdminUserApiLogicService implements CrudInterface<AdminUserApiReque
         // 1. request data
         AdminUserApiRequest adminUserApiRequest = request.getData();
 
-        // 2. User 생성
+        // 2. 중복검사
+        verifyDuplicateAccount(adminUserApiRequest.getAccount());
+
+        // 3. User 생성
         AdminUser adminUser = AdminUser.builder()
                 .account(adminUserApiRequest.getAccount())
                 .password(adminUserApiRequest.getPassword())
@@ -54,7 +58,7 @@ public class AdminUserApiLogicService implements CrudInterface<AdminUserApiReque
                 .build();
         AdminUser newAdminUser = adminUserRepository.save(adminUser);
 
-        // 3. 생성된 데이터 -> userApiResponse return
+        // 4. 생성된 데이터 -> userApiResponse return
         return Header.OK(response(newAdminUser));
     }
 
@@ -136,9 +140,17 @@ public class AdminUserApiLogicService implements CrudInterface<AdminUserApiReque
                 .role(adminUser.getRole())
                 .registeredAt(adminUser.getRegisteredAt())
                 .unregisteredAt(adminUser.getUnregisteredAt())
+                .lastLoginAt(adminUser.getLastLoginAt())
+                .loginFailCount(adminUser.getLoginFailCount())
                 .build();
 
         return adminUserApiResponse;
+    }
+
+    private void verifyDuplicateAccount(String account){
+        if(adminUserRepository.findByAccount(account).isPresent()){
+            throw new ValidCustomException("이미 사용중인 계정 입니다", "account");
+        }
     }
 
 
