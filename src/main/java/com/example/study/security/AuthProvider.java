@@ -32,7 +32,6 @@ public class AuthProvider implements AuthenticationProvider  {
         /*UserDto user = userService.selectUser(new UserDto(id));*/
         UserDetails user = userService.loadUserByUsername(id);
 
-        // email에 맞는 user가 없거나 비밀번호가 맞지 않는 경우.
         if (null == user){
             throw new UsernameNotFoundException(id);
         }else if(!user.getPassword().equals(password)){

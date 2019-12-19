@@ -19,7 +19,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @EnableGlobalAuthentication
 @ComponentScan(basePackages = {"com.example.study.*"})
-
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired

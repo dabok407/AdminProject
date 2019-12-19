@@ -26,6 +26,16 @@
         el : '#itemList',
         data : {
             itemList : {}
+        },
+        methods: {
+            click: function (id) {
+                // template 태그 삽입
+                $('#modalContentDiv').html($('#modify-template').html());
+                // 상세 모달 팝업 show
+                $('#adminModifyModal').modal('show');
+                // 상세 정보 조회
+                detailSearch(id);
+            }
         }
     });
 
@@ -46,7 +56,6 @@
                 }
             },
             nextClick:function () {
-
                 if(pagination.current_page !== pagination.total_pages-1){
                     searchStart(pagination.current_page+1);
                 }
@@ -61,33 +70,72 @@
         }
     });
 
+    $(document).ready(function () {
+        searchStart(0)
+    });
 
     $('#search').click(function () {
         searchStart(0)
     });
 
-    $(document).ready(function () {
-        searchStart(0)
+    // 등록 모달 팝업 open
+    $('#registPopupBtn').click(function () {
+        // template 태그 삽입
+        $('#modalContentDiv').html($('#regist-template').html());
+        // 등록 모달 팝업 show
+        $('#adminRegistModal').modal('show');
     });
-    
+
+    // 등록 모달 팝업 hide
+    $('#registCloseModalBtn').click(function(){
+        //$('#adminRegistModal').modal('hide');
+        $('#adminRegistModal').remove();
+    });
+
+    // 등록 event
+    $('#registBtn').click(function () {
+        registAdminUser();
+    });
+
+    // 등록 모달 팝업 비밀번호 일치
+    $('#reg_passwordCheck').keyup(function () {
+        var pwdVal = $('#reg_password').val();
+        var pwdCheckVal = $('#reg_passwordCheck').val();
+        var msg = "";
+        if(pwdVal === pwdCheckVal){
+            msg = "일치 합니다.";
+        }else{
+            msg = "비밀번호가 일지 하지 않습니다.";
+        }
+        $('#reg_pwdCompareText').text(msg);
+        $('#reg_pwdCompareText').show();
+    });
+
+
+    // 상세 모달 팝업 hide
+    $('#modifyCloseModalBtn').click(function(){
+        //$('#adminModifyModal').modal('hide');
+        $('#adminModifyModal').remove();
+    });
+
+    // 수정 event
+    $('#modifyBtn').click(function () {
+        modifyAdminUser();
+    });
+
     function searchStart(index) {
-        console.log("call index : "+index);
         $.get("/api/adminUser?page="+index, function (response) {
 
-            /* 데이터 셋팅 */
             // 페이징 처리 데이터
             indexBtn = [];
             pagination = response.pagination;
-
 
             //전체 페이지
             showPage.totalElements = pagination.current_elements;
             showPage.currentPage = pagination.current_page+1;
 
-
             // 검색 데이터
             itemList.itemList = response.data;
-
 
             // 이전버튼
             if(pagination.current_page === 0){
@@ -95,7 +143,6 @@
             }else{
                 $('#previousBtn').removeClass("disabled")
             }
-
 
             // 다음버튼
             if(pagination.current_page === pagination.total_pages-1){
@@ -117,12 +164,46 @@
             // 페이지 버튼 셋팅
             pageBtnList.btnList = indexBtn;
 
-
             // 색상처리
             setTimeout(function () {
                 $('li[btn_id]').removeClass( "active" );
                 $('li[btn_id='+(pagination.current_page+1)+']').addClass( "active" );
             },50)
+        });
+    }
+
+    // 사용자 등록
+    function registAdminUser(){
+        $.ajax({
+            url: "/api/adminUser",
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            /*data: JSON.stringify($('#registForm').serialize()),*/
+            data: $('#registForm').serialize(),
+            dataType: 'json',
+            async: true,
+            success: function (response, textStatus, jqXHR) {
+                console.log(response);
+            }
+        });
+    }
+
+    // 사용자 수정
+    function modifyAdminUser(){
+
+    }
+
+    // 사용자 상세 정보 조회
+    function detailSearch(id){
+        $.ajax({
+            url: "/api/adminUser/"+id,
+            success: function (response, textStatus, jqXHR) {
+                var adminUserData = response.data;
+                new Vue({
+                    el : '#adminModifyTableDiv',
+                    data :adminUserData
+                });
+            }
         });
     }
 

@@ -2,7 +2,6 @@ package com.example.study.security;
 
 import java.io.IOException;
 
-import javax.security.auth.login.CredentialExpiredException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.ModelAndView;
+
 
 /**
  * 로그인 실패 핸들러

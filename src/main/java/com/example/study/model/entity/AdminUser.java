@@ -58,4 +58,5 @@ public class AdminUser {
 
     @LastModifiedBy
     private String updatedBy;
+
 }

@@ -16,7 +16,7 @@ public class AdminMenuService {
                 ,AdminMenu.builder().title("파트너").url("/pages/partner/").code("partner").build()
                 ,AdminMenu.builder().title("주문내역").url("/pages/orderGroup").code("orderGroup").build()
                 /*,AdminMenu.builder().title("주문 관리").url("/pages/order").code("order").build()*/
-                ,AdminMenu.builder().title("관리자").url("/pages/adminUser").code("adminUser").build()
+                ,AdminMenu.builder().title("사용자").url("/pages/adminUser").code("adminUser").build()
         );
 
     }
