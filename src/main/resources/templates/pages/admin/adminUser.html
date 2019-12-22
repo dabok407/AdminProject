@@ -36,7 +36,7 @@
 
         <section class="content">
 
-            <!--<div class="row">
+            <div class="row">
                 <div class="col-xs-12">
                     <div class="box box-danger">
                         <div class="box-header with-border">
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-            </div>--><!-- row end-->
+            </div><!-- row end-->
 
             <div class="row">
                 <div class="col-xs-12">
@@ -178,6 +178,8 @@
     <div class="control-sidebar-bg"></div>
 </div>
 
+<script src="/app/admin/adminUser.js"></script>
+
 <!-- Regist Modal Popup Start -->
 <script type="text/x-template" id="regist-template">
     <div id="adminRegistModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
@@ -276,6 +278,7 @@
                             <tr role="row" class="odd">
                                 <td class="text-left">
                                     <input type="text" id="mod_account" name="account" v-model="account" style="width: 300px;">
+                                    <input type="hidden" id="id" name="id">
                                 </td>
                             </tr>
                             <tr role="row">
@@ -357,8 +360,8 @@
                     </div>
                 </form>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="modifyBtn">수정</button>
-                    <button type="button" class="btn btn-default" id="modifyCloseModalBtn">취소</button>
+                    <button type="button" class="btn btn-primary" id="modifyBtn" th:onclick="|javascript:modifyAdminUser()|">수정</button>
+                    <button type="button" class="btn btn-default" id="modifyCloseBtn" th:onclick="|javascript:closeModifyPopup()|">취소</button>
                 </div>
             </div>
         </div>
@@ -366,6 +369,5 @@
 </script>
 <!-- Modify Modal Popup End -->
 
-<script src="/app/admin/adminUser.js"></script>
 </body>
 </html>
