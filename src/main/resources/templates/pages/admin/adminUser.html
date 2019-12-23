@@ -162,7 +162,205 @@
                 </div>
             </div>
         </section>
-        <div id="modalContentDiv"></div>
+
+        <!--<div id="modalContentDiv"></div>-->
+
+        <!-- Regist Modal Popup Start -->
+        <!--<script type="text/x-template" id="regist-template">-->
+            <div id="adminRegistModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h2 class="modal-title" id="myModalLabel">사용자 등록</h2>
+                        </div>
+                        <form id="registForm">
+                            <div class="modal-body">
+                                <table id="registTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                                    <tbody>
+                                    <tr role="row">
+                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                            계정
+                                            <span style="color: #FF5B6B;">&nbsp;*</span>
+                                        </th>
+                                    </tr>
+                                    <tr role="row" class="odd">
+                                        <td class="text-left">
+                                            <input type="text" id="reg_account" name="account" style="width: 300px;">
+                                        </td>
+                                    </tr>
+                                    <tr role="row">
+                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                            비밀번호
+                                            <span style="color: #FF5B6B;">&nbsp;*</span>
+                                        </th>
+                                    </tr>
+                                    <tr role="row" class="odd">
+                                        <td class="text-left">
+                                            <input type="password" id="reg_password" name="password" style="width: 300px;">
+                                        </td>
+                                    </tr>
+                                    <tr role="row">
+                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                            비밀번호 확인
+                                            <span style="color: #FF5B6B;">&nbsp;*</span>
+                                        </th>
+                                    </tr>
+                                    <tr role="row" class="odd">
+                                        <td class="text-left">
+                                            <input type="password" id="reg_passwordCheck" name="passwordCheck" style="width: 300px;">
+                                            <span class="error_next_box" id="reg_pwdCompareText" style="color: red; float: right; display: none;" ></span>
+                                        </td>
+                                    </tr>
+                                    <tr role="row">
+                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                            권한
+                                            <span style="color: #FF5B6B;">&nbsp;*</span>
+                                        </th>
+                                    </tr>
+                                    <tr role="row" class="odd">
+                                        <td class="text-left">
+                                            <select id="reg_role" name="role" style="width: 300px;">
+                                                <option value="ROLE_ADMIN">관리자</option>
+                                                <option value="ROLE_USER">일반사용자</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="registBtn">등록</button>
+                            <button type="button" class="btn btn-default" id="registCloseModalBtn">취소</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!--</script>-->
+        <!-- Regist Modal Popup End -->
+
+
+        <!-- Modify Modal Popup Start -->
+        <!--<script type="text/x-template" id="modify-template">-->
+            <div id="adminModifyModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>
+                            <h2 class="modal-title">사용자 상세</h2>
+                        </div>
+                        <form id="modifyForm">
+                            <div class="modal-body" id="adminModifyTableDiv">
+                                <table id="modifyTable" class="table table-bordered table-hover dataTable" role="grid"
+                                       aria-describedby="example2_info">
+                                    <tbody>
+                                    <tr role="row">
+                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                            계정
+                                            <span style="color: #FF5B6B;">&nbsp;*</span>
+                                        </th>
+                                    </tr>
+                                    <tr role="row" class="odd">
+                                        <td class="text-left">
+                                            <input type="text" id="mod_account" name="account" style="width: 300px;"> <!--v-model="account"-->
+                                            <input type="hidden" id="id" name="id">
+                                        </td>
+                                    </tr>
+                                    <tr role="row">
+                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                            비밀번호
+                                            <span style="color: #FF5B6B;">&nbsp;*</span>
+                                        </th>
+                                    </tr>
+                                    <tr role="row" class="odd">
+                                        <td class="text-left">
+                                            <input type="password" id="mod_password" name="password" style="width: 300px;">
+                                        </td>
+                                    </tr>
+                                    <tr role="row">
+                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                            비밀번호 확인
+                                            <span style="color: #FF5B6B;">&nbsp;*</span>
+                                        </th>
+                                    </tr>
+                                    <tr role="row" class="odd">
+                                        <td class="text-left">
+                                            <input type="password" id="mod_passwordCheck" name="passwordCheck"
+                                                   style="width: 300px;">
+                                            <span class="error_next_box" id="mod_pwdCompareText"
+                                                  style="color: red; float: right; display: none;"></span>
+                                        </td>
+                                    </tr>
+                                    <tr role="row">
+                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                            권한
+                                            <span style="color: #FF5B6B;">&nbsp;*</span>
+                                        </th>
+                                    </tr>
+                                    <tr role="row" class="odd">
+                                        <td class="text-left">
+                                            <select id="mod_role" name="role" style="width: 300px;"> <!--v-model="role"-->
+                                                <option disabled value="">선택</option>
+                                                <option value="ROLE_ADMIN">관리자</option>
+                                                <option value="ROLE_USER">일반사용자</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr role="row">
+                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                            로그인 실패 수
+                                        </th>
+                                    </tr>
+                                    <tr role="row" class="odd">
+                                        <td class="text-left">
+                                            <span id="mod_login_fail_count">
+                                                <!--{{login_fail_count}}-->
+                                            </span>
+                                            <br>
+                                            <!--<input type="text" id="mod_loginFailCount" name="login_fail_count" v-model="login_fail_count" style="width: 300px;">-->
+                                        </td>
+                                    </tr>
+                                    <tr role="row">
+                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                            최근 로그인
+                                        </th>
+                                    </tr>
+                                    <tr role="row" class="odd">
+                                        <td class="text-left">
+                                            <span id="mod_last_login_at">
+                                                <!--{{last_login_at}}-->
+                                            </span>
+                                            <br>
+                                        </td>
+                                    </tr>
+                                    <tr role="row">
+                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                            등록일
+                                        </th>
+                                    </tr>
+                                    <tr role="row" class="odd">
+                                        <td class="text-left">
+                                            <span id="mod_registered_at">
+                                                <!--{{registered_at}}-->
+                                            </span>
+                                            <br>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="modifyBtn" th:onclick="|javascript:modifyAdminUser()|">수정</button>
+                            <button type="button" class="btn btn-default" id="modifyCloseBtn" th:onclick="|javascript:closeModifyPopup()|">취소</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!--</script>-->
+        <!-- Modify Modal Popup End -->
     </div>
     <!-- Content End -->
 
@@ -178,196 +376,8 @@
     <div class="control-sidebar-bg"></div>
 </div>
 
+
 <script src="/app/admin/adminUser.js"></script>
-
-<!-- Regist Modal Popup Start -->
-<script type="text/x-template" id="regist-template">
-    <div id="adminRegistModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                    <h2 class="modal-title" id="myModalLabel">사용자 등록</h2>
-                </div>
-                <div class="modal-body">
-                    <table id="registTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
-                        <tbody>
-                        <tr role="row">
-                            <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                계정
-                                <span style="color: #FF5B6B;">&nbsp;*</span>
-                            </th>
-                        </tr>
-                        <tr role="row" class="odd">
-                            <td class="text-left">
-                                <input type="text" id="reg_account" name="account" style="width: 300px;">
-                            </td>
-                        </tr>
-                        <tr role="row">
-                            <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                비밀번호
-                                <span style="color: #FF5B6B;">&nbsp;*</span>
-                            </th>
-                        </tr>
-                        <tr role="row" class="odd">
-                            <td class="text-left">
-                                <input type="password" id="reg_password" name="password" style="width: 300px;">
-                            </td>
-                        </tr>
-                        <tr role="row">
-                            <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                비밀번호 확인
-                                <span style="color: #FF5B6B;">&nbsp;*</span>
-                            </th>
-                        </tr>
-                        <tr role="row" class="odd">
-                            <td class="text-left">
-                                <input type="password" id="reg_passwordCheck" name="passwordCheck" style="width: 300px;">
-                                <span class="error_next_box" id="reg_pwdCompareText" style="color: red; float: right; display: none;" ></span>
-                            </td>
-                        </tr>
-                        <tr role="row">
-                            <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                권한
-                                <span style="color: #FF5B6B;">&nbsp;*</span>
-                            </th>
-                        </tr>
-                        <tr role="row" class="odd">
-                            <td class="text-left">
-                                <select id="reg_role" name="role" style="width: 300px;">
-                                    <option value="ROLE_ADMIN">관리자</option>
-                                    <option value="ROLE_USER">일반사용자</option>
-                                </select>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="registBtn">등록</button>
-                    <button type="button" class="btn btn-default" id="registCloseModalBtn">취소</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</script>
-<!-- Regist Modal Popup End -->
-
-
-<!-- Modify Modal Popup Start -->
-<script type="text/x-template" id="modify-template">
-    <div id="adminModifyModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">×</span></button>
-                    <h2 class="modal-title">사용자 상세</h2>
-                </div>
-                <form id="registForm">
-                    <div class="modal-body" id="adminModifyTableDiv">
-                        <table id="modifyTable" class="table table-bordered table-hover dataTable" role="grid"
-                               aria-describedby="example2_info">
-                            <tbody>
-                            <tr role="row">
-                                <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                    계정
-                                    <span style="color: #FF5B6B;">&nbsp;*</span>
-                                </th>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="text-left">
-                                    <input type="text" id="mod_account" name="account" v-model="account" style="width: 300px;">
-                                    <input type="hidden" id="id" name="id">
-                                </td>
-                            </tr>
-                            <tr role="row">
-                                <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                    비밀번호
-                                    <span style="color: #FF5B6B;">&nbsp;*</span>
-                                </th>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="text-left">
-                                    <input type="password" id="mod_password" name="password" style="width: 300px;">
-                                </td>
-                            </tr>
-                            <tr role="row">
-                                <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                    비밀번호 확인
-                                    <span style="color: #FF5B6B;">&nbsp;*</span>
-                                </th>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="text-left">
-                                    <input type="password" id="mod_passwordCheck" name="passwordCheck"
-                                           style="width: 300px;">
-                                    <span class="error_next_box" id="mod_pwdCompareText"
-                                          style="color: red; float: right; display: none;"></span>
-                                </td>
-                            </tr>
-                            <tr role="row">
-                                <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                    권한
-                                    <span style="color: #FF5B6B;">&nbsp;*</span>
-                                </th>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="text-left">
-                                    <select id="mod_role" name="role" v-model="role" style="width: 300px;">
-                                        <option disabled value="">선택</option>
-                                        <option value="ROLE_ADMIN">관리자</option>
-                                        <option value="ROLE_USER">일반사용자</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr role="row">
-                                <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                    로그인 실패 수
-                                </th>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="text-left">
-                                    <span>{{login_fail_count}}</span>
-                                    <br>
-                                    <!--<input type="text" id="mod_loginFailCount" name="login_fail_count" v-model="login_fail_count" style="width: 300px;">-->
-                                </td>
-                            </tr>
-                            <tr role="row">
-                                <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                    최근 로그인
-                                </th>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="text-left">
-                                    <span>{{last_login_at}}</span>
-                                    <br>
-                                </td>
-                            </tr>
-                            <tr role="row">
-                                <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                    등록일
-                                </th>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="text-left">
-                                    <span>{{registered_at}}</span>
-                                    <br>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </form>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="modifyBtn" th:onclick="|javascript:modifyAdminUser()|">수정</button>
-                    <button type="button" class="btn btn-default" id="modifyCloseBtn" th:onclick="|javascript:closeModifyPopup()|">취소</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</script>
-<!-- Modify Modal Popup End -->
 
 </body>
 </html>

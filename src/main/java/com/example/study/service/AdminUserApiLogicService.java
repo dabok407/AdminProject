@@ -13,6 +13,7 @@ import com.example.study.model.network.request.UserApiRequest;
 import com.example.study.model.network.response.*;
 import com.example.study.repository.AdminUserRepository;
 import com.example.study.repository.UserRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -84,6 +85,7 @@ public class AdminUserApiLogicService implements CrudInterface<AdminUserApiReque
         return optional.map(adminUser -> {
             // 3. data -> update
             // id
+            /*BeanUtils.copyProperties(adminUser, adminUserApiRequest);*/
             adminUser.setAccount(adminUserApiRequest.getAccount())
                     .setPassword(adminUserApiRequest.getPassword())
                     .setStatus(adminUserApiRequest.getStatus())

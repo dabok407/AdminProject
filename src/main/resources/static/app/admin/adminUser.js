@@ -29,10 +29,6 @@
         },
         methods: {
             click: function (id) {
-                // template 태그 삽입
-                $('#modalContentDiv').html($('#modify-template').html());
-                // 상세 모달 팝업 show
-                $('#adminModifyModal').modal('show');
                 // 상세 정보 조회
                 detailSearch(id);
             }
@@ -81,20 +77,19 @@
     // 등록 모달 팝업 open
     $('#registPopupBtn').click(function () {
         // template 태그 삽입
-        $('#modalContentDiv').html($('#regist-template').html());
+        //$('#modalContentDiv').html($('#regist-template').html());
         // 등록 모달 팝업 show
         $('#adminRegistModal').modal('show');
-    });
-
-    // 등록 모달 팝업 hide
-    $('#registCloseModalBtn').click(function(){
-        //$('#adminRegistModal').modal('hide');
-        $('#adminRegistModal').remove();
     });
 
     // 등록 event
     $('#registBtn').click(function () {
         registAdminUser();
+    });
+
+    // 등록 모달 팝업 close
+    $('#registCloseModalBtn').click(function () {
+        $('#adminRegistModal').modal('hide');
     });
 
     // 등록 모달 팝업 비밀번호 일치
@@ -111,17 +106,21 @@
         $('#reg_pwdCompareText').show();
     });
 
-
-    // 상세 모달 팝업 hide
-    $('#modifyCloseModalBtn').click(function(){
-        //$('#adminModifyModal').modal('hide');
-        $('#adminModifyModal').remove();
-    });
-
     // 수정 event
     $('#modifyBtn').click(function () {
         modifyAdminUser();
     });
+
+    // 상세 모달 팝업 hide
+    function closeModifyPopup() {
+        $('#adminModifyModal').remove();
+    }
+
+    // 등록 모달 팝업 hide
+    function closeRegistPopup() {
+        //$('#adminRegistModal').modal('hide');
+        $('#adminRegistModal').remove();
+    }
 
     function searchStart(index) {
         $.get("/api/adminUser?page="+index, function (response) {
@@ -179,9 +178,14 @@
             type: 'POST',
             contentType: 'application/json; charset=utf-8',
             /*data: JSON.stringify($('#registForm').serialize()),*/
-            data: $('#registForm').serialize(),
+            data: JSON.stringify(common.serializeObject("registForm")),
             dataType: 'json',
             async: true,
+            beforeSend : function(xhr) {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                xhr.setRequestHeader(header, token);
+            },
             success: function (response, textStatus, jqXHR) {
                 console.log(response);
             }
@@ -190,19 +194,54 @@
 
     // 사용자 수정
     function modifyAdminUser(){
-
+        $.ajax({
+            url: "/api/adminUser",
+            type: 'PUT',
+            contentType: 'application/json; charset=utf-8',
+            /*data: JSON.stringify($('#registForm').serialize()),*/
+            data: $('#registForm').serialize(),
+            dataType: 'json',
+            async: true,
+            beforeSend : function(xhr) {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response, textStatus, jqXHR) {
+                console.log(response);
+                // 팝업 닫기
+                closeModifyPopup();
+                // 상세 팝업 재호출
+                detailSearch(response.data.id);
+            }
+        });
     }
 
     // 사용자 상세 정보 조회
     function detailSearch(id){
+        // template 태그 삽입
+        $('#modalContentDiv').html($('#modify-template').html());
+        // 상세 모달 팝업 show
+        $('#adminModifyModal').modal('show');
+        // 상세 조회 서비스 호출
         $.ajax({
             url: "/api/adminUser/"+id,
             success: function (response, textStatus, jqXHR) {
                 var adminUserData = response.data;
-                new Vue({
+                var $selector = $('#modifyForm');
+
+                $('#modifyForm').find('input, select, checkbox, radio').val(null);
+
+                $selector.find("#mod_account").val(adminUserData.account);
+                $selector.find("#mod_role").val(adminUserData.role);
+                $selector.find("#mod_login_fail_count").text(adminUserData.login_fail_count);
+                $selector.find("#mod_last_login_at").text(adminUserData.last_login_at);
+                $selector.find("#mod_registered_at").text(adminUserData.registered_at);
+
+                /*new Vue({
                     el : '#adminModifyTableDiv',
                     data :adminUserData
-                });
+                });*/
             }
         });
     }
