@@ -6,6 +6,7 @@ import com.example.study.ifs.CrudInterface;
 import com.example.study.model.entity.AdminUser;
 import com.example.study.model.entity.OrderGroup;
 import com.example.study.model.enumclass.AdminUserStatus;
+import com.example.study.model.enumclass.LoginFailType;
 import com.example.study.model.enumclass.UserStatus;
 import com.example.study.model.network.Header;
 import com.example.study.model.network.Pagination;
@@ -48,8 +49,10 @@ public class AdminUserApiLogicService implements CrudInterface<AdminUserApiReque
         AdminUserApiRequest adminUserApiRequest = request.getData();
 
         // 2. 중복검사
-        verifyDuplicateAccount(adminUserApiRequest.getAccount());
-
+        boolean adminUserValidation = verifyDuplicateAccount(adminUserApiRequest.getAccount());
+        if(!adminUserValidation){
+            return Header.ERROR(LoginFailType.NONE_ACCOUNT.getMsg());
+        }
         // 3. User 생성
         AdminUser adminUser = AdminUser.builder()
                 .account(adminUserApiRequest.getAccount())
@@ -124,8 +127,20 @@ public class AdminUserApiLogicService implements CrudInterface<AdminUserApiReque
         .orElseGet(()->Header.ERROR("데이터 없음"));
     }
 
-    public Header<List<AdminUserApiResponse>> search(Pageable pageable) {
-        Page<AdminUser> adminUsers = adminUserRepository.findAll(pageable);
+    public Header<List<AdminUserApiResponse>> search(Pageable pageable, AdminUserApiRequest adminUserApiRequest) {
+
+        Page<AdminUser> adminUsers = null;
+
+        if(adminUserApiRequest.getAccount() == null && adminUserApiRequest.getRole() == null){
+            adminUsers = adminUserRepository.findAll(pageable);
+        }else if(adminUserApiRequest.getAccount() != null && adminUserApiRequest.getRole() == null){
+            adminUsers = adminUserRepository.findAllByAccount(pageable, adminUserApiRequest.getAccount());
+        }else if(adminUserApiRequest.getRole() != null && adminUserApiRequest.getAccount() == null){
+            adminUsers = adminUserRepository.findAllByRole(pageable, adminUserApiRequest.getRole());
+        }else{
+            adminUsers = adminUserRepository.findAllByAccountAndRole(pageable, adminUserApiRequest.getAccount(), adminUserApiRequest.getRole());
+        }
+
         List<AdminUserApiResponse> adminUserApiResponseList = adminUsers.stream()
                 .map(adminUser -> response(adminUser))
                 .collect(Collectors.toList());
@@ -158,26 +173,12 @@ public class AdminUserApiLogicService implements CrudInterface<AdminUserApiReque
         return adminUserApiResponse;
     }
 
-    private void verifyDuplicateAccount(String account){
+    private boolean verifyDuplicateAccount(String account){
         if(adminUserRepository.findByAccount(account).isPresent()){
-            throw new ValidCustomException("이미 사용중인 계정 입니다", "account");
+            return false;
+            /*throw new ValidCustomException("이미 사용중인 계정 입니다", "account");*/
         }
+        return true;
     }
-
-
-    /*public UserDetails loadUserByUsername(String accrount, String password) throws UsernameNotFoundException {
-        Optional<AdminUser> adminUserEntityWrapper = Optional.ofNullable(adminUserRepository.findFirstByAccountAndPassword(accrount, password));
-        AdminUser AdminUserEntity = adminUserEntityWrapper.get();
-
-        List<GrantedAuthority> authorities = new ArrayList<>();
-
-        if (("ADMIN").equals(AdminUserEntity.getRole())) {
-            authorities.add(new SimpleGrantedAuthority("ADMIN"));
-        } else {
-            authorities.add(new SimpleGrantedAuthority("MEMBER"));
-        }
-
-        return new User(AdminUserEntity.getAccount(), AdminUserEntity.getPassword(), authorities);
-    }*/
 
 }

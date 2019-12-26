@@ -124,7 +124,17 @@
     }
 
     function searchStart(index) {
-        $.get("/api/adminUser?page="+index, function (response) {
+
+        var paramUrl = "";
+        var account = $("#account").val();
+        var role = $("#role").val();
+        if(account != "" && account != null){
+            paramUrl += "&account="+account;
+        }
+        if(role != "" && role != null){
+            paramUrl += "&role="+role;
+        }
+        $.get("/api/adminUser?page="+index+paramUrl, function (response) {
 
             // 페이징 처리 데이터
             indexBtn = [];
@@ -174,6 +184,10 @@
 
     // 사용자 등록
     function registAdminUser(){
+
+        /*암호화 비밀번호 세팅*/
+        $("#crypto_reg_password").val(CryptoJS.SHA256($("#reg_password").val()));
+
         $.ajax({
             url: "/api/adminUser",
             type: 'POST',
@@ -188,7 +202,6 @@
                 xhr.setRequestHeader(header, token);
             },
             success: function (response, textStatus, jqXHR) {
-
                 var resultCode = response.result_code;
                 if(resultCode == "OK"){
                     alert("등록 되었습니다.");
@@ -196,6 +209,8 @@
                     closeRegistPopup();
                     // 사용자 조회
                     searchStart(0);
+                }else{
+                    alert(response.description);
                 }
             }
         });

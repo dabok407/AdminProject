@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,8 +56,12 @@ public class AdminUserApiController implements CrudInterface<AdminUserApiRequest
     }
 
     @GetMapping("")
-    public Header<List<AdminUserApiResponse>> findAll(@PageableDefault(sort = { "id" }, direction = Sort.Direction.ASC)Pageable pageable){
+    public Header<List<AdminUserApiResponse>> findAll(@SortDefault.SortDefaults({
+                                                                                 @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
+                                                                                 , @SortDefault(sort = "id", direction = Sort.Direction.ASC)
+                                                                                }) Pageable pageable
+                                                        ,@ModelAttribute AdminUserApiRequest adminUserApiRequest){
         log.info("{}",pageable);
-        return adminUserApiLogicService.search(pageable);
+        return adminUserApiLogicService.search(pageable, adminUserApiRequest);
     }
 }

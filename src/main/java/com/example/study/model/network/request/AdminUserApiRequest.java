@@ -2,10 +2,8 @@ package com.example.study.model.network.request;
 
 import com.example.study.model.enumclass.AdminUserStatus;
 import com.example.study.model.enumclass.UserStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
