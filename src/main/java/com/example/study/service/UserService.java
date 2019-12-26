@@ -1,6 +1,7 @@
 package com.example.study.service;
 
 import com.example.study.model.entity.AdminUser;
+import com.example.study.model.network.Header;
 import com.example.study.repository.AdminUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +31,32 @@ public class UserService implements UserDetailsService {
         adminUser.setPassword(passwordEncoder.encode(adminUser.getPassword()));
 
         return adminUserRepository.save(adminUser).getId();
+    }
+
+    public void updateLoginDt(String account){
+
+        Optional<AdminUser> optional = adminUserRepository.findByAccount(account);
+
+        optional.map(adminUser -> {
+            adminUser.setLastLoginAt(LocalDateTime.now());
+            return adminUser;
+        })
+        .map(adminUser -> adminUserRepository.save(adminUser))             // update -> newUser
+        .map(Header::OK)
+        .orElseGet(()->Header.ERROR("데이터 없음"));
+    }
+
+    public void updateLoginFailCount(String account){
+
+        Optional<AdminUser> optional = adminUserRepository.findByAccount(account);
+
+        optional.map(adminUser -> {
+            adminUser.setLoginFailCount(adminUser.getLoginFailCount()+1);
+            return adminUser;
+        })
+                .map(adminUser -> adminUserRepository.save(adminUser))             // update -> newUser
+                .map(Header::OK)
+                .orElseGet(()->Header.ERROR("데이터 없음"));
     }
 
     @Override

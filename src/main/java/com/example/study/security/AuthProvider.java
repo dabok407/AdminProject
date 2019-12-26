@@ -35,6 +35,7 @@ public class AuthProvider implements AuthenticationProvider  {
         if (null == user){
             throw new UsernameNotFoundException(id);
         }else if(!user.getPassword().equals(password)){
+            userService.updateLoginFailCount(id); /* 로그인 실패 count update */
             throw new BadCredentialsException(id);
         }else if(!user.isAccountNonLocked()){
             throw new LockedException(id);
@@ -45,6 +46,9 @@ public class AuthProvider implements AuthenticationProvider  {
         }else if(!user.isCredentialsNonExpired()){
             throw new CredentialsExpiredException(id);
         }
+
+        /* 최근로그인 update */
+        userService.updateLoginDt(id);
 
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
 

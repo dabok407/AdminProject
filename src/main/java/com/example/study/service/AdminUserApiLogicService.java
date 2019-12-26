@@ -1,5 +1,6 @@
 package com.example.study.service;
 
+import com.example.study.common.ShaPasswordEncoder;
 import com.example.study.common.ValidCustomException;
 import com.example.study.ifs.CrudInterface;
 import com.example.study.model.entity.AdminUser;
@@ -24,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;*/
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,14 +87,21 @@ public class AdminUserApiLogicService implements CrudInterface<AdminUserApiReque
         return optional.map(adminUser -> {
             // 3. data -> update
             // id
-            /*BeanUtils.copyProperties(adminUser, adminUserApiRequest);*/
-            adminUser.setAccount(adminUserApiRequest.getAccount())
+            BeanUtils.copyProperties(adminUserApiRequest, adminUser
+                    , "password","status","loginFailCount","registeredAt", "unregisteredAt"
+                    ,"createdAt","createdBy","updatedAt","updatedBy");
+            if(!adminUserApiRequest.getPassword().isEmpty()){
+                adminUser.setPassword(ShaPasswordEncoder.getSHA256(adminUserApiRequest.getPassword()));
+                adminUser.setPasswordUpdatedAt(LocalDateTime.now());
+            }
+            adminUser.setUpdatedAt(LocalDateTime.now());
+            /*adminUser.setAccount(adminUserApiRequest.getAccount())
                     .setPassword(adminUserApiRequest.getPassword())
                     .setStatus(adminUserApiRequest.getStatus())
                     .setRole(adminUserApiRequest.getRole())
                     .setRegisteredAt(adminUserApiRequest.getRegisteredAt())
                     .setUnregisteredAt(adminUserApiRequest.getUnregisteredAt())
-                    ;
+                    ;*/
             return adminUser;
 
         })

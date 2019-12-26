@@ -113,13 +113,14 @@
 
     // 상세 모달 팝업 hide
     function closeModifyPopup() {
-        $('#adminModifyModal').remove();
+        $('#adminModifyModal').modal('hide');
+        /*$('#adminModifyModal').remove();*/
     }
 
     // 등록 모달 팝업 hide
     function closeRegistPopup() {
-        //$('#adminRegistModal').modal('hide');
-        $('#adminRegistModal').remove();
+        $('#adminRegistModal').modal('hide');
+        /*$('#adminRegistModal').remove();*/
     }
 
     function searchStart(index) {
@@ -187,7 +188,15 @@
                 xhr.setRequestHeader(header, token);
             },
             success: function (response, textStatus, jqXHR) {
-                console.log(response);
+
+                var resultCode = response.result_code;
+                if(resultCode == "OK"){
+                    alert("등록 되었습니다.");
+                    // 팝업 close
+                    closeRegistPopup();
+                    // 사용자 조회
+                    searchStart(0);
+                }
             }
         });
     }
@@ -199,7 +208,7 @@
             type: 'PUT',
             contentType: 'application/json; charset=utf-8',
             /*data: JSON.stringify($('#registForm').serialize()),*/
-            data: $('#registForm').serialize(),
+            data: JSON.stringify(common.serializeObject("modifyForm")),
             dataType: 'json',
             async: true,
             beforeSend : function(xhr) {
@@ -208,11 +217,14 @@
                 xhr.setRequestHeader(header, token);
             },
             success: function (response, textStatus, jqXHR) {
-                console.log(response);
-                // 팝업 닫기
-                closeModifyPopup();
-                // 상세 팝업 재호출
-                detailSearch(response.data.id);
+                var resultCode = response.result_code;
+                if(resultCode == "OK"){
+                    alert("수정 되었습니다.");
+                    // 팝업 close
+                    closeModifyPopup();
+                    // 사용자 조회
+                    searchStart(0);
+                }
             }
         });
     }
@@ -232,6 +244,7 @@
 
                 $('#modifyForm').find('input, select, checkbox, radio').val(null);
 
+                $selector.find("#mod_id").val(adminUserData.id);
                 $selector.find("#mod_account").val(adminUserData.account);
                 $selector.find("#mod_role").val(adminUserData.role);
                 $selector.find("#mod_login_fail_count").text(adminUserData.login_fail_count);
