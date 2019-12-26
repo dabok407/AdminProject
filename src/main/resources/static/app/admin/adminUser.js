@@ -123,6 +123,11 @@
         /*$('#adminRegistModal').remove();*/
     }
 
+    // 등록 모달 팝업 close
+    $('#modifyCloseModalBtn').click(function () {
+        $('#adminModifyModal').modal('hide');
+    });
+
     function searchStart(index) {
 
         var paramUrl = "";
