@@ -26,7 +26,7 @@
 
                         <li class="user-footer">
                             <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                <a href="/pages/logout" class="btn btn-default btn-flat">Log out</a>
                             </div>
                         </li>
                     </ul>
@@ -39,3 +39,11 @@
     </nav>
 </header>
 </html>
+
+<script type="application/javascript">
+    $(document).ready(function () {
+
+        // 내정보 보기 레이어 팝업 하단부 오늘 날짜 표시
+        $('.user-header').find("small").text(common.getToday());
+    });
+</script>
