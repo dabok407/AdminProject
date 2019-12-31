@@ -111,6 +111,13 @@
         modifyAdminUser();
     });
 
+    // 삭제 event
+    $('#deleteBtn').click(function () {
+        if(confirm("정말 삭제 하시겠습니까?")){
+            deleteAdminUser();
+        }
+    });
+
     // 상세 모달 팝업 hide
     function closeModifyPopup() {
         $('#adminModifyModal').modal('hide');
@@ -244,6 +251,32 @@
                     closeModifyPopup();
                     // 사용자 조회
                     searchStart(0);
+                }
+            }
+        });
+    }
+
+    // 사용자 삭제
+    function deleteAdminUser(){
+        var id = $("#mod_id").val();
+        $.ajax({
+            url: "/api/adminUser/"+id,
+            type: 'DELETE',
+            beforeSend : function(xhr) {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response, textStatus, jqXHR) {
+                var resultCode = response.result_code;
+                if(resultCode == "OK"){
+                    alert("삭제 되었습니다.");
+                    // 팝업 close
+                    closeModifyPopup();
+                    // 사용자 조회
+                    searchStart(0);
+                }else{
+                    alert(response.description);
                 }
             }
         });
