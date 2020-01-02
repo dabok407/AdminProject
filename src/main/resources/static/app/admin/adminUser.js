@@ -99,8 +99,10 @@
         var msg = "";
         if(pwdVal === pwdCheckVal){
             msg = "일치 합니다.";
+            $('#reg_equal_pwd').val("success");
         }else{
             msg = "비밀번호가 일지 하지 않습니다.";
+            $('#reg_equal_pwd').val("fail");
         }
         $('#reg_pwdCompareText').text(msg);
         $('#reg_pwdCompareText').show();
@@ -109,6 +111,22 @@
     // 수정 event
     $('#modifyBtn').click(function () {
         modifyAdminUser();
+    });
+
+    // 수정 모달 팝업 비밀번호 일치
+    $('#mod_passwordCheck').keyup(function () {
+        var pwdVal = $('#mod_password').val();
+        var pwdCheckVal = $('#mod_passwordCheck').val();
+        var msg = "";
+        if(pwdVal === pwdCheckVal){
+            msg = "일치 합니다.";
+            $('#mod_equal_pwd').val("success");
+        }else{
+            msg = "비밀번호가 일지 하지 않습니다.";
+            $('#mod_equal_pwd').val("fail");
+        }
+        $('#mod_pwdCompareText').text(msg);
+        $('#mod_pwdCompareText').show();
     });
 
     // 삭제 event
@@ -197,6 +215,13 @@
     // 사용자 등록
     function registAdminUser(){
 
+        var pwdEqualCheck = $('#reg_equal_pwd').val();
+
+        if(pwdEqualCheck != "success"){
+            alert("비밀번호를 확인해주세요.");
+            return false;
+        }
+
         /*암호화 비밀번호 세팅*/
         $("#crypto_reg_password").val(CryptoJS.SHA256($("#reg_password").val()));
 
@@ -230,6 +255,14 @@
 
     // 사용자 수정
     function modifyAdminUser(){
+
+        var pwdEqualCheck = $('#mod_equal_pwd').val();
+
+        if(pwdEqualCheck != "success"){
+            alert("비밀번호를 확인해주세요.");
+            return false;
+        }
+
         $.ajax({
             url: "/api/adminUser",
             type: 'PUT',
@@ -303,7 +336,8 @@
                 $selector.find("#mod_login_fail_count").text(adminUserData.login_fail_count);
                 $selector.find("#mod_last_login_at").text(adminUserData.last_login_at);
                 $selector.find("#mod_registered_at").text(adminUserData.registered_at);
-
+                $selector.find("#mod_equal_pwd").val("success");
+                $selector.find("#mod_pwdCompareText").text("");
                 /*new Vue({
                     el : '#adminModifyTableDiv',
                     data :adminUserData
