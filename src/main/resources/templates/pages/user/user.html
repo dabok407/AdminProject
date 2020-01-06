@@ -25,40 +25,36 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                사용자 관리
+                고객 관리
                 <small>회원 관리</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> 사용자 관리</a></li>
+                <li><a href="#"><i class="fa fa-dashboard"></i> 고객 관리</a></li>
                 <li class="active">회원 관리</li>
             </ol>
         </section>
 
         <section class="content">
 
-            <!--<div class="row">
+            <div class="row">
                 <div class="col-xs-12">
                     <div class="box box-danger">
                         <div class="box-header with-border">
-                            <h3 class="box-title"></h3>
+                            <h3 class="box-title">검색조건</h3>
                         </div>
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-xs-3">
-                                    <label for="email">Email</label>
-                                    <input id="email" type="text" class="form-control" placeholder="Email">
-                                </div>
                                 <div class="col-xs-3">
                                     <label for="account">Account</label>
                                     <input id="account" type="text" class="form-control" placeholder="Account">
                                 </div>
                                 <div class="col-xs-3">
-                                    <label for="phoneNumber">PhoneNumber</label>
-                                    <input id="phoneNumber" type="text" class="form-control" placeholder="PhoneNumber">
-                                </div>
-                                <div class="col-xs-3">
-                                    <label for="itemName">Name</label>
-                                    <input id="itemName" type="text" class="form-control" placeholder="Name">
+                                    <label for="status">Status</label>
+                                    <select id="status" class="form-control">
+                                        <option value="">전체</option>
+                                        <option value="REGISTERED">REGISTERED</option>
+                                        <option value="UNREGISTERED">UNREGISTERED</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -68,13 +64,14 @@
                         </div>
                     </div>
                 </div>
-            </div>--><!-- row end-->
+            </div><!-- row end-->
 
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">결과</h3>
+                            <h3 class="box-title">고객 목록</h3>
+                            <button type="button" class="btn btn-primary" id="registPopupBtn" style="float: right">고객 등록</button>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
@@ -114,7 +111,7 @@
                                             </tr>
                                             </thead>
                                             <tbody id="itemList">
-                                            <tr role="row" class="odd" v-for="dto in itemList">
+                                            <tr role="row" class="odd" v-for="(dto, index) in itemList" v-on:click="click(itemList[index].id)">
                                                 <td class="text-center">{{dto.id}}</td>
                                                 <td class="text-center">{{dto.account}}</td>
                                                 <td class="text-center">{{dto.status}}</td>
@@ -158,7 +155,236 @@
             </div>
 
         </section>
+
+        <!-- Regist Modal Popup Start -->
+        <div id="userRegistModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h2 class="modal-title" id="myModalLabel">고객 등록</h2>
+                    </div>
+                    <form id="registForm">
+                        <div class="modal-body">
+                            <table id="registTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                                <tbody>
+                                <tr role="row">
+                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        계정
+                                        <span style="color: #FF5B6B;">&nbsp;*</span>
+                                    </th>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="text-left">
+                                        <input type="text" id="reg_account" name="account" style="width: 300px;">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        비밀번호
+                                        <span style="color: #FF5B6B;">&nbsp;*</span>
+                                    </th>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="text-left">
+                                        <input type="password" id="reg_password" name="reg_password" style="width: 300px;">
+                                        <input type="hidden" id="crypto_reg_password" name="password">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        비밀번호 확인
+                                        <span style="color: #FF5B6B;">&nbsp;*</span>
+                                    </th>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="text-left">
+                                        <input type="password" id="reg_passwordCheck" name="passwordCheck" style="width: 300px;">
+                                        <span class="error_next_box" id="reg_pwdCompareText" style="color: red; float: right; display: none;" ></span>
+                                        <input type="hidden" id="reg_equal_pwd" name="reg_equal_pwd" value="success">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        상태
+                                        <span style="color: #FF5B6B;">&nbsp;*</span>
+                                    </th>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="text-left">
+                                        <select id="reg_status" name="status" style="width: 300px;">
+                                            <option value="REGISTERED">REGISTERED</option>
+                                            <option value="UNREGISTERED">UNREGISTERED</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        이메일
+                                        <span style="color: #FF5B6B;">&nbsp;*</span>
+                                    </th>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="text-left">
+                                        <input type="text" id="reg_email" name="email" style="width: 300px;">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        핸드폰 번호
+                                        <span style="color: #FF5B6B;">&nbsp;*</span>
+                                    </th>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="text-left">
+                                        <input type="text" id="reg_phone_number" name="phone_number" style="width: 300px;">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="registBtn">등록</button>
+                        <button type="button" class="btn btn-default" id="registCloseModalBtn">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--</script>-->
+        <!-- Regist Modal Popup End -->
+
+        <!-- Modify Modal Popup Start -->
+        <!--<script type="text/x-template" id="modify-template">-->
+        <div id="userModifyModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h2 class="modal-title">고객 상세</h2>
+                    </div>
+                    <form id="modifyForm">
+                        <div class="modal-body" id="adminModifyTableDiv">
+                            <table id="modifyTable" class="table table-bordered table-hover dataTable" role="grid"
+                                   aria-describedby="example2_info">
+                                <tbody>
+                                <tr role="row">
+                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        계정
+                                        <span style="color: #FF5B6B;">&nbsp;*</span>
+                                    </th>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="text-left">
+                                        <input type="text" id="mod_account" name="account" style="width: 300px;"> <!--v-model="account"-->
+                                        <input type="hidden" id="mod_id" name="id">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        비밀번호
+                                        <span style="color: #FF5B6B;">&nbsp;*</span>
+                                    </th>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="text-left">
+                                        <input type="password" id="mod_password" name="password" style="width: 300px;">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        비밀번호 확인
+                                        <span style="color: #FF5B6B;">&nbsp;*</span>
+                                    </th>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="text-left">
+                                        <input type="password" id="mod_passwordCheck" name="passwordCheck" style="width: 300px;">
+                                        <span class="error_next_box" id="mod_pwdCompareText" style="color: red; float: right; display: none;"></span>
+                                        <input type="hidden" id="mod_equal_pwd" name="mod_equal_pwd" value="success">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        상태
+                                        <span style="color: #FF5B6B;">&nbsp;*</span>
+                                    </th>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="text-left">
+                                        <select id="mod_status" name="status" style="width: 300px;">
+                                            <option value="REGISTERED">REGISTERED</option>
+                                            <option value="UNREGISTERED">UNREGISTERED</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        이메일
+                                        <span style="color: #FF5B6B;">&nbsp;*</span>
+                                    </th>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="text-left">
+                                        <input type="text" id="mod_email" name="email" style="width: 300px;">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        핸드폰 번호
+                                        <span style="color: #FF5B6B;">&nbsp;*</span>
+                                    </th>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="text-left">
+                                        <input type="text" id="mod_phone_number" name="phone_number" style="width: 300px;">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        등록일
+                                    </th>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="text-left">
+                                            <span id="mod_registered_at">
+                                                <!--{{registered_at}}-->
+                                            </span>
+                                        <br>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        등록해제일
+                                    </th>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="text-left">
+                                            <span id="mod_unregistered_at">
+                                                <!--{{registered_at}}-->
+                                            </span>
+                                        <br>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="modifyBtn">수정</button>
+                        <button type="button" class="btn btn-danger" id="deleteBtn">삭제</button>
+                        <button type="button" class="btn btn-default" id="modifyCloseModalBtn">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--</script>-->
+        <!-- Modify Modal Popup End -->
+
     </div>
+
+
     <!-- Content End -->
 
     <!-- Footer Start -->

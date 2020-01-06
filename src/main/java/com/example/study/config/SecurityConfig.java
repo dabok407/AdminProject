@@ -80,10 +80,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // csrf 사용유무 설정
                 // csrf 설정을 사용하면 모든 request에 csrf 값을 함께 전달해야한다.
-                .csrf().disable()
+                .csrf()
+                //.disable()
                 //.addFilter(jwtAuthenticationFilter())
                 //.addFilter(jwtAuthorizationFilter())
-                //.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 ;
     }
 

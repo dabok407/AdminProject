@@ -87,8 +87,9 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest , UserA
                     .setStatus(userApiRequest.getStatus())
                     .setPhoneNumber(userApiRequest.getPhoneNumber())
                     .setEmail(userApiRequest.getEmail())
-                    .setRegisteredAt(userApiRequest.getRegisteredAt())
-                    .setUnregisteredAt(userApiRequest.getUnregisteredAt())
+                    .setUpdatedAt(LocalDateTime.now())
+                    //.setRegisteredAt(userApiRequest.getRegisteredAt())
+                    //.setUnregisteredAt(userApiRequest.getUnregisteredAt())
                     ;
             return user;
 
@@ -112,8 +113,19 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest , UserA
         .orElseGet(()->Header.ERROR("데이터 없음"));
     }
 
-    public Header<List<UserApiResponse>> search(Pageable pageable) {
-        Page<User> users = userRepository.findAll(pageable);
+    public Header<List<UserApiResponse>> search(Pageable pageable, UserApiRequest userApiRequest) {
+        Page<User> users = null;
+
+        if(userApiRequest.getAccount() == null && userApiRequest.getStatus() == null){
+            users = userRepository.findAll(pageable);
+        }else if(userApiRequest.getAccount() != null && userApiRequest.getStatus() == null){
+            users = userRepository.findAllByAccount(pageable, userApiRequest.getAccount());
+        }else if(userApiRequest.getStatus() != null && userApiRequest.getAccount() == null){
+            users = userRepository.findAllByStatus(pageable, userApiRequest.getStatus());
+        }else{
+            users = userRepository.findAllByAccountAndStatus(pageable, userApiRequest.getAccount(), userApiRequest.getStatus());
+        }
+
         List<UserApiResponse> userApiResponseList = users.stream()
                 .map(user -> response(user))
                 .collect(Collectors.toList());
