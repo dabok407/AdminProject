@@ -155,6 +155,7 @@
 
     function searchStart(index) {
 
+        var pageSize = 10;
         var paramUrl = "";
         var account = $("#account").val();
         var role = $("#role").val();
@@ -164,7 +165,7 @@
         if(role != "" && role != null){
             paramUrl += "&role="+role;
         }
-        $.get("/api/adminUser?page="+index+paramUrl, function (response) {
+        $.get("/api/adminUser?page="+index+'&size='+pageSize+paramUrl, function (response) {
 
             // 페이징 처리 데이터
             indexBtn = [];
@@ -242,6 +243,9 @@
                 var resultCode = response.result_code;
                 if(resultCode == "OK"){
                     alert("등록 되었습니다.");
+                    // form 초기화
+                    $('#registForm').find('input, select, checkbox, radio').val(null);
+                    $('#reg_pwdCompareText').text("");
                     // 팝업 close
                     closeRegistPopup();
                     // 사용자 조회

@@ -86,7 +86,7 @@
 
     // 등록 event
     $('#registBtn').click(function () {
-        registAdminUser();
+        registUser();
     });
 
     // 등록 모달 팝업 close
@@ -155,6 +155,7 @@
     
     function searchStart(index) {
 
+        var pageSize = 10;
         var paramUrl = "";
         var account = $("#account").val();
         var status = $("#status").val();
@@ -165,7 +166,7 @@
             paramUrl += "&status="+status;
         }
 
-        $.get("/api/user?page="+index+paramUrl, function (response) {
+        $.get("/api/user?page="+index+'&size='+pageSize+paramUrl, function (response) {
 
             /* 데이터 셋팅 */
             // 페이징 처리 데이터
@@ -220,7 +221,7 @@
     }
 
     // 고객 등록
-    function registAdminUser(){
+    function registUser(){
 
         var pwdEqualCheck = $('#reg_equal_pwd').val();
 
@@ -249,6 +250,9 @@
                 var resultCode = response.result_code;
                 if(resultCode == "OK"){
                     alert("등록 되었습니다.");
+                    // form 초기화
+                    $('#registForm').find('input, select, checkbox, radio').val(null);
+                    $('#reg_pwdCompareText').text("");
                     // 팝업 close
                     closeRegistPopup();
                     // 사용자 조회
