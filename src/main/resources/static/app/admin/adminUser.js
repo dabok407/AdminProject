@@ -331,7 +331,7 @@
             success: function (response, textStatus, jqXHR) {
                 var adminUserData = response.data;
                 var $selector = $('#modifyForm');
-
+                // 수정 form 값 초기화
                 $('#modifyForm').find('input, select, checkbox, radio').val(null);
 
                 $selector.find("#mod_id").val(adminUserData.id);

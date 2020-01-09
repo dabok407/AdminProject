@@ -338,7 +338,7 @@
             success: function (response, textStatus, jqXHR) {
                 var userData = response.data;
                 var $selector = $('#modifyForm');
-
+                // 수정폼 데이터 초기화
                 $('#modifyForm').find('input, select, checkbox, radio').val(null);
 
                 $selector.find("#mod_id").val(userData.id);
