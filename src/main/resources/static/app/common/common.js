@@ -120,3 +120,67 @@ common.getToday = function()
     var today = year+"-"+month+"-"+day;
     return today;
 };
+/*
+ * 문자열size가 maxNum 이상일때 ...표시
+ * {return} ...표시 문자열
+ */
+common.summaryStr = function(obj, maxNum){
+    var li_str_len = obj.length;
+    var li_byte = 0;
+    var li_len = 0;
+    var ls_one_char = "";
+    var ls_str2 = "";
+    for( var j=0; j<li_str_len; j++){
+        ls_one_char = obj.charAt(j);
+        if(escape(ls_one_char).length > 4 ) {
+            li_byte += 2;
+        }else{
+            li_byte++;
+        }
+        if(li_byte <= maxNum){
+            li_len = j+1;
+        }
+    }
+    if(li_byte > maxNum){
+        ls_str2 = obj.substr(0, li_len)+"...";
+    }else{
+        ls_str2 = obj;
+    }
+    return ls_str2;
+};
+
+
+/*
+ * 브라우저 판별
+ * {return} 브라우저명
+ */
+common.getBrowserType = function(){
+
+    var _ua = navigator.userAgent;
+    var rv = -1;
+    //IE 11,10,9,8
+    var trident = _ua.match(/Trident\/(\d.\d)/i);
+    if( trident != null ){
+        if( trident[1] == "7.0" ) return rv = "IE" + 11;
+        if( trident[1] == "6.0" ) return rv = "IE" + 10;
+        if( trident[1] == "5.0" ) return rv = "IE" + 9;
+        if( trident[1] == "4.0" ) return rv = "IE" + 8;
+    }
+    //IE 7...
+    if( navigator.appName == 'Microsoft Internet Explorer' ) return rv = "IE" + 7;
+    //other
+    var agt = _ua.toLowerCase();
+    if (agt.indexOf("chrome") != -1) return 'Chrome';
+    if (agt.indexOf("opera") != -1) return 'Opera';
+    if (agt.indexOf("staroffice") != -1) return 'Star Office';
+    if (agt.indexOf("webtv") != -1) return 'WebTV';
+    if (agt.indexOf("beonex") != -1) return 'Beonex';
+    if (agt.indexOf("chimera") != -1) return 'Chimera';
+    if (agt.indexOf("netpositive") != -1) return 'NetPositive';
+    if (agt.indexOf("phoenix") != -1) return 'Phoenix';
+    if (agt.indexOf("firefox") != -1) return 'Firefox';
+    if (agt.indexOf("safari") != -1) return 'Safari';
+    if (agt.indexOf("skipstone") != -1) return 'SkipStone';
+    if (agt.indexOf("netscape") != -1) return 'Netscape';
+    if (agt.indexOf("mozilla/5.0") != -1) return 'Mozilla';
+};
