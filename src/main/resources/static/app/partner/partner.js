@@ -81,7 +81,7 @@
         // template 태그 삽입
         //$('#modalContentDiv').html($('#regist-template').html());
         // 등록 모달 팝업 show
-        $('#userRegistModal').modal('show');
+        $('#partnerRegistModal').modal('show');
     });
 
     // 등록 event
@@ -91,7 +91,7 @@
 
     // 등록 모달 팝업 close
     $('#registCloseModalBtn').click(function () {
-        $('#userRegistModal').modal('hide');
+        $('#partnerRegistModal').modal('hide');
     });
 
     // 등록 모달 팝업 비밀번호 일치
@@ -112,7 +112,7 @@
 
     // 수정 event
     $('#modifyBtn').click(function () {
-        modifyAdminUser();
+        modifyPartner();
     });
 
     // 수정 모달 팝업 비밀번호 일치
@@ -134,23 +134,23 @@
     // 삭제 event
     $('#deleteBtn').click(function () {
         if(confirm("정말 삭제 하시겠습니까?")){
-            deleteAdminUser();
+            deletePartner();
         }
     });
 
     // 상세 모달 팝업 hide
     function closeModifyPopup() {
-        $('#userModifyModal').modal('hide');
+        $('#partnerModifyModal').modal('hide');
     }
 
     // 등록 모달 팝업 hide
     function closeRegistPopup() {
-        $('#userRegistModal').modal('hide');
+        $('#partnerRegistModal').modal('hide');
     }
 
     // 등록 모달 팝업 close
     $('#modifyCloseModalBtn').click(function () {
-        $('#userModifyModal').modal('hide');
+        $('#partnerModifyModal').modal('hide');
     });
 
     
@@ -158,14 +158,18 @@
 
         var pageSize = 10;
         var paramUrl = "";
-        /*var account = $("#account").val();
-        var status = $("#status").val();
-        if(account != "" && account != null){
-            paramUrl += "&account="+account;
+        var partner_name = $("#partner_name").val();
+        var ceo_name = $("#ceo_name").val();
+        var business_number = $("#business_number").val();
+        if(partner_name != "" && partner_name != null){
+            paramUrl += "&name="+partner_name;
         }
-        if(status != "" && status != null){
-            paramUrl += "&status="+status;
-        }*/
+        if(ceo_name != "" && ceo_name != null){
+            paramUrl += "&ceo_name="+ceo_name;
+        }
+        if(business_number != "" && business_number != null){
+            paramUrl += "&business_number="+business_number;
+        }
 
         $.get("/api/partner?page="+index+'&size='+pageSize+paramUrl, function (response) {
 
@@ -288,7 +292,7 @@
     function deletePartner(){
         var id = $("#mod_id").val();
         $.ajax({
-            url: "/api/user/"+id,
+            url: "/api/partner/"+id,
             type: 'DELETE',
             beforeSend : function(xhr) {
                 var token = $("meta[name='_csrf']").attr("content");
@@ -318,7 +322,7 @@
         $('#partnerModifyModal').modal('show');
         // 상세 조회 서비스 호출
         $.ajax({
-            url: "/api/user/"+id,
+            url: "/api/partner/"+id,
             success: function (response, textStatus, jqXHR) {
                 var partnerData = response.data;
                 var $selector = $('#modifyForm');
@@ -326,6 +330,8 @@
                 $('#modifyForm').find('input, select, checkbox, radio').val(null);
 
                 $selector.find("#mod_id").val(partnerData.id);
+                $selector.find("#mod_category_id").val(partnerData.category_id);
+                $selector.find("#mod_status").val(partnerData.status);
                 $selector.find("#mod_name").val(partnerData.name);
                 $selector.find("#mod_ceo_name").val(partnerData.ceo_name);
                 $selector.find("#mod_address").val(partnerData.address);

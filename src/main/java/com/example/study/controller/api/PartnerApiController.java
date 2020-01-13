@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,9 +57,13 @@ public class PartnerApiController implements CrudInterface<PartnerApiRequest, Pa
     }
 
     @GetMapping("")
-    public Header<List<PartnerApiResponse>> findAll(@PageableDefault(sort = { "id" }, direction = Sort.Direction.ASC) Pageable pageable){
+    public Header<List<PartnerApiResponse>> findAll(@SortDefault.SortDefaults({
+                                                                                @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
+                                                                                , @SortDefault(sort = "id", direction = Sort.Direction.ASC)
+                                                                                }) Pageable pageable
+                                                    ,@ModelAttribute PartnerApiRequest partnerApiRequest){
         log.info("{}",pageable);
-        return partnerApiLogicService.search(pageable);
+        return partnerApiLogicService.search(pageable, partnerApiRequest);
     }
 }
 

@@ -25,7 +25,7 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                사용자 관리
+                파트너 관리
                 <small>파트너 관리</small>
             </h1>
             <ol class="breadcrumb">
@@ -45,20 +45,16 @@
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <label for="email">Email</label>
-                                    <input id="email" type="text" class="form-control" placeholder="Email">
+                                    <label for="partner_name">파트너</label>
+                                    <input id="partner_name" type="text" class="form-control" placeholder="파트너명">
                                 </div>
                                 <div class="col-xs-3">
-                                    <label for="account">Account</label>
-                                    <input id="account" type="text" class="form-control" placeholder="Account">
+                                    <label for="ceo_name">대표이사</label>
+                                    <input id="ceo_name" type="text" class="form-control" placeholder="대표이사">
                                 </div>
                                 <div class="col-xs-3">
-                                    <label for="phoneNumber">PhoneNumber</label>
-                                    <input id="phoneNumber" type="text" class="form-control" placeholder="PhoneNumber">
-                                </div>
-                                <div class="col-xs-3">
-                                    <label for="itemName">Name</label>
-                                    <input id="itemName" type="text" class="form-control" placeholder="Name">
+                                    <label for="business_number">사업자 번호</label>
+                                    <input id="business_number" type="text" class="form-control" placeholder="사업자 번호">
                                 </div>
                             </div>
                         </div>
@@ -75,7 +71,7 @@
                     <div class="box">
                         <div class="box-header">
                             <h3 class="box-title">파트너 목록</h3>
-                            <button type="button" class="btn btn-primary" id="registPopupBtn" style="float: right">고객 등록</button>
+                            <button type="button" class="btn btn-primary" id="registPopupBtn" style="float: right">파트너 등록</button>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
@@ -170,7 +166,7 @@
 
 
         <!-- Regist Modal Popup Start -->
-        <div id="partenrRegistModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
+        <div id="partnerRegistModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -200,7 +196,7 @@
                                 </tr>
                                 <tr role="row" class="odd">
                                     <td class="text-left">
-                                        <input type="text" id="reg_ceo_name" name="ceo_name" style="width: 300px;">
+                                        <input type="text" id="reg_ceo_name" name="ceo_name">
                                     </td>
                                 </tr>
                                 <tr role="row">
@@ -211,7 +207,7 @@
                                 </tr>
                                 <tr role="row" class="odd">
                                     <td class="text-left">
-                                        <input type="text" id="reg_address" name="address">
+                                        <input type="text" id="reg_address" name="address" style="width: 300px;">
                                     </td>
                                 </tr>
                                 <tr role="row">
@@ -286,6 +282,8 @@
                                     <td class="text-left">
                                         <input type="text" id="mod_name" name="name" style="width: 300px;"> <!--v-model="account"-->
                                         <input type="hidden" id="mod_id" name="id">
+                                        <input type="hidden" id="mod_category_id" name="category_id">
+                                        <input type="hidden" id="mod_status" name="status">
                                     </td>
                                 </tr>
                                 <tr role="row">
@@ -296,7 +294,7 @@
                                 </tr>
                                 <tr role="row" class="odd">
                                     <td class="text-left">
-                                        <input type="text" id="mod_ceo_name" name="ceo_name" style="width: 300px;">
+                                        <input type="text" id="mod_ceo_name" name="ceo_name">
                                     </td>
                                 </tr>
                                 <tr role="row">
@@ -307,7 +305,7 @@
                                 </tr>
                                 <tr role="row" class="odd">
                                     <td class="text-left">
-                                        <input type="text" id="mod_address" name="address">
+                                        <input type="text" id="mod_address" name="address" style="width: 300px;">
                                     </td>
                                 </tr>
                                 <tr role="row">
