@@ -71,9 +71,9 @@ public class PartnerApiLogicService extends BaseService<PartnerApiRequest, Partn
                     .setPartnerNumber(partnerApiRequest.getPartnerNumber())
                     .setCallCenter(partnerApiRequest.getCallCenter())
                     .setAddress(partnerApiRequest.getAddress())
-                    .setCategory(categoryRepository.getOne(partnerApiRequest.getCategoryId()))
-                    .setRegisteredAt(partnerApiRequest.getRegisteredAt())
-                    .setUnregisteredAt(partnerApiRequest.getUnregisteredAt());
+                    .setCategory(categoryRepository.getOne(partnerApiRequest.getCategoryId()));
+                    /*.setRegisteredAt(partnerApiRequest.getRegisteredAt())
+                    .setUnregisteredAt(partnerApiRequest.getUnregisteredAt());*/
             return partner;
         })
                 .map(changePartner -> baseRepository.save(changePartner))
@@ -93,7 +93,8 @@ public class PartnerApiLogicService extends BaseService<PartnerApiRequest, Partn
                 .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
-    public Header<List<PartnerApiResponse>> search(Pageable pageable){
+    public Header<List<PartnerApiResponse>> search(Pageable pageable, PartnerApiRequest partnerApiRequest){
+
         Page<Partner> partners = baseRepository.findAll(pageable);
         List<PartnerApiResponse> partnerApiResponseList = partners.stream()
                 .map(parter -> response(parter))

@@ -4,13 +4,15 @@ import com.example.study.model.entity.AdminUser;
 import com.example.study.model.network.request.AdminUserApiRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface AdminUserRepository extends JpaRepository<AdminUser, Long> {
+public interface AdminUserRepository extends JpaRepository<AdminUser, Long>, JpaSpecificationExecutor<AdminUser> {
 
     Optional<AdminUser> findByAccount(String account);
 
@@ -24,4 +26,5 @@ public interface AdminUserRepository extends JpaRepository<AdminUser, Long> {
 
     Page<AdminUser> findAllByAccountAndRole(Pageable pageable, String account, String role);
 
+    Page<AdminUser> findAll(Specification<AdminUser> spec, Pageable pageable);
 }

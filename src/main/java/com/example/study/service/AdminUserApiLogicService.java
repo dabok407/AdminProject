@@ -1,43 +1,42 @@
 package com.example.study.service;
 
+import com.example.study.common.CommonObjectUtils;
 import com.example.study.common.ShaPasswordEncoder;
-import com.example.study.common.ValidCustomException;
 import com.example.study.ifs.CrudInterface;
 import com.example.study.model.entity.AdminUser;
-import com.example.study.model.entity.OrderGroup;
 import com.example.study.model.enumclass.AdminUserStatus;
 import com.example.study.model.enumclass.LoginFailType;
-import com.example.study.model.enumclass.UserStatus;
 import com.example.study.model.network.Header;
 import com.example.study.model.network.Pagination;
 import com.example.study.model.network.request.AdminUserApiRequest;
-import com.example.study.model.network.request.UserApiRequest;
 import com.example.study.model.network.response.*;
+import com.example.study.model.specs.AdminUserSpecification;
 import com.example.study.repository.AdminUserRepository;
-import com.example.study.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-/*import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;*/
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 public class AdminUserApiLogicService implements CrudInterface<AdminUserApiRequest, AdminUserApiResponse> {
 
     @Autowired
     private AdminUserRepository adminUserRepository;
+
+    @Autowired
+    private AdminUserSpecification adminUserSpecification;
+
 
     // 1. request data
     // 2. user 생성
@@ -129,8 +128,31 @@ public class AdminUserApiLogicService implements CrudInterface<AdminUserApiReque
 
     public Header<List<AdminUserApiResponse>> search(Pageable pageable, AdminUserApiRequest adminUserApiRequest) {
 
-        Page<AdminUser> adminUsers = null;
+        /*첫 번째*/
+        Map<String, Object> searchRequest = CommonObjectUtils.convertObjectToMap(adminUserApiRequest);
+        Map<String, Object> searchKeys = new HashMap<>();
 
+        for (String key : searchRequest.keySet()) {
+            String value = String.valueOf(searchRequest.get(key));
+            if(value != null && !value.isEmpty() && !"null".equals(value)){
+                searchKeys.put(key, searchRequest.get(key));
+            }
+        }
+
+        Page<AdminUser> adminUsers =  searchKeys.isEmpty() ?
+                    adminUserRepository.findAll(pageable) :
+                    adminUserRepository.findAll(adminUserSpecification.searchWith(searchKeys), pageable);
+
+        /* 두 번째
+        Page<AdminUser> adminUsers = adminUserRepository.findAll
+                                        (Specification.where
+                                                (adminUserSpecification.accountEqual(adminUserApiRequest.getAccount()))
+                                                .and(adminUserSpecification.roleEqual(adminUserApiRequest.getRole()))
+                                        ,pageable);
+        */
+
+        /* 세 번째
+        Page<AdminUser> adminUsers = null;
         if(adminUserApiRequest.getAccount() == null && adminUserApiRequest.getRole() == null){
             adminUsers = adminUserRepository.findAll(pageable);
         }else if(adminUserApiRequest.getAccount() != null && adminUserApiRequest.getRole() == null){
@@ -140,6 +162,7 @@ public class AdminUserApiLogicService implements CrudInterface<AdminUserApiReque
         }else{
             adminUsers = adminUserRepository.findAllByAccountAndRole(pageable, adminUserApiRequest.getAccount(), adminUserApiRequest.getRole());
         }
+        */
 
         List<AdminUserApiResponse> adminUserApiResponseList = adminUsers.stream()
                 .map(adminUser -> response(adminUser))
