@@ -1,5 +1,6 @@
 package com.example.study.service;
 
+import com.example.study.common.CommonObjectUtils;
 import com.example.study.ifs.CrudInterface;
 import com.example.study.model.entity.Item;
 import com.example.study.model.entity.OrderGroup;
@@ -12,6 +13,7 @@ import com.example.study.model.network.response.ItemApiResponse;
 import com.example.study.model.network.response.OrderGroupApiResponse;
 import com.example.study.model.network.response.UserApiResponse;
 import com.example.study.model.network.response.UserOrderInfoApiResponse;
+import com.example.study.model.specs.UserSpecification;
 import com.example.study.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,9 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +35,10 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest , UserA
 
     @Autowired
     private ItemApiLogicService itemApiLogicService;
+
+    @Autowired
+    private UserSpecification userSpecification;
+
 
     // 1. request data
     // 2. user 생성
@@ -114,17 +118,20 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest , UserA
     }
 
     public Header<List<UserApiResponse>> search(Pageable pageable, UserApiRequest userApiRequest) {
-        Page<User> users = null;
 
-        if(userApiRequest.getAccount() == null && userApiRequest.getStatus() == null){
-            users = userRepository.findAll(pageable);
-        }else if(userApiRequest.getAccount() != null && userApiRequest.getStatus() == null){
-            users = userRepository.findAllByAccount(pageable, userApiRequest.getAccount());
-        }else if(userApiRequest.getStatus() != null && userApiRequest.getAccount() == null){
-            users = userRepository.findAllByStatus(pageable, userApiRequest.getStatus());
-        }else{
-            users = userRepository.findAllByAccountAndStatus(pageable, userApiRequest.getAccount(), userApiRequest.getStatus());
+        Map<String, Object> searchRequest = CommonObjectUtils.convertObjectToMap(userApiRequest);
+        Map<String, Object> searchKeys = new HashMap<>();
+
+        for (String key : searchRequest.keySet()) {
+            String value = String.valueOf(searchRequest.get(key));
+            if(value != null && !value.isEmpty() && !"null".equals(value)){
+                searchKeys.put(key, searchRequest.get(key));
+            }
         }
+
+        Page<User> users = searchKeys.isEmpty() ?
+                userRepository.findAll(pageable) :
+                userRepository.findAll(userSpecification.searchWith(searchKeys), pageable);
 
         List<UserApiResponse> userApiResponseList = users.stream()
                 .map(user -> response(user))
