@@ -35,5 +35,5 @@ public class AdminUserApiRequest {
 
     private LocalDateTime passwordUpdatedAt;
 
-    private int loginFailCount;
+    /*private int loginFailCount;*/
 }

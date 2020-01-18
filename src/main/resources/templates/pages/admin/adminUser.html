@@ -164,61 +164,62 @@
         <!-- Regist Modal Popup Start -->
         <!--<script type="text/x-template" id="regist-template">-->
             <div id="adminRegistModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
+                <div class="modal-dialog" role="document" style="width: 21%;">
+                    <div class="modal-content" style="background-color: aliceblue;">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            <h2 class="modal-title" id="myModalLabel">사용자 등록</h2>
+                            <h2 class="modal-title" id="myModalLabel" style="text-align:center;">사용자 등록</h2>
                         </div>
                         <form id="registForm">
                             <div class="modal-body">
-                                <table id="registTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                                <table id="registTable" class="table dataTable" role="grid" aria-describedby="example2_info">
                                     <tbody>
                                     <tr role="row">
-                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left" tabindex="0" rowspan="1" colspan="1">
                                             계정
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
                                     </tr>
                                     <tr role="row" class="odd">
                                         <td class="text-left">
-                                            <input type="text" id="reg_account" name="account" style="width: 300px;">
+                                            <input type="text" id="reg_account" name="account" class="inputV3">
                                         </td>
                                     </tr>
                                     <tr role="row">
-                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left" tabindex="0" rowspan="1" colspan="1">
                                             비밀번호
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
                                     </tr>
                                     <tr role="row" class="odd">
                                         <td class="text-left">
-                                            <input type="password" id="reg_password" name="reg_password" style="width: 300px;">
+                                            <input type="password" id="reg_password" name="reg_password" class="inputV3">
                                             <input type="hidden" id="crypto_reg_password" name="password">
                                         </td>
                                     </tr>
                                     <tr role="row">
-                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left" tabindex="0" rowspan="1" colspan="1">
                                             비밀번호 확인
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
+                                            &nbsp;&nbsp;
+                                            <span class="error_next_box" id="reg_pwdCompareText" style="color: red; float: right; display: none;" ></span>
                                         </th>
                                     </tr>
                                     <tr role="row" class="odd">
                                         <td class="text-left">
-                                            <input type="password" id="reg_passwordCheck" name="passwordCheck" style="width: 300px;">
-                                            <span class="error_next_box" id="reg_pwdCompareText" style="color: red; float: right; display: none;" ></span>
+                                            <input type="password" id="reg_passwordCheck" name="passwordCheck" class="inputV3">
                                             <input type="hidden" id="reg_equal_pwd" name="reg_equal_pwd" value="success">
                                         </td>
                                     </tr>
                                     <tr role="row">
-                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left" tabindex="0" rowspan="1" colspan="1">
                                             권한
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
                                     </tr>
                                     <tr role="row" class="odd">
                                         <td class="text-left">
-                                            <select id="reg_role" name="role" style="width: 300px;">
+                                            <select id="reg_role" name="role" class="selectV3">
                                                 <option value="" selected disabled hidden >선택</option>
                                                 <option value="ROLE_ADMIN">관리자</option>
                                                 <option value="ROLE_USER">일반사용자</option>
@@ -229,7 +230,7 @@
                                 </table>
                             </div>
                         </form>
-                        <div class="modal-footer">
+                        <div class="modal-footer" style="text-align:center;">
                             <button type="button" class="btn btn-primary" id="registBtn">등록</button>
                             <button type="button" class="btn btn-default" id="registCloseModalBtn">취소</button>
                         </div>
