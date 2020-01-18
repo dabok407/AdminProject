@@ -88,7 +88,10 @@
     });
 
     // 등록 모달 팝업 close
-    $('#registCloseModalBtn').click(function () {
+    $('#registCloseModalTopBtn').click(function () {
+        // regist form reset
+        registFormReset();
+        // regist modal hide
         $('#adminRegistModal').modal('hide');
     });
 
@@ -148,10 +151,27 @@
         /*$('#adminRegistModal').remove();*/
     }
 
-    // 등록 모달 팝업 close
-    $('#modifyCloseModalBtn').click(function () {
+    // 수정 모달 팝업 close
+    $('#modifyCloseModalBtn, #modifyCloseModalTopBtn').click(function () {
+        // modify form reset
+        modifyFormReset();
+        // modal popup hide
         $('#adminModifyModal').modal('hide');
+
     });
+
+    // 등록 from 값 초기화
+    function registFormReset() {
+        $('#registForm').find('input, select, checkbox, radio').val(null);
+        $('#reg_pwdCompareText').text("");
+    }
+
+    // 수정 form 값 초기화
+    function modifyFormReset() {
+        $('#modifyForm').find('input, select, checkbox, radio').val(null);
+        $("#mod_pwdCompareText").text("");
+    }
+
 
     function searchStart(index) {
 
@@ -244,8 +264,7 @@
                 if(resultCode == "OK"){
                     alert("등록 되었습니다.");
                     // form 초기화
-                    $('#registForm').find('input, select, checkbox, radio').val(null);
-                    $('#reg_pwdCompareText').text("");
+                    registFormReset();
                     // 팝업 close
                     closeRegistPopup();
                     // 사용자 조회
@@ -331,8 +350,6 @@
             success: function (response, textStatus, jqXHR) {
                 var adminUserData = response.data;
                 var $selector = $('#modifyForm');
-                // 수정 form 값 초기화
-                $('#modifyForm').find('input, select, checkbox, radio').val(null);
 
                 $selector.find("#mod_id").val(adminUserData.id);
                 $selector.find("#mod_account").val(adminUserData.account);
@@ -341,7 +358,7 @@
                 $selector.find("#mod_last_login_at").text(adminUserData.last_login_at);
                 $selector.find("#mod_registered_at").text(adminUserData.registered_at);
                 $selector.find("#mod_equal_pwd").val("success");
-                $selector.find("#mod_pwdCompareText").text("");
+
                 /*new Vue({
                     el : '#adminModifyTableDiv',
                     data :adminUserData

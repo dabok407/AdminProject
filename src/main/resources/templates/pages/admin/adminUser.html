@@ -165,17 +165,17 @@
         <!--<script type="text/x-template" id="regist-template">-->
             <div id="adminRegistModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
                 <div class="modal-dialog" role="document" style="width: 21%;">
-                    <div class="modal-content" style="background-color: aliceblue;">
+                    <div class="modal-content" style="background-color: #F7F7FD;">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            <h2 class="modal-title" id="myModalLabel" style="text-align:center;">사용자 등록</h2>
+                            <button type="button" id="registCloseModalTopBtn" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h2 class="modal-title modal-center" id="myModalLabel">계정 등록</h2>
                         </div>
                         <form id="registForm">
                             <div class="modal-body">
                                 <table id="registTable" class="table dataTable" role="grid" aria-describedby="example2_info">
                                     <tbody>
                                     <tr role="row">
-                                        <th class="text-left" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                             계정
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
@@ -186,7 +186,7 @@
                                         </td>
                                     </tr>
                                     <tr role="row">
-                                        <th class="text-left" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                             비밀번호
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
@@ -198,7 +198,7 @@
                                         </td>
                                     </tr>
                                     <tr role="row">
-                                        <th class="text-left" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                             비밀번호 확인
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                             &nbsp;&nbsp;
@@ -212,7 +212,7 @@
                                         </td>
                                     </tr>
                                     <tr role="row">
-                                        <th class="text-left" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                             권한
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
@@ -231,8 +231,8 @@
                             </div>
                         </form>
                         <div class="modal-footer" style="text-align:center;">
-                            <button type="button" class="btn btn-primary" id="registBtn">등록</button>
-                            <button type="button" class="btn btn-default" id="registCloseModalBtn">취소</button>
+                            <button type="button" class="btn btn-primary btn-wide" id="registBtn">등록</button>
+                            <!--<button type="button" class="btn btn-warning" id="registCloseModalBtn">취소</button>-->
                         </div>
                     </div>
                 </div>
@@ -244,63 +244,64 @@
         <!-- Modify Modal Popup Start -->
         <!--<script type="text/x-template" id="modify-template">-->
             <div id="adminModifyModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
+                <div class="modal-dialog" role="document" style="width: 21%;">
+                    <div class="modal-content" style="background-color: #F7F7FD;">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            <button type="button" id="modifyCloseModalTopBtn" class="close" data-dismiss="modal" aria-label="Close"><span
                                     aria-hidden="true">×</span></button>
-                            <h2 class="modal-title">사용자 상세</h2>
+                            <h2 class="modal-title modal-center">계정 상세</h2>
                         </div>
                         <form id="modifyForm">
                             <div class="modal-body" id="adminModifyTableDiv">
-                                <table id="modifyTable" class="table table-bordered table-hover dataTable" role="grid"
+                                <table id="modifyTable" class="table dataTable" role="grid"
                                        aria-describedby="example2_info">
                                     <tbody>
                                     <tr role="row">
-                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                             계정
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
                                     </tr>
-                                    <tr role="row" class="odd">
+                                    <tr role="row" class="modal-tr odd">
                                         <td class="text-left">
-                                            <input type="text" id="mod_account" name="account" style="width: 300px;"> <!--v-model="account"-->
+                                            <input type="text" id="mod_account" name="account" class="inputV3"> <!--v-model="account"-->
                                             <input type="hidden" id="mod_id" name="id">
                                         </td>
                                     </tr>
                                     <tr role="row">
-                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                             비밀번호
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
                                     </tr>
-                                    <tr role="row" class="odd">
+                                    <tr role="row" class="modal-tr odd">
                                         <td class="text-left">
-                                            <input type="password" id="mod_password" name="password" style="width: 300px;">
+                                            <input type="password" id="mod_password" name="password" class="inputV3">
                                         </td>
                                     </tr>
                                     <tr role="row">
-                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                             비밀번호 확인
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
+                                            &nbsp;
+                                            <span class="error_next_box" id="mod_pwdCompareText" style="color: red; float: right; display: none;"></span>
                                         </th>
                                     </tr>
-                                    <tr role="row" class="odd">
+                                    <tr role="row" class="modal-tr odd">
                                         <td class="text-left">
-                                            <input type="password" id="mod_passwordCheck" name="passwordCheck" style="width: 300px;">
-                                            <span class="error_next_box" id="mod_pwdCompareText" style="color: red; float: right; display: none;"></span>
+                                            <input type="password" id="mod_passwordCheck" name="passwordCheck" class="inputV3">
                                             <input type="hidden" id="mod_equal_pwd" name="mod_equal_pwd" value="success">
                                         </td>
                                     </tr>
                                     <tr role="row">
-                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                             권한
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
                                     </tr>
-                                    <tr role="row" class="odd">
+                                    <tr role="row" class=" modal-tr odd">
                                         <td class="text-left">
-                                            <select id="mod_role" name="role" style="width: 300px;"> <!--v-model="role"-->
+                                            <select id="mod_role" name="role" class="selectV3"> <!--v-model="role"-->
                                                 <option disabled value="">선택</option>
                                                 <option value="ROLE_ADMIN">관리자</option>
                                                 <option value="ROLE_USER">일반사용자</option>
@@ -308,11 +309,11 @@
                                         </td>
                                     </tr>
                                     <tr role="row">
-                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                             로그인 실패 수
                                         </th>
                                     </tr>
-                                    <tr role="row" class="odd">
+                                    <tr role="row" class="modal-tr odd">
                                         <td class="text-left">
                                             <span id="mod_login_fail_count">
                                                 <!--{{login_fail_count}}-->
@@ -322,11 +323,11 @@
                                         </td>
                                     </tr>
                                     <tr role="row">
-                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                             최근 로그인
                                         </th>
                                     </tr>
-                                    <tr role="row" class="odd">
+                                    <tr role="row" class="modal-tr odd">
                                         <td class="text-left">
                                             <span id="mod_last_login_at">
                                                 <!--{{last_login_at}}-->
@@ -335,11 +336,11 @@
                                         </td>
                                     </tr>
                                     <tr role="row">
-                                        <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                             등록일
                                         </th>
                                     </tr>
-                                    <tr role="row" class="odd">
+                                    <tr role="row" class="modal-tr odd">
                                         <td class="text-left">
                                             <span id="mod_registered_at">
                                                 <!--{{registered_at}}-->
@@ -353,8 +354,8 @@
                         </form>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" id="modifyBtn">수정</button>
-                            <button type="button" class="btn btn-danger" id="deleteBtn">삭제</button>
-                            <button type="button" class="btn btn-default" id="modifyCloseModalBtn">취소</button>
+                            <button type="button" class="btn btn-warning" id="deleteBtn">삭제</button>
+                            <button type="button" class="btn btn" id="modifyCloseModalBtn">취소</button>
                         </div>
                     </div>
                 </div>
