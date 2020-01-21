@@ -86,11 +86,14 @@
 
     // 등록 event
     $('#registBtn').click(function () {
-        registUser();
+        registPartner();
     });
 
     // 등록 모달 팝업 close
     $('#registCloseModalBtn').click(function () {
+        // regist form reset
+        registFormReset();
+        // regist modal hide
         $('#partnerRegistModal').modal('hide');
     });
 
@@ -149,9 +152,23 @@
     }
 
     // 등록 모달 팝업 close
-    $('#modifyCloseModalBtn').click(function () {
+    $('#modifyCloseModalBtn, #modifyCloseModalTopBtn').click(function () {
+        // modify form reset
+        modifyFormReset();
+        // modal popup hide
         $('#partnerModifyModal').modal('hide');
     });
+
+    // 등록 from 값 초기화
+    function registFormReset() {
+        $('#registForm').find('input, select, checkbox, radio').val(null);
+        $('#reg_pwdCompareText').text("");
+    }
+
+    // 수정 form 값 초기화
+    function modifyFormReset() {
+        $('#modifyForm').find('input, select, checkbox, radio').val(null);
+    }
 
     
     function searchStart(index) {
@@ -246,8 +263,7 @@
                 if(resultCode == "OK"){
                     alert("등록 되었습니다.");
                     // form 초기화
-                    $('#registForm').find('input, select, checkbox, radio').val(null);
-                    $('#reg_pwdCompareText').text("");
+                    registFormReset();
                     // 팝업 close
                     closeRegistPopup();
                     // 사용자 조회
@@ -326,8 +342,6 @@
             success: function (response, textStatus, jqXHR) {
                 var partnerData = response.data;
                 var $selector = $('#modifyForm');
-                // 수정폼 데이터 초기화
-                $('#modifyForm').find('input, select, checkbox, radio').val(null);
 
                 $selector.find("#mod_id").val(partnerData.id);
                 $selector.find("#mod_category_id").val(partnerData.category_id);

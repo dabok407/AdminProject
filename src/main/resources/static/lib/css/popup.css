@@ -28,7 +28,7 @@
 
 .modal-content{
     background-color: #F7F7FD;
-    padding-bottom: 20px;
+    padding-bottom: 5px;
 }
 
 .modal-header h3 {
@@ -84,4 +84,9 @@
 
 .btn-wide{
     width: 95%;
+}
+
+.modal-form{
+    margin-top: -15px;
+    margin-bottom: -15px;
 }

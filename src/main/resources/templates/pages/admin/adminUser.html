@@ -170,7 +170,7 @@
                             <button type="button" id="registCloseModalTopBtn" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                             <h2 class="modal-title modal-center" id="myModalLabel">계정 등록</h2>
                         </div>
-                        <form id="registForm">
+                        <form id="registForm" class="modal-form">
                             <div class="modal-body">
                                 <table id="registTable" class="table dataTable" role="grid" aria-describedby="example2_info">
                                     <tbody>
@@ -220,7 +220,7 @@
                                     <tr role="row" class="odd">
                                         <td class="text-left">
                                             <select id="reg_role" name="role" class="selectV3">
-                                                <option value="" selected disabled hidden >선택</option>
+                                                <option value="" selected disabled hidden>선택</option>
                                                 <option value="ROLE_ADMIN">관리자</option>
                                                 <option value="ROLE_USER">일반사용자</option>
                                             </select>
@@ -251,10 +251,9 @@
                                     aria-hidden="true">×</span></button>
                             <h2 class="modal-title modal-center">계정 상세</h2>
                         </div>
-                        <form id="modifyForm">
+                        <form id="modifyForm" class="modal-form">
                             <div class="modal-body" id="adminModifyTableDiv">
-                                <table id="modifyTable" class="table dataTable" role="grid"
-                                       aria-describedby="example2_info">
+                                <table id="modifyTable" class="table dataTable" role="grid" aria-describedby="example2_info">
                                     <tbody>
                                     <tr role="row">
                                         <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">

@@ -1,6 +1,6 @@
 /*@import url('../noto.css');*/
 
-body  {font-family:'notoSansR','Malgun Gothic', '맑은 고딕'; background:#586579 repeat 0 0;}
+body  {font-family:'notoSansR','Malgun Gothic', '맑은 고딕'; background:#ecf0f5 repeat 0 0;}
 
 /* -------------------------------- login --------------------------------  */
 .login-body {display: flex;justify-content:center;align-items:center;height:95vh;}

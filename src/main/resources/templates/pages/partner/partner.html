@@ -167,89 +167,112 @@
 
         <!-- Regist Modal Popup Start -->
         <div id="partnerRegistModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog" role="document" style="width: 21%;">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <h2 class="modal-title" id="myModalLabel">파트너 등록</h2>
+                        <button type="button" id="registCloseModalTopBtn" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h2 class="modal-title modal-center" id="myModalLabel">파트너 등록</h2>
                     </div>
-                    <form id="registForm">
+                    <form id="registForm" class="modal-form">
                         <div class="modal-body">
                             <table id="registTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
                                 <tbody>
                                 <tr role="row">
-                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                         파트너명
                                         <span style="color: #FF5B6B;">&nbsp;*</span>
                                     </th>
                                 </tr>
-                                <tr role="row" class="odd">
+                                <tr role="row" class="modal-tr odd">
                                     <td class="text-left">
-                                        <input type="text" id="reg_name" name="name" style="width: 300px;">
+                                        <input type="text" id="reg_name" name="name" class="inputV3">
+                                        <input type="hidden" id="reg_status" name="status">
                                     </td>
                                 </tr>
                                 <tr role="row">
-                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
+                                        분류
+                                        <span style="color: #FF5B6B;">&nbsp;*</span>
+                                    </th>
+                                </tr>
+                                <tr role="row" class=" modal-tr odd">
+                                    <td class="text-left">
+                                        <select id="reg_category_id" name="category_id" class="selectV3">
+                                            <option disabled value="">선택</option>
+                                            <option value="1">컴퓨터-전자제품</option>
+                                            <option value="2">의류</option>
+                                            <option value="3">멀티샵</option>
+                                            <option value="4">인테리어</option>
+                                            <option value="5">음식</option>
+                                            <option value="6">스포츠</option>
+                                            <option value="7">쇼핑몰</option>
+                                            <option value="8">면세점</option>
+                                            <option value="9">화장품</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                         대표이사
                                         <span style="color: #FF5B6B;">&nbsp;*</span>
                                     </th>
                                 </tr>
-                                <tr role="row" class="odd">
+                                <tr role="row" class="modal-tr odd">
                                     <td class="text-left">
-                                        <input type="text" id="reg_ceo_name" name="ceo_name">
+                                        <input type="text" id="reg_ceo_name" name="ceo_name" class="inputV3">
                                     </td>
                                 </tr>
                                 <tr role="row">
-                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                         주소
                                         <span style="color: #FF5B6B;">&nbsp;*</span>
                                     </th>
                                 </tr>
-                                <tr role="row" class="odd">
+                                <tr role="row" class="modal-tr odd">
                                     <td class="text-left">
-                                        <input type="text" id="reg_address" name="address" style="width: 300px;">
+                                        <input type="text" id="reg_address" name="address" class="inputV3">
                                     </td>
                                 </tr>
                                 <tr role="row">
-                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                         콜센터
                                         <span style="color: #FF5B6B;">&nbsp;*</span>
                                     </th>
                                 </tr>
-                                <tr role="row" class="odd">
+                                <tr role="row" class="modal-tr odd">
                                     <td class="text-left">
-                                        <input type="text" id="reg_call_center" name="call_center" >
+                                        <input type="text" id="reg_call_center" name="call_center" class="inputV3">
                                     </td>
                                 </tr>
                                 <tr role="row">
-                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                         파트너 번호
                                         <span style="color: #FF5B6B;">&nbsp;*</span>
                                     </th>
                                 </tr>
-                                <tr role="row" class="odd">
+                                <tr role="row" class="modal-tr odd">
                                     <td class="text-left">
-                                        <input type="text" id="reg_partner_number" name="partner_number" >
+                                        <input type="text" id="reg_partner_number" name="partner_number" class="inputV3">
                                     </td>
                                 </tr>
                                 <tr role="row">
-                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                         사업자 번호
                                         <span style="color: #FF5B6B;">&nbsp;*</span>
                                     </th>
                                 </tr>
-                                <tr role="row" class="odd">
+                                <tr role="row" class="modal-tr odd">
                                     <td class="text-left">
-                                        <input type="text" id="reg_business_number" name="business_number">
+                                        <input type="text" id="reg_business_number" name="business_number" class="inputV3">
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </form>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="registBtn">등록</button>
-                        <button type="button" class="btn btn-default" id="registCloseModalBtn">취소</button>
+                    <div class="modal-footer" style="text-align: center;">
+                        <button type="button" class="btn btn-primary btn-wide" id="registBtn">등록</button>
+                        <!--<button type="button" class="btn btn-default" id="registCloseModalBtn">취소</button>-->
                     </div>
                 </div>
             </div>
@@ -260,93 +283,114 @@
         <!-- Modify Modal Popup Start -->
         <!--<script type="text/x-template" id="modify-template">-->
         <div id="partnerModifyModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog" role="document" style="width: 21%;">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        <button type="button" id="modifyCloseModalTopBtn" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                        <h2 class="modal-title">파트너 상세</h2>
+                        <h2 class="modal-title modal-center">파트너 상세</h2>
                     </div>
-                    <form id="modifyForm">
+                    <form id="modifyForm" class="modal-form">
                         <div class="modal-body" id="adminModifyTableDiv">
                             <table id="modifyTable" class="table table-bordered table-hover dataTable" role="grid"
                                    aria-describedby="example2_info">
                                 <tbody>
                                 <tr role="row">
-                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                         파트너
                                         <span style="color: #FF5B6B;">&nbsp;*</span>
                                     </th>
                                 </tr>
-                                <tr role="row" class="odd">
+                                <tr role="row" class="modal-tr odd">
                                     <td class="text-left">
-                                        <input type="text" id="mod_name" name="name" style="width: 300px;"> <!--v-model="account"-->
+                                        <input type="text" id="mod_name" name="name" class="inputV3"> <!--v-model="account"-->
                                         <input type="hidden" id="mod_id" name="id">
-                                        <input type="hidden" id="mod_category_id" name="category_id">
                                         <input type="hidden" id="mod_status" name="status">
                                     </td>
                                 </tr>
                                 <tr role="row">
-                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
+                                        분류
+                                        <span style="color: #FF5B6B;">&nbsp;*</span>
+                                    </th>
+                                </tr>
+                                <tr role="row" class=" modal-tr odd">
+                                    <td class="text-left">
+                                        <select id="mod_category_id" name="category_id" class="selectV3">
+                                            <option value="" selected disabled hidden>선택</option>
+                                            <option value="1">컴퓨터-전자제품</option>
+                                            <option value="2">의류</option>
+                                            <option value="3">멀티샵</option>
+                                            <option value="4">인테리어</option>
+                                            <option value="5">음식</option>
+                                            <option value="6">스포츠</option>
+                                            <option value="7">쇼핑몰</option>
+                                            <option value="8">면세점</option>
+                                            <option value="9">화장품</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                         대표이사
                                         <span style="color: #FF5B6B;">&nbsp;*</span>
                                     </th>
                                 </tr>
-                                <tr role="row" class="odd">
+                                <tr role="row" class="modal-tr odd">
                                     <td class="text-left">
-                                        <input type="text" id="mod_ceo_name" name="ceo_name">
+                                        <input type="text" id="mod_ceo_name" name="ceo_name" class="inputV3">
                                     </td>
                                 </tr>
                                 <tr role="row">
-                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                         주소
                                         <span style="color: #FF5B6B;">&nbsp;*</span>
                                     </th>
                                 </tr>
-                                <tr role="row" class="odd">
+                                <tr role="row" class="modal-tr odd">
                                     <td class="text-left">
-                                        <input type="text" id="mod_address" name="address" style="width: 300px;">
+                                        <input type="text" id="mod_address" name="address" class="inputV3">
                                     </td>
                                 </tr>
                                 <tr role="row">
-                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                         콜센터
                                         <span style="color: #FF5B6B;">&nbsp;*</span>
                                     </th>
                                 </tr>
-                                <tr role="row" class="odd">
+                                <tr role="row" class="modal-tr odd">
                                     <td class="text-left">
-                                        <input type="text" id="mod_call_center" name="call_center">
+                                        <input type="text" id="mod_call_center" name="call_center" class="inputV3">
                                     </td>
                                 </tr>
                                 <tr role="row">
-                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                         파트너 번호
                                         <span style="color: #FF5B6B;">&nbsp;*</span>
                                     </th>
                                 </tr>
-                                <tr role="row" class="odd">
+                                <tr role="row" class="modal-tr odd">
                                     <td class="text-left">
-                                        <input type="text" id="mod_partner_number" name="partner_number">
+                                        <input type="text" id="mod_partner_number" name="partner_number" class="inputV3">
                                     </td>
                                 </tr>
                                 <tr role="row">
-                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                         사업자 번호
                                         <span style="color: #FF5B6B;">&nbsp;*</span>
                                     </th>
                                 </tr>
-                                <tr role="row" class="odd">
+                                <tr role="row" class="modal-tr odd">
                                     <td class="text-left">
-                                        <input type="text" id="mod_business_number" name="business_number">
+                                        <input type="text" id="mod_business_number" name="business_number" class="inputV3">
                                     </td>
                                 </tr>
                                 <tr role="row">
-                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                         가입일
                                     </th>
                                 </tr>
-                                <tr role="row" class="odd">
+                                <tr role="row" class="modal-tr odd">
                                     <td class="text-left">
                                             <span id="mod_registered_at">
                                                 <!--{{registered_at}}-->
@@ -355,11 +399,11 @@
                                     </td>
                                 </tr>
                                 <tr role="row">
-                                    <th class="text-left bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                    <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
                                         해지일
                                     </th>
                                 </tr>
-                                <tr role="row" class="odd">
+                                <tr role="row" class="modal-tr odd">
                                     <td class="text-left">
                                             <span id="mod_unregistered_at">
                                                 <!--{{registered_at}}-->
@@ -373,8 +417,8 @@
                     </form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="modifyBtn">수정</button>
-                        <button type="button" class="btn btn-danger" id="deleteBtn">삭제</button>
-                        <button type="button" class="btn btn-default" id="modifyCloseModalBtn">취소</button>
+                        <button type="button" class="btn btn-warning" id="deleteBtn">삭제</button>
+                        <button type="button" class="btn btn" id="modifyCloseModalBtn">취소</button>
                     </div>
                 </div>
             </div>

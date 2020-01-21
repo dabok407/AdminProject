@@ -91,6 +91,9 @@
 
     // 등록 모달 팝업 close
     $('#registCloseModalBtn').click(function () {
+        // regist form reset
+        registFormReset();
+        // regist modal hide
         $('#userRegistModal').modal('hide');
     });
 
@@ -150,9 +153,24 @@
 
     // 등록 모달 팝업 close
     $('#modifyCloseModalBtn').click(function () {
+        // modify form reset
+        modifyFormReset();
+        // modal popup hide
         $('#userModifyModal').modal('hide');
     });
-    
+
+    // 등록 from 값 초기화
+    function registFormReset() {
+        $('#registForm').find('input, select, checkbox, radio').val(null);
+        $('#reg_pwdCompareText').text("");
+    }
+
+    // 수정 form 값 초기화
+    function modifyFormReset() {
+        $('#modifyForm').find('input, select, checkbox, radio').val(null);
+        $("#mod_pwdCompareText").text("");
+    }
+
     function searchStart(index) {
 
         var pageSize = 10;
@@ -251,8 +269,7 @@
                 if(resultCode == "OK"){
                     alert("등록 되었습니다.");
                     // form 초기화
-                    $('#registForm').find('input, select, checkbox, radio').val(null);
-                    $('#reg_pwdCompareText').text("");
+                    registFormReset();
                     // 팝업 close
                     closeRegistPopup();
                     // 사용자 조회
@@ -339,7 +356,7 @@
                 var userData = response.data;
                 var $selector = $('#modifyForm');
                 // 수정폼 데이터 초기화
-                $('#modifyForm').find('input, select, checkbox, radio').val(null);
+                modifyFormReset();
 
                 $selector.find("#mod_id").val(userData.id);
                 $selector.find("#mod_account").val(userData.account);
@@ -349,7 +366,7 @@
                 $selector.find("#mod_registered_at").text(userData.registered_at);
                 $selector.find("#mod_unregistered_at").text(userData.unregistered_at);
                 $selector.find("#mod_equal_pwd").val("success");
-                $selector.find("#mod_pwdCompareText").text("");
+
                 /*new Vue({
                     el : '#adminModifyTableDiv',
                     data :adminUserData
