@@ -90,7 +90,7 @@
     });
 
     // 등록 모달 팝업 close
-    $('#registCloseModalBtn').click(function () {
+    $('#registCloseModalTopBtn').click(function () {
         // regist form reset
         registFormReset();
         // regist modal hide
