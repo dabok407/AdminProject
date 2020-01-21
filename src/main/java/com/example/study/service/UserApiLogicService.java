@@ -180,7 +180,7 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest , UserA
                     // item api response
                     List<ItemApiResponse> itemApiResponseList = orderGroup.getOrderDetailList().stream()
                             .map(detail -> detail.getItem())
-                            .map(item -> itemApiLogicService.response(item).getData())
+                            .map(item -> itemApiLogicService.response(item))
                             .collect(Collectors.toList());
 
                     orderGroupApiResponse.setItemApiResponseList(itemApiResponseList);

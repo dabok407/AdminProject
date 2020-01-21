@@ -1,23 +1,39 @@
 package com.example.study.service;
 
+import com.example.study.common.CommonFunction;
+import com.example.study.common.CommonObjectUtils;
 import com.example.study.ifs.CrudInterface;
 import com.example.study.model.entity.Item;
 import com.example.study.model.network.Header;
+import com.example.study.model.network.Pagination;
 import com.example.study.model.network.request.ItemApiRequest;
 import com.example.study.model.network.response.ItemApiResponse;
+import com.example.study.model.specs.ItemSpecification;
 import com.example.study.repository.ItemRepository;
 import com.example.study.repository.PartnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResponse, Item> {
 
     @Autowired
     private PartnerRepository partnerRepository;
+
+    @Autowired
+    private PartnerApiLogicService partnerApiLogicService;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     @Override
     public Header<ItemApiResponse> create(Header<ItemApiRequest> request) {
@@ -39,14 +55,16 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
             })
             .map(newItem -> baseRepository.save(newItem))
             .map(newItem -> response(newItem))
+            .map(Header::OK)
             .orElseGet(()->Header.ERROR("데이터 없음"));
     }
 
     @Override
     public Header<ItemApiResponse> read(Long id) {
 
-        return baseRepository.findById(id)
+        return itemRepository.findById(id)
                 .map(item -> response(item))
+                .map(Header::OK)
                 .orElseGet(()-> Header.ERROR("데이터 없음"));
     }
 
@@ -55,7 +73,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
 
         return Optional.ofNullable(request.getData())
                 .map(body ->{
-                    return baseRepository.findById(body.getId());
+                    return itemRepository.findById(body.getId());
                 })
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -78,6 +96,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 })
                 .map(changeItem -> baseRepository.save(changeItem))
                 .map(newItem -> response(newItem))
+                .map(Header::OK)
                 .orElseGet(()->Header.ERROR("데이터 없음"));
 
     }
@@ -93,7 +112,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
             .orElseGet(()->Header.ERROR("데이터 없음"));
     }
 
-    public Header<ItemApiResponse> response(Item item){
+    public ItemApiResponse response(Item item){
 
         ItemApiResponse body = ItemApiResponse.builder()
                 .id(item.getId())
@@ -101,13 +120,46 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .name(item.getName())
                 .title(item.getTitle())
                 .content(item.getContent())
-                .price(item.getPrice())
+                .price(CommonFunction.convertCommaMoney(String.valueOf(item.getPrice())))
                 .brandName(item.getBrandName())
                 .registeredAt(item.getRegisteredAt())
                 .unregisteredAt(item.getUnregisteredAt())
                 .partnerId(item.getPartner().getId())
+                .partner(partnerApiLogicService.read(item.getPartner().getId()).getData())
                 .build();
 
-        return Header.OK(body);
+        return body;
+    }
+
+    public Header<List<ItemApiResponse>> search(Pageable pageable, ItemApiRequest itemApiRequest) {
+
+        /*첫 번째*/
+        Map<String, Object> searchRequest = CommonObjectUtils.convertObjectToMap(itemApiRequest);
+        Map<String, Object> searchKeys = new HashMap<>();
+
+        for (String key : searchRequest.keySet()) {
+            String value = String.valueOf(searchRequest.get(key));
+            if(value != null && !value.isEmpty() && !"null".equals(value)){
+                searchKeys.put(key, searchRequest.get(key));
+            }
+        }
+
+        Page<Item> items =  searchKeys.isEmpty() ?
+                itemRepository.findAll(pageable) :
+                itemRepository.findAll(ItemSpecification.searchWith(searchKeys), pageable);
+
+
+        List<ItemApiResponse> itemApiResponseList = items.stream()
+                .map(item -> response(item))
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(items.getTotalPages())
+                .totalElements(items.getTotalElements())
+                .currentPage(items.getNumber())
+                .currentElements(items.getNumberOfElements())
+                .build();
+
+        return Header.OK(itemApiResponseList,pagination);
     }
 }

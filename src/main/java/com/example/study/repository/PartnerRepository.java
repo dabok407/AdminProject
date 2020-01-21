@@ -11,4 +11,6 @@ import java.util.List;
 public interface PartnerRepository extends JpaRepository<Partner, Long> {
 
     List<Partner> findByCategory(Category category);
+
+
 }

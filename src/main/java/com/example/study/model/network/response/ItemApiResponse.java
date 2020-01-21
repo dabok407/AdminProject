@@ -1,5 +1,6 @@
 package com.example.study.model.network.response;
 
+import com.example.study.model.entity.Partner;
 import com.example.study.model.enumclass.ItemStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +26,9 @@ public class ItemApiResponse {
 
     private String content;
 
-    private BigDecimal price;
+    /*private BigDecimal price;*/
+
+    private String price;
 
     private String brandName;
 
@@ -34,4 +37,6 @@ public class ItemApiResponse {
     private LocalDateTime unregisteredAt;
 
     private Long partnerId;
+
+    private PartnerApiResponse partner;
 }

@@ -52,6 +52,14 @@ public class PageController {
                 ;
     }
 
+    @RequestMapping("/item")
+    public ModelAndView item() {
+        return new ModelAndView("/pages/item/item")
+                .addObject("menuList", adminMenuService.getAdminMenu())
+                .addObject("code", "item")
+                ;
+    }
+
     @RequestMapping("/adminUser")
     public ModelAndView adminUser() {
         return new ModelAndView("/pages/admin/adminUser")
