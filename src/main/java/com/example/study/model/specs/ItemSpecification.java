@@ -1,5 +1,6 @@
 package com.example.study.model.specs;
 
+import com.example.study.common.CommonObjectUtils;
 import com.example.study.model.entity.Item;
 import com.example.study.model.entity.Partner;
 import com.example.study.model.entity.User;
@@ -11,6 +12,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,9 +39,13 @@ public class ItemSpecification {
             if("brandName".equals(key)){
                 predicate.add(builder.like(root.get(key), "%"+searchKeyword.get(key)+"%"));
             }else if("partner".equals(key)){
-                /*predicate.add(builder.like(root.get(key), "%"+searchKeyword.get(key)+"%"));*/
                 Join<Item,Partner> join = root.join("partner");
-                predicate.add(builder.like(join.get("name"), "%"+searchKeyword.get(key)+"%"));
+                Map<String, Object> partnerKeyword = CommonObjectUtils.convertObjectToMap(searchKeyword.get(key));
+                for (String partnerKey : partnerKeyword.keySet()) {
+                    if("name".equals(partnerKey)){
+                        predicate.add(builder.like(join.get("name"), "%"+ partnerKeyword.get("name")+"%"));
+                    }
+                }
             }else{
                 predicate.add(builder.equal(root.get(key), searchKeyword.get(key)));
             }
