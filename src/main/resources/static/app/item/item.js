@@ -145,11 +145,19 @@
         var paramUrl = "";
         var account = $("#account").val();
         var status = $("#status").val();
+        var brandName = $("#brandName").val();
+        var partnerName = $("#partnerName").val();
         if(account != "" && account != null){
             paramUrl += "&account="+account;
         }
         if(status != "" && status != null){
             paramUrl += "&status="+status;
+        }
+        if(brandName != "" && brandName != null){
+            paramUrl += "&brandName="+brandName;
+        }
+        if(partnerName != "" && partnerName != null){
+            paramUrl += "&partner.name="+partnerName;
         }
 
         $.get("/api/item?page="+index+'&size='+pageSize+paramUrl, function (response) {

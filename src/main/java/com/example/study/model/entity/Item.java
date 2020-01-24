@@ -61,7 +61,6 @@ public class Item {
     @ManyToOne
     private Partner partner;
 
-
     // Item  1 : N OrderDetail
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
     private List<OrderDetail> orderDetailList;

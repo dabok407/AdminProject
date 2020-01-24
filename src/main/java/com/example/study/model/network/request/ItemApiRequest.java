@@ -34,4 +34,8 @@ public class ItemApiRequest {
     private LocalDateTime unregisteredAt;
 
     private Long partnerId;
+
+    private String partnerName;
+
+    private PartnerApiRequest partner;
 }
