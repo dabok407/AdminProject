@@ -1,6 +1,7 @@
 package com.example.study.model.network.response;
 
 import com.example.study.model.enumclass.OrderType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,8 +33,10 @@ public class OrderGroupApiResponse {
 
     private Integer totalQuantity;
 
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd (HH:mm:ss)", timezone="Asia/Seoul")
     private LocalDateTime orderAt;
 
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd (HH:mm:ss)", timezone="Asia/Seoul")
     private LocalDateTime arrivalDate;
 
     private Long userId;

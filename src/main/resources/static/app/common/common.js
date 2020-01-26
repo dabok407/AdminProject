@@ -184,3 +184,14 @@ common.getBrowserType = function(){
     if (agt.indexOf("netscape") != -1) return 'Netscape';
     if (agt.indexOf("mozilla/5.0") != -1) return 'Mozilla';
 };
+
+
+
+/*
+ * 문자열 교체
+ * {return} 변경된 문자열
+ */
+common.replaceAll = function replaceAll(str, searchStr, replaceStr) {
+    return str.split(searchStr).join(replaceStr);
+}
+
