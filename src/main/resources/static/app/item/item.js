@@ -52,7 +52,6 @@
                 }
             },
             nextClick:function () {
-
                 if(pagination.current_page !== pagination.total_pages-1){
                     searchStart(pagination.current_page+1);
                 }
@@ -73,7 +72,7 @@
     });
 
     $(document).ready(function () {
-        searchStart(0)
+        searchStart(0, "Y")
     });
 
     // 등록 모달 팝업 open
@@ -139,7 +138,7 @@
         $("#mod_pwdCompareText").text("");
     }
 
-    function searchStart(index) {
+    function searchStart(index, initialYn) {
 
         var pageSize = 10;
         var paramUrl = "";
@@ -158,6 +157,11 @@
         }
         if(partnerName != "" && partnerName != null){
             paramUrl += "&partner.name="+partnerName;
+        }
+        if(initialYn != "" && initialYn != null){
+            paramUrl += "&initialYn=Y";
+        }else{
+            paramUrl += "&initialYn=''";
         }
 
         $.get("/api/item?page="+index+'&size='+pageSize+paramUrl, function (response) {
@@ -211,6 +215,24 @@
                 $('li[btn_id]').removeClass( "active" );
                 $('li[btn_id='+(pagination.current_page+1)+']').addClass( "active" );
             },50)
+
+            if(response.init_data != null){
+                // 파트너 코드 set
+                if(typeof response.init_data.partnerAllList != "undefined"){
+                    var partnerList = response.init_data.partnerAllList;
+                    var $regSelector = $("#registForm").find("#reg_partner_id");
+                    var $modSelector = $("#modifyForm").find("#mod_partner_id");
+
+                    $.each(partnerList, function(key, value) {
+                        var id = value.id;
+                        var name = value.name;
+                        var html = "<option value="+id+">"+name+"</option>";
+                        $regSelector.append(html);
+                        $modSelector.append(html);
+                    });
+                }
+            }
+
         });
     }
 
@@ -312,19 +334,22 @@
         $.ajax({
             url: "/api/item/"+id,
             success: function (response, textStatus, jqXHR) {
-                var userData = response.data;
+                var itemData = response.data;
                 var $selector = $('#modifyForm');
                 // 수정폼 데이터 초기화
                 modifyFormReset();
 
-                $selector.find("#mod_id").val(userData.id);
-                $selector.find("#mod_account").val(userData.account);
-                $selector.find("#mod_status").val(userData.status);
-                $selector.find("#mod_email").val(userData.email);
-                $selector.find("#mod_phone_number").val(userData.phone_number);
-                $selector.find("#mod_registered_at").text(userData.registered_at);
-                $selector.find("#mod_unregistered_at").text(userData.unregistered_at);
-                $selector.find("#mod_equal_pwd").val("success");
+                $selector.find("#mod_id").val(itemData.id);
+                $selector.find("#mod_name").val(itemData.name);
+                $selector.find("#mod_status").val(itemData.status);
+                $selector.find("#mod_title").val(itemData.title);
+                $selector.find("#mod_content").val(itemData.content);
+                $selector.find("#mod_price").val(common.replaceAll(itemData.price, "," ,""));
+                $selector.find("#mod_brand_name").val(itemData.brand_name);
+                $selector.find("#mod_partner_name").val(itemData.partner.name);
+                $selector.find("#mod_partner_id").val(itemData.partner_id);
+                $selector.find("#mod_registered_at").text(itemData.registered_at);
+                $selector.find("#mod_unregistered_at").text(itemData.unregistered_at);
 
                 /*new Vue({
                     el : '#adminModifyTableDiv',

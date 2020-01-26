@@ -14,6 +14,7 @@ import com.example.study.repository.PartnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -88,8 +89,8 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                             .setBrandName(body.getBrandName())
                             .setPartner(partnerRepository.getOne(body.getPartnerId()))
                             .setStatus(body.getStatus())
-                            .setRegisteredAt(body.getRegisteredAt())
-                            .setUnregisteredAt(body.getUnregisteredAt())
+                            /*.setRegisteredAt(body.getRegisteredAt())
+                            .setUnregisteredAt(body.getUnregisteredAt())*/
                             ;
                     return item;
 
@@ -131,7 +132,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
         return body;
     }
 
-    public Header<List<ItemApiResponse>> search(Pageable pageable, ItemApiRequest itemApiRequest) {
+    public Header<List<ItemApiResponse>> search(Pageable pageable, ItemApiRequest itemApiRequest, String initialYn) {
 
         /*첫 번째*/
         Map<String, Object> searchRequest = CommonObjectUtils.convertObjectToMap(itemApiRequest);
@@ -160,6 +161,13 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResp
                 .currentElements(items.getNumberOfElements())
                 .build();
 
-        return Header.OK(itemApiResponseList,pagination);
+        // init 데이터가 필요 할 때
+        if("Y".equals(initialYn)){
+            Map<String, Object> initMap = new HashMap<String, Object>();
+            initMap.put("partnerAllList", partnerRepository.findCodeAll());
+            return Header.OK(itemApiResponseList, initMap, pagination);
+        }else{
+            return Header.OK(itemApiResponseList,pagination);
+        }
     }
 }

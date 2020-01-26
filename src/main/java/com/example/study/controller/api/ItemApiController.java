@@ -56,11 +56,12 @@ public class ItemApiController extends CrudController<ItemApiRequest, ItemApiRes
 
     @GetMapping("")
     public Header<List<ItemApiResponse>> findAll(@SortDefault.SortDefaults({
-            @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
-            , @SortDefault(sort = "id", direction = Sort.Direction.ASC)
-    }) Pageable pageable
-            , @ModelAttribute ItemApiRequest itemApiRequest){
+                                                                            @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
+                                                                            , @SortDefault(sort = "id", direction = Sort.Direction.ASC)
+                                                                        }) Pageable pageable
+                                            , @ModelAttribute ItemApiRequest itemApiRequest
+                                            , @RequestParam("initialYn") String initialYn){
         log.info("{}",pageable);
-        return itemApiLogicService.search(pageable, itemApiRequest);
+        return itemApiLogicService.search(pageable, itemApiRequest, initialYn);
     }
 }

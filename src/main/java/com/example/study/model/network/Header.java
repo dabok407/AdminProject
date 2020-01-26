@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -26,6 +28,8 @@ public class Header<T> {
 
 
     private T data;
+
+    private T initData;
 
     // pagination
     private Pagination pagination;
@@ -56,6 +60,17 @@ public class Header<T> {
                 .resultCode("OK")
                 .description("OK")
                 .data(data)
+                .pagination(pagination)
+                .build();
+    }
+
+    public static <T> Header<T> OK(T data, Map initData, Pagination pagination){
+        return (Header<T>)Header.builder()
+                .transactionTime(LocalDateTime.now())
+                .resultCode("OK")
+                .description("OK")
+                .data(data)
+                .initData(initData)
                 .pagination(pagination)
                 .build();
     }
