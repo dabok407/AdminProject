@@ -60,6 +60,14 @@ public class PageController {
                 ;
     }
 
+    @RequestMapping("/itemRegistPopup")
+    public ModelAndView itemRegistPopup() {
+        return new ModelAndView("/pages/item/itemRegistPopup")
+                .addObject("menuList", adminMenuService.getAdminMenu())
+                .addObject("code", "itemRegistPopup")
+                ;
+    }
+
     @RequestMapping("/adminUser")
     public ModelAndView adminUser() {
         return new ModelAndView("/pages/admin/adminUser")

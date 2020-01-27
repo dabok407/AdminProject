@@ -26,6 +26,23 @@
     font-family: Helvetica, Arial, sans-serif;
 }
 
+.modal-default-layout{
+    width: 21%;
+}
+
+.modal-wide-layout{
+    width: 50%;
+}
+
+.modal-float-left{
+    width: 40%;
+    float: left;
+}
+.modal-float-right{
+    width: 59%;
+    float: right;
+}
+
 .modal-content{
     background-color: #F7F7FD;
     padding-bottom: 5px;
@@ -41,7 +58,11 @@
     margin-top: 15px;
     color: #545454;
 }
-
+.modal-left {
+    text-align: left;
+    margin-top: 15px;
+    color: #545454;
+}
 .modal-body {
     margin: 0px 0;
 }
