@@ -189,51 +189,59 @@
                         <form id="registForm" class="modal-form">
                             <div class="modal-body">
                                 <table id="registTable" class="table dataTable" role="grid" aria-describedby="example2_info">
+                                    <thead>
+                                        <col width="25%" />
+                                        <col width="25%" />
+                                        <col width="25%" />
+                                        <col width="25%" />
+                                    </thead>
                                     <tbody>
                                     <tr role="row">
-                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="2">
                                             주문자
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
-                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="2">
                                             상태
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
                                     </tr>
                                     <tr role="row" class="odd">
-                                        <td class="text-left">
+                                        <td class="text-left" colspan="2">
                                             <input type="text" id="reg_user_account" name="user_account" class="inputV3">
                                             <input type="hidden" id="reg_user_id" name="user_id">
                                         </td>
-                                        <td class="text-left">
+                                        <td class="text-left" colspan="2">
                                             <select id="reg_status" name="status" class="selectV3">
-                                                <option value="" selected disabled hidden>선택</option>
+                                                <option value="ORDERING">ORDERING</option>
                                                 <option value="CONFIRM">CONFIRM</option>
                                                 <option value="COMPLETE">COMPLETE</option>
-                                                <option value="ORDERING">ORDERING</option>
                                             </select>
                                         </td>
                                     </tr>
                                     <tr role="row">
-                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="2">
                                             타입
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
-                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
-                                            -
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="2">
+                                            결제
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
                                     </tr>
                                     <tr role="row" class="odd">
-                                        <td class="text-left">
-                                            <select id="reg_type" name="type" class="selectV3">
-                                                <option value="" selected disabled hidden>선택</option>
-                                                <option value="EACH">EACH</option>
+                                        <td class="text-left" colspan="2">
+                                            <select id="reg_order_type" name="order_type" class="selectV3">
                                                 <option value="ALL">ALL</option>
+                                                <option value="EACH">EACH</option>
                                             </select>
                                         </td>
-                                        <td class="text-left">
-
+                                        <td class="text-left" colspan="2">
+                                            <select id="reg_payment_type" name="payment_type" class="selectV3">
+                                                <option value="CARD">CARD</option>
+                                                <option value="CHECK_CARD">CHECK_CARD</option>
+                                                <option value="BANK_TRANSFER">BANK_TRANSFER</option>
+                                            </select>
                                         </td>
                                     </tr>
                                     <tr role="row">
@@ -241,96 +249,74 @@
                                             이름
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
-                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="1">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="3">
                                             주소
                                             <span style="color: #FF5B6B;">&nbsp;*</span>
                                         </th>
                                     </tr>
                                     <tr role="row" class="odd">
-                                        <td class="text-left">
+                                        <td class="text-left" colspan="1">
                                             <input type="text" id="reg_rev_name" name="rev_name" class="inputV3">
                                         </td>
-                                        <td class="text-left">
+                                        <td class="text-left" colspan="3">
                                             <input type="text" id="reg_rev_address" name="rev_address" class="inputV3">
                                         </td>
                                     </tr>
                                     <tr role="row">
-                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="2">
+                                        <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="4" style="pointer-events:auto;">
                                             주문상품
-                                            <div style="float: right">
-                                                <button type="button" class="btn btn-primary" id="itemRegistPopupBtn" style="float: right">상품 추가</button>
+                                            <div style="float:right">
+                                                <button type="button" class="btn btn-primary inner-btn" id="itemRegistPopupBtn" style="float:right">상품 추가</button>
                                             </div>
                                         </th>
                                     </tr>
                                     <tr role="row" class="odd">
-                                        <td class="text-left" colspan="2">
-                                            <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
-
-                                                <thead>
-                                                <tr role="row">
-                                                    <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                        id
-                                                    </th>
-                                                    <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                        상태
-                                                    </th>
-                                                    <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                        도착일
-                                                    </th>
-                                                    <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                        수량
-                                                    </th>
-                                                    <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                        가격
-                                                    </th>
-                                                    <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
-                                                        상품명
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="itemList2">
-                                                <tr role="row" class="odd">
-                                                    <td class="text-center">5468</td>
-                                                    <td class="text-center">ORDERING</td>
-                                                    <td class="text-center">2019-09-11 (09:06:04)</td>
-                                                    <td class="text-right">5</td>
-                                                    <td class="text-right">2,369,140</td>
-                                                    <td class="text-center">화장품5호</td>
-                                                </tr>
-                                                <tr role="row" class="odd">
-                                                    <td class="text-center">5468</td>
-                                                    <td class="text-center">ORDERING</td>
-                                                    <td class="text-center">2019-09-11 (09:06:04)</td>
-                                                    <td class="text-right">5</td>
-                                                    <td class="text-right">2,369,140</td>
-                                                    <td class="text-center">화장품5호</td>
-                                                </tr>
-                                                <tr role="row" class="odd">
-                                                    <td class="text-center">5468</td>
-                                                    <td class="text-center">ORDERING</td>
-                                                    <td class="text-center">2019-09-11 (09:06:04)</td>
-                                                    <td class="text-right">5</td>
-                                                    <td class="text-right">2,369,140</td>
-                                                    <td class="text-center">화장품5호</td>
-                                                </tr>
-                                                <tr role="row" class="odd">
-                                                    <td class="text-center">5468</td>
-                                                    <td class="text-center">ORDERING</td>
-                                                    <td class="text-center">2019-09-11 (09:06:04)</td>
-                                                    <td class="text-right">5</td>
-                                                    <td class="text-right">2,369,140</td>
-                                                    <td class="text-center">화장품5호</td>
-                                                </tr>
-                                                <tr role="row" class="odd">
-                                                    <td class="text-center">5468</td>
-                                                    <td class="text-center">ORDERING</td>
-                                                    <td class="text-center">2019-09-11 (09:06:04)</td>
-                                                    <td class="text-right">5</td>
-                                                    <td class="text-right">2,369,140</td>
-                                                    <td class="text-center">화장품5호</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+                                        <td class="text-left" colspan="4">
+                                            <div style="overflow-y:auto; height:290px;">
+                                                <table class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                                                    <colgroup>
+                                                        <col width="30%" />
+                                                        <col width="20%" />
+                                                        <col width="20%" />
+                                                        <col width="20%" />
+                                                    </colgroup>
+                                                    <thead>
+                                                    <tr role="row">
+                                                        <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                                            상품명
+                                                        </th>
+                                                        <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                                            상태
+                                                        </th>
+                                                        <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                                            수량
+                                                        </th>
+                                                        <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                                            가격
+                                                        </th>
+                                                        <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                                            기능
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="itemList2">
+                                                    <tr role="row" class="odd">
+                                                        <td class="text-center">화장품5호</td>
+                                                        <td class="text-center">ORDERING</td>
+                                                        <td class="text-right">
+                                                            <span style="padding-right:5px;">5</span>
+                                                            &nbsp;
+                                                            <button type="button" class="btn btn-default inner-btn">+</button>
+                                                            <button type="button" class="btn btn-default inner-btn">-</button>
+                                                        </td>
+                                                        <td class="text-right">2,369,140</td>
+                                                        <td class="text-center">
+                                                            <button type="button" class="btn btn-warning inner-btn">삭제</button>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </td>
                                     </tr>
                                     </tbody>

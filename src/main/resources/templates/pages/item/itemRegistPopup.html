@@ -76,10 +76,10 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title">상품 목록</h3>
-                            <!--<button type="button" class="btn btn-primary" id="registPopupBtn" style="float: right">상품 등록</button>-->
-                        </div>
+                        <!--<div class="box-header">
+                            &lt;!&ndash;<h3 class="box-title">상품 목록</h3>&ndash;&gt;
+                            &lt;!&ndash;<button type="button" class="btn btn-primary" id="registPopupBtn" style="float: right">상품 등록</button>&ndash;&gt;
+                        </div>-->
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
@@ -94,6 +94,8 @@
 
                                             <thead>
                                             <tr role="row">
+                                                <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                                </th>
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
                                                     id
                                                 </th>
@@ -115,6 +117,9 @@
                                                 <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
                                                     파트너
                                                 </th>
+                                                <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                                    기능
+                                                </th>
                                                 <!--<th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
                                                     가입일
                                                 </th>
@@ -125,6 +130,7 @@
                                             </thead>
                                             <tbody id="itemList">
                                             <tr role="row" class="odd" v-for="(dto, index) in itemList" v-on:click="click(itemList[index].id)">
+                                                <td class="text-center"><input type="checkbox" name="itemId" id="" v-bind:value="dto.id" style="width:18px;height:18px;"></td>
                                                 <td class="text-center">{{dto.id}}</td>
                                                 <td class="text-center">{{dto.name}}</td>
                                                 <td class="text-center">{{dto.status}}</td>
@@ -132,6 +138,9 @@
                                                 <td class="text-center">{{dto.price}}</td>
                                                 <td class="text-center">{{dto.brand_name}}</td>
                                                 <td class="text-center">{{dto.partner.name}}</td>
+                                                <td class="text-center">
+                                                    <button type="button" class="btn btn-default inner-btn" v-on:click="singleClick(itemList[index].id)">선택</button>
+                                                </td>
                                                 <!--<td class="text-center">{{dto.registered_at}}</td>
                                                 <td class="text-center">{{dto.unregistered_at}}</td>-->
                                             </tr>
@@ -145,8 +154,8 @@
                                             Showing {{currentPage}} to 10 of {{totalElements}} entries
                                         </div>
                                     </div>
-                                    <div class="col-sm-7">
-                                        <div class="dataTables_paginate paging_simple_numbers" id="pageBtn">
+                                    <div>
+                                        <div class="dataTables_paginate paging_simple_numbers" id="pageBtn" style="float: left;">
                                             <ul class="pagination">
                                                 <li class="paginate_button previous" id="previousBtn">
                                                     <a href="javascript:;" v-on:click="previousClick()">이전</a>
@@ -160,6 +169,9 @@
                                                     <a href="javascript:;" v-on:click="nextClick()">다음</a>
                                                 </li>
                                             </ul>
+                                        </div>
+                                        <div style="float: right; padding-top: 19px; padding-right: 15px">
+                                            <button type="button" class="btn btn-primary" id="itemRegistPopupBtn" style="float: right" onclick="javascript:fnMultiSelectItem()">상품 선택</button>
                                         </div>
                                     </div>
                                 </div>
@@ -285,7 +297,7 @@
         <!-- Modify Modal Popup Start -->
         <!--<script type="text/x-template" id="modify-template">-->
         <div id="itemModifyModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> <!--style="display: none;"-->
-            <div class="modal-dialog modal-default-layout" role="document" style="width: 40%;">
+            <div class="modal-dialog modal-default-layout" role="document" style="width: 35%;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" id="modifyCloseModalTopBtn" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -441,6 +453,6 @@
     <div class="control-sidebar-bg"></div>
 </div>
 
-<script src="/app/item/item.js"></script>
+<script src="/app/item/itemRegistPopup.js"></script>
 </body>
 </html>

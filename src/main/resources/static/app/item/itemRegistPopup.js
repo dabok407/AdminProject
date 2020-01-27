@@ -1,6 +1,6 @@
 (function ($) {
 
-    var maxBtnSize = 7;              // 검색 하단 최대 범위
+    var maxBtnSize = 5;              // 검색 하단 최대 범위
     var indexBtn = [];               // 인덱스 버튼
 
     // 페이징 처리 데이터
@@ -30,7 +30,10 @@
         methods: {
             click: function (id) {
                 // 상세 정보 조회
-                detailSearch(id);
+                /*detailSearch(id);*/
+            }
+            ,singleClick : function (id) {
+                alert(id);
             }
         }
     });
@@ -75,21 +78,17 @@
         searchStart(0, "Y")
     });
 
-    $('#itemRegistPopupBtn').click(function () {
-        window.open("/pages/itemRegistPopup", "itemPopup","width=1300,height=685");
-    });
-
     // 등록 모달 팝업 open
     $('#registPopupBtn').click(function () {
         // template 태그 삽입
         //$('#modalContentDiv').html($('#regist-template').html());
         // 등록 모달 팝업 show
-        $('#orderRegistModal').modal('show');
+        $('#itemRegistModal').modal('show');
     });
 
     // 등록 event
     $('#registBtn').click(function () {
-        registOrder();
+        registItem();
     });
 
     // 등록 모달 팝업 close
@@ -97,64 +96,78 @@
         // regist form reset
         registFormReset();
         // regist modal hide
-        $('#orderRegistModal').modal('hide');
+        $('#itemRegistModal').modal('hide');
     });
 
     // 수정 event
     $('#modifyBtn').click(function () {
-        modifyOrder();
+        modifyItem();
     });
 
     // 삭제 event
     $('#deleteBtn').click(function () {
         if(confirm("정말 삭제 하시겠습니까?")){
-            deleteOrder();
+            deleteItem();
         }
     });
 
     // 상세 모달 팝업 hide
     function closeModifyPopup() {
-        $('#orderModifyModal').modal('hide');
-        /*$('#adminModifyModal').remove();*/
+        $('#itemModifyModal').modal('hide');
     }
 
     // 등록 모달 팝업 hide
     function closeRegistPopup() {
-        $('#orderRegistModal').modal('hide');
-        /*$('#adminRegistModal').remove();*/
+        $('#itemRegistModal').modal('hide');
     }
 
-    // 수정 모달 팝업 close
-    $('#modifyCloseModalBtn, #modifyCloseModalTopBtn').click(function () {
+    // 등록 모달 팝업 close
+    $('#modifyCloseModalBtn').click(function () {
         // modify form reset
         modifyFormReset();
         // modal popup hide
-        $('#orderModifyModal').modal('hide');
-
+        $('#itemModifyModal').modal('hide');
     });
 
     // 등록 from 값 초기화
     function registFormReset() {
         $('#registForm').find('input, select, checkbox, radio').val(null);
+        $('#reg_pwdCompareText').text("");
     }
 
     // 수정 form 값 초기화
     function modifyFormReset() {
         $('#modifyForm').find('input, select, checkbox, radio').val(null);
+        $("#mod_pwdCompareText").text("");
     }
 
     function searchStart(index, initialYn) {
 
         var pageSize = 10;
         var paramUrl = "";
-
+        var account = $("#account").val();
+        var status = $("#status").val();
+        var brandName = $("#brandName").val();
+        var partnerName = $("#partnerName").val();
+        if(account != "" && account != null){
+            paramUrl += "&account="+account;
+        }
+        if(status != "" && status != null){
+            paramUrl += "&status="+status;
+        }
+        if(brandName != "" && brandName != null){
+            paramUrl += "&brandName="+brandName;
+        }
+        if(partnerName != "" && partnerName != null){
+            paramUrl += "&partner.name="+partnerName;
+        }
         if(initialYn != "" && initialYn != null){
             paramUrl += "&initialYn=Y";
         }else{
             paramUrl += "&initialYn=''";
         }
 
-        $.get("/api/orderGroup?page="+index+'&size='+pageSize+paramUrl, function (response) {
+        $.get("/api/item?page="+index+'&size='+pageSize+paramUrl, function (response) {
 
             /* 데이터 셋팅 */
             // 페이징 처리 데이터
@@ -205,16 +218,32 @@
                 $('li[btn_id]').removeClass( "active" );
                 $('li[btn_id='+(pagination.current_page+1)+']').addClass( "active" );
             },50)
+
+            if(response.init_data != null){
+                // 파트너 코드 set
+                if(typeof response.init_data.partnerAllList != "undefined"){
+                    var partnerList = response.init_data.partnerAllList;
+                    var $regSelector = $("#registForm").find("#reg_partner_id");
+                    var $modSelector = $("#modifyForm").find("#mod_partner_id");
+
+                    $.each(partnerList, function(key, value) {
+                        var id = value.id;
+                        var name = value.name;
+                        var html = "<option value="+id+">"+name+"</option>";
+                        $regSelector.append(html);
+                        $modSelector.append(html);
+                    });
+                }
+            }
+
         });
     }
 
-    // 주문 등록
-    function registOrder(){
-
-        var pwdEqualCheck = $('#reg_equal_pwd').val();
+    // 상품 등록
+    function registItem(){
 
         $.ajax({
-            url: "/api/orderGroup",
+            url: "/api/item",
             type: 'POST',
             contentType: 'application/json; charset=utf-8',
             /*data: JSON.stringify($('#registForm').serialize()),*/
@@ -234,7 +263,7 @@
                     registFormReset();
                     // 팝업 close
                     closeRegistPopup();
-                    // 주문 조회
+                    // 상품 조회
                     searchStart(0);
                 }else{
                     alert(response.description);
@@ -243,18 +272,11 @@
         });
     }
 
-    // 주문 수정
-    function modifyOrder(){
-
-        var pwdEqualCheck = $('#mod_equal_pwd').val();
-
-        if(pwdEqualCheck != "success"){
-            alert("비밀번호를 확인해주세요.");
-            return false;
-        }
+    // 고객 수정
+    function modifyItem(){
 
         $.ajax({
-            url: "/api/orderGroup",
+            url: "/api/item",
             type: 'PUT',
             contentType: 'application/json; charset=utf-8',
             /*data: JSON.stringify($('#registForm').serialize()),*/
@@ -272,18 +294,18 @@
                     alert("수정 되었습니다.");
                     // 팝업 close
                     closeModifyPopup();
-                    // 주문 조회
+                    // 사용자 조회
                     searchStart(0);
                 }
             }
         });
     }
 
-    // 주문 삭제
-    function deleteOrder(){
+    // 상품 삭제
+    function deleteItem(){
         var id = $("#mod_id").val();
         $.ajax({
-            url: "/api/orderGroup/"+id,
+            url: "/api/item/"+id,
             type: 'DELETE',
             beforeSend : function(xhr) {
                 var token = $("meta[name='_csrf']").attr("content");
@@ -296,7 +318,7 @@
                     alert("삭제 되었습니다.");
                     // 팝업 close
                     closeModifyPopup();
-                    // 주문 조회
+                    // 상품 조회
                     searchStart(0);
                 }else{
                     alert(response.description);
@@ -305,26 +327,32 @@
         });
     }
 
-    // 주문 상세 정보 조회
+    // 상품 상세 정보 조회
     function detailSearch(id){
         // template 태그 삽입
         $('#modalContentDiv').html($('#modify-template').html());
         // 상세 모달 팝업 show
-        $('#orderModifyModal').modal('show');
+        $('#itemModifyModal').modal('show');
         // 상세 조회 서비스 호출
         $.ajax({
-            url: "/api/orderGroup/"+id,
+            url: "/api/item/"+id,
             success: function (response, textStatus, jqXHR) {
-                var orderData = response.data;
+                var itemData = response.data;
                 var $selector = $('#modifyForm');
+                // 수정폼 데이터 초기화
+                modifyFormReset();
 
-                $selector.find("#mod_id").val(orderData.id);
-                $selector.find("#mod_account").val(orderData.account);
-                $selector.find("#mod_role").val(orderData.role);
-                $selector.find("#mod_login_fail_count").text(orderData.login_fail_count);
-                $selector.find("#mod_last_login_at").text(orderData.last_login_at);
-                $selector.find("#mod_registered_at").text(orderData.registered_at);
-                $selector.find("#mod_equal_pwd").val("success");
+                $selector.find("#mod_id").val(itemData.id);
+                $selector.find("#mod_name").val(itemData.name);
+                $selector.find("#mod_status").val(itemData.status);
+                $selector.find("#mod_title").val(itemData.title);
+                $selector.find("#mod_content").val(itemData.content);
+                $selector.find("#mod_price").val(common.replaceAll(itemData.price, "," ,""));
+                $selector.find("#mod_brand_name").val(itemData.brand_name);
+                $selector.find("#mod_partner_name").val(itemData.partner.name);
+                $selector.find("#mod_partner_id").val(itemData.partner_id);
+                $selector.find("#mod_registered_at").text(itemData.registered_at);
+                $selector.find("#mod_unregistered_at").text(itemData.unregistered_at);
 
                 /*new Vue({
                     el : '#adminModifyTableDiv',
@@ -333,5 +361,6 @@
             }
         });
     }
+    
 
 })(jQuery);
