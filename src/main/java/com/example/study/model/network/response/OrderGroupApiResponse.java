@@ -1,5 +1,7 @@
 package com.example.study.model.network.response;
 
+import com.example.study.model.entity.OrderDetail;
+import com.example.study.model.entity.User;
 import com.example.study.model.enumclass.OrderType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -42,6 +44,8 @@ public class OrderGroupApiResponse {
     private Long userId;
 
     private String userAccount;
+
+    private List<OrderDetailApiResponse> orderDetailList;
 
     private List<ItemApiResponse> itemApiResponseList;
 
