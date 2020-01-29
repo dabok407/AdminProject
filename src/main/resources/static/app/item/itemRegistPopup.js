@@ -32,8 +32,8 @@
                 // 상세 정보 조회
                 /*detailSearch(id);*/
             }
-            ,singleClick : function (id) {
-                alert(id);
+            ,singleClick : function (obj) {
+                fnSingleSelectItem(obj);
             }
         }
     });
@@ -77,6 +77,24 @@
     $(document).ready(function () {
         searchStart(0, "Y")
     });
+
+    window.onload = function () {
+        // 상품 단일 선택 버튼 클릭
+        $("button[name='itemSingleSelectBtn']").click(function () {
+
+            var returnArray = new Array();
+            var obj = new Object();
+            var $selector = $(this).parent().parent();
+            var id = $selector.find("td span[name='itemId']").val();
+            var name = $selector.find("td span[name='itemName']").text();
+            obj["id"] = id;
+            obj["name"] = name;
+            returnArray.push(obj);
+
+            window.opener.fnPopupCallback(returnArray);
+        });
+    }
+
 
     // 등록 모달 팝업 open
     $('#registPopupBtn').click(function () {
@@ -127,6 +145,11 @@
         modifyFormReset();
         // modal popup hide
         $('#itemModifyModal').modal('hide');
+    });
+
+    // 상품 선택 버튼 클릭
+    $('#itemSelectBtn').click(function () {
+        fnMultiSelectItem();
     });
 
     // 등록 from 값 초기화
@@ -183,7 +206,6 @@
             // 검색 데이터
             itemList.itemList = response.data;
 
-
             // 이전버튼
             if(pagination.current_page === 0){
                 $('#previousBtn').addClass("disabled")
@@ -238,6 +260,7 @@
 
         });
     }
+
 
     // 상품 등록
     function registItem(){
@@ -364,3 +387,33 @@
     
 
 })(jQuery);
+
+// 상품 Multi 선택
+function fnMultiSelectItem(){
+    var returnArray = new Array();
+    $("input[name=itemId]:checked").each(function(index, item) {
+        var obj = new Object();
+        var id = $(this).val();
+        var name = $(item).parent().parent().find("td span[name='itemName']").text();
+        var price = $(item).parent().parent().find("td span[name='itemPrice']").text();
+        obj["id"] = id;
+        obj["name"] = name;
+        obj["price"] = price;
+        returnArray.push(obj);
+    });
+    window.opener.fnPopupCallback(returnArray);
+}
+
+// 상품 Single 선택
+function fnSingleSelectItem(itemObj){
+    var returnArray = new Array();
+    var obj = new Object();
+    var id = itemObj.id;
+    var name = itemObj.name;
+    var price = itemObj.price;
+    obj["id"] = id;
+    obj["name"] = name;
+    obj["price"] = price;
+    returnArray.push(obj);
+    window.opener.fnPopupCallback(returnArray);
+}

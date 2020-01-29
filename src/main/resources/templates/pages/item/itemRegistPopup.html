@@ -132,14 +132,15 @@
                                             <tr role="row" class="odd" v-for="(dto, index) in itemList" v-on:click="click(itemList[index].id)">
                                                 <td class="text-center"><input type="checkbox" name="itemId" id="" v-bind:value="dto.id" style="width:18px;height:18px;"></td>
                                                 <td class="text-center">{{dto.id}}</td>
-                                                <td class="text-center">{{dto.name}}</td>
+                                                <td class="text-center"><span name="itemName">{{dto.name}}</span></td>
                                                 <td class="text-center">{{dto.status}}</td>
                                                 <td class="text-center">{{dto.content}}</td>
-                                                <td class="text-center">{{dto.price}}</td>
+                                                <td class="text-center"><span name="itemPrice">{{dto.price}}</span></td>
                                                 <td class="text-center">{{dto.brand_name}}</td>
                                                 <td class="text-center">{{dto.partner.name}}</td>
                                                 <td class="text-center">
-                                                    <button type="button" class="btn btn-default inner-btn" v-on:click="singleClick(itemList[index].id)">선택</button>
+                                                    <button type="button" class="btn btn-default inner-btn" name="itemSingleSelectBtn" v-on:click="singleClick(itemList[index])">선택</button>
+                                                    <!--v-on:click="singleClick(itemList[index])"-->
                                                 </td>
                                                 <!--<td class="text-center">{{dto.registered_at}}</td>
                                                 <td class="text-center">{{dto.unregistered_at}}</td>-->
@@ -171,7 +172,7 @@
                                             </ul>
                                         </div>
                                         <div style="float: right; padding-top: 19px; padding-right: 15px">
-                                            <button type="button" class="btn btn-primary" id="itemRegistPopupBtn" style="float: right" onclick="javascript:fnMultiSelectItem()">상품 선택</button>
+                                            <button type="button" class="btn btn-primary" id="itemSelectBtn" style="float: right">상품 선택</button>
                                         </div>
                                     </div>
                                 </div>

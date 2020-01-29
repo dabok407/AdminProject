@@ -76,7 +76,7 @@
     });
 
     $('#itemRegistPopupBtn').click(function () {
-        window.open("/pages/itemRegistPopup", "itemPopup","width=1300,height=685");
+        window.open("/pages/itemRegistPopup", "itemPopup","width=1300,height=690");
     });
 
     // 등록 모달 팝업 open
@@ -333,5 +333,77 @@
             }
         });
     }
-
 })(jQuery);
+
+// 상품 선택 callback
+function fnPopupCallback(obj){
+    var $selector = $("#registFormItemTable").find("tbody");
+
+    for(var i=0; i<obj.length; i++){
+        var html = '<tr role="row" class="odd">'
+            +'<td class="text-center">'
+            +obj[i].name
+            +'<div style="display: none;">'
+            +'<input name="itemId" value="'+obj[i].id+'">'
+            +'<input name="itemOriginPrice" value="'+obj[i].price+'">'
+            +'</div>'
+            +'</td>'
+            +'<td class="text-center">ORDERING</td>'
+            +'<td class="text-right">'
+            +'<span style="padding-right:5px;">1</span>'
+            +'&nbsp;&nbsp;'
+            +'<button type="button" class="btn btn-default inner-btn" onclick="fnPlusItem(this)">+</button>'
+            +'&nbsp;'
+            +'<button type="button" class="btn btn-default inner-btn" onclick="fnMinusItem(this)">-</button>'
+            +'</td>'
+            +'<td class="text-right">'
+            +'<span>'+obj[i].price+'</span>'
+            +'</td>'
+            +'<td class="text-center">'
+            +'<button type="button" class="btn btn-warning inner-btn" onclick="fnDeleteItem(this)">삭제</button>'
+            +'</td>'
+            +'</tr>'
+        $selector.append(html);
+    }
+}
+// 상품 삭제
+function fnDeleteItem(selector){
+    var $selector = $(selector);
+    $selector.parent().parent().remove();
+}
+
+// 상품 수량 plus
+function fnPlusItem(selector){
+    var $selector = $(selector);
+    var $dtSelector = $selector.parent().parent().find("td");
+    var maximumSize = 999;
+    var itemCnt = parseInt($dtSelector.eq(2).find("span").text());
+    var itemOriginPrice = parseInt(common.replaceAll($dtSelector.eq(0).find("input[name=itemOriginPrice]").val(), ",", ""));
+    var itemNowPrice = parseInt(common.replaceAll($dtSelector.eq(3).find("span").text(), ",", ""));
+    if(itemCnt > maximumSize){
+        alert("수량 최대치");
+    }else{
+        var cnt = itemCnt+1;
+        var price = itemOriginPrice * cnt;
+        $dtSelector.eq(2).find("span").text(cnt);
+        $dtSelector.eq(3).find("span").text(common.setComma(price));
+    }
+}
+
+// 상품 수량 minus
+function fnMinusItem(selector){
+    var $selector = $(selector);
+    var $dtSelector = $selector.parent().parent().find("td");
+    var minimumSize = 2;
+    var itemCnt = parseInt($dtSelector.eq(2).find("span").text());
+    var itemOriginPrice = parseInt(common.replaceAll($dtSelector.eq(0).find("input[name=itemOriginPrice]").val(), ",", ""));
+    var itemNowPrice = parseInt(common.replaceAll($dtSelector.eq(3).find("span").text(), ",", ""));
+    if(itemCnt < minimumSize){
+        alert("수량 최소치");
+    }else{
+        var cnt = itemCnt-1;
+        var price = itemOriginPrice * cnt;
+        $dtSelector.eq(2).find("span").text(cnt);
+        $dtSelector.eq(3).find("span").text(common.setComma(price));
+    }
+}
