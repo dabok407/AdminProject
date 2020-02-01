@@ -152,6 +152,15 @@
         fnMultiSelectItem();
     });
 
+    // 목록 전체 선택, 해제
+    $("#allCheck").click(function(){ 
+        if($("#allCheck").prop("checked")) { 
+            $("input[type=checkbox]").prop("checked",true); 
+        } else { 
+            $("input[type=checkbox]").prop("checked",false); 
+        } 
+    })
+    
     // 등록 from 값 초기화
     function registFormReset() {
         $('#registForm').find('input, select, checkbox, radio').val(null);
