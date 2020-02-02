@@ -211,14 +211,31 @@
     // 주문 등록
     function registOrder(){
 
-        var pwdEqualCheck = $('#reg_equal_pwd').val();
+        var itemData = null;
+        var $itemTableList = $("#registFormItemTable").find("tbody tr");
+        var itemDataArryay = new Array();
+        $itemTableList.each(function(index, item) {
+            var itemObj = new Object();
+            var itemId = $(item).find("input[name=itemId]").val();
+            var itemCnt = $(item).find("span[name=itemCnt]").text();
+            var itemTotalPrice = $(item).find("span[name=itemTotalPrice]").text();
+            itemObj["item_id"] = itemId;
+            itemObj["status"] = "ORDERING";
+            itemObj["quantity"] = itemCnt;
+            itemObj["total_price"] = common.replaceAll(itemTotalPrice, ",", "");
+            itemDataArryay.push(itemObj);
+        });
+
+        /*itemData = JSON.stringify(itemDataArryay);*/
+        itemData = itemDataArryay;
+        var groupData = JSON.stringify(common.serializeObject("registForm", 'order_detail_api_request_list', itemData));
+            /*.replace(/\\/g,'');*/
 
         $.ajax({
             url: "/api/orderGroup",
             type: 'POST',
             contentType: 'application/json; charset=utf-8',
-            /*data: JSON.stringify($('#registForm').serialize()),*/
-            data: JSON.stringify(common.serializeObject("registForm")),
+            data: groupData,
             dataType: 'json',
             async: true,
             beforeSend : function(xhr) {
@@ -350,14 +367,14 @@ function fnPopupCallback(obj){
             +'</td>'
             +'<td class="text-center">ORDERING</td>'
             +'<td class="text-right">'
-            +'<span style="padding-right:5px;">1</span>'
+            +'<span name="itemCnt" style="padding-right:5px;">1</span>'
             +'&nbsp;&nbsp;'
             +'<button type="button" class="btn btn-default inner-btn" onclick="fnPlusItem(this)">+</button>'
             +'&nbsp;'
             +'<button type="button" class="btn btn-default inner-btn" onclick="fnMinusItem(this)">-</button>'
             +'</td>'
             +'<td class="text-right">'
-            +'<span>'+obj[i].price+'</span>'
+            +'<span name="itemTotalPrice">'+obj[i].price+'</span>'
             +'</td>'
             +'<td class="text-center">'
             +'<button type="button" class="btn btn-warning inner-btn" onclick="fnDeleteItem(this)">삭제</button>'
@@ -370,6 +387,7 @@ function fnPopupCallback(obj){
 function fnDeleteItem(selector){
     var $selector = $(selector);
     $selector.parent().parent().remove();
+    fnCalculateTotalData($(selector).parent().parent().parent().parent());
 }
 
 // 상품 수량 plus
@@ -382,11 +400,13 @@ function fnPlusItem(selector){
     var itemNowPrice = parseInt(common.replaceAll($dtSelector.eq(3).find("span").text(), ",", ""));
     if(itemCnt > maximumSize){
         alert("수량 최대치");
+        return;
     }else{
         var cnt = itemCnt+1;
         var price = itemOriginPrice * cnt;
         $dtSelector.eq(2).find("span").text(cnt);
         $dtSelector.eq(3).find("span").text(common.setComma(price));
+        fnCalculateTotalData($(selector).parent().parent().parent().parent());
     }
 }
 
@@ -400,10 +420,27 @@ function fnMinusItem(selector){
     var itemNowPrice = parseInt(common.replaceAll($dtSelector.eq(3).find("span").text(), ",", ""));
     if(itemCnt < minimumSize){
         alert("수량 최소치");
+        return;
     }else{
         var cnt = itemCnt-1;
         var price = itemOriginPrice * cnt;
         $dtSelector.eq(2).find("span").text(cnt);
         $dtSelector.eq(3).find("span").text(common.setComma(price));
+        fnCalculateTotalData($(selector).parent().parent().parent().parent());
     }
+}
+
+// 상품 총 수량 및 금액 계산 함수
+function fnCalculateTotalData(selector){
+    var $itemTableList = $(selector).find("tbody tr");
+    var totalCnt = 0;
+    var totalPrice = 0;
+    $itemTableList.each(function(index, item) {
+        var itemCnt = $(item).find("span[name=itemCnt]").text();
+        var itemTotalPrice = common.replaceAll($(item).find("span[name=itemTotalPrice]").text(), ",", "") ;
+        totalCnt += parseInt(itemCnt);
+        totalPrice += parseInt(itemTotalPrice);
+    });
+    $("#reg_total_quantity").val(totalCnt);
+    $("#reg_total_price").val(totalPrice);
 }

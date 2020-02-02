@@ -411,6 +411,7 @@ function fnMultiSelectItem(){
         returnArray.push(obj);
     });
     window.opener.fnPopupCallback(returnArray);
+    self.close();
 }
 
 // 상품 Single 선택
@@ -425,4 +426,5 @@ function fnSingleSelectItem(itemObj){
     obj["price"] = price;
     returnArray.push(obj);
     window.opener.fnPopupCallback(returnArray);
+    self.close();
 }

@@ -48,6 +48,34 @@ common.serializeObject = function(formId) {
 }
 
 /*
+ * form data json parse
+ * {param} form Data (serialize)
+ * {return} json
+ */
+common.serializeObject = function(formId, objlistName, objList) {
+    var returnObj = null;
+    var data = null;
+    var $selector = $('#'+formId);
+    try {
+        if($selector[0].tagName && $selector[0].tagName.toUpperCase() == "FORM" ) {
+            var arr = $selector.serializeArray();
+            if(arr){
+                returnObj = {};
+                data = {};
+                jQuery.each(arr, function() {
+                    data[this.name] = this.value;
+                });
+                data[objlistName] = objList;
+            }
+        }
+    }catch(e) {
+        alert(e.message);
+    }finally {}
+    returnObj["data"] = data;
+    return returnObj;
+}
+
+/*
  * object empty 여부 확인
  * {param} obj
  * {return} boolean true or false

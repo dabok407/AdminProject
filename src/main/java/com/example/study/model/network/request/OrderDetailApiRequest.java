@@ -14,31 +14,23 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderGroupApiRequest {
+public class OrderDetailApiRequest {
 
     private Long id;
 
     private String status;
 
-    private OrderType orderType;
+    private LocalDateTime arrivalDate;
 
-    private String revAddress;
-
-    private String revName;
-
-    private String paymentType;
+    private Integer quantity;
 
     private BigDecimal totalPrice;
 
-    private Integer totalQuantity;
-
     private LocalDateTime orderAt;
 
-    private LocalDateTime arrivalDate;
+    private Long orderGroupId;
 
-    private Long userId;
-
-    private List<OrderDetailApiRequest> orderDetailApiRequestList;
+    private Long itemId;
 
 
 }
