@@ -112,6 +112,15 @@
         }
     });
 
+    // 등록 모달팝업 상품 삭제
+    $('#itemDeleteBtn').click(function(){
+        var $table = $("#registFormItemTable");
+
+        $table.find("input[name=itemId]:checked").each(function(index, item) {
+            $(item).parent().parent().remove();
+        });
+    });
+
     // 상세 모달 팝업 hide
     function closeModifyPopup() {
         $('#orderModifyModal').modal('hide');
@@ -352,12 +361,24 @@
     }
 })(jQuery);
 
+// 목록 전체 선택, 해제
+$("#registFormItemTable").find("#allCheck").click(function(){
+    if($("#allCheck").prop("checked")) {
+        $("#registFormItemTable").find("input[type=checkbox]").prop("checked",true);
+    } else {
+        $("#registFormItemTable").find("input[type=checkbox]").prop("checked",false);
+    }
+})
+
 // 상품 선택 callback
 function fnPopupCallback(obj){
     var $selector = $("#registFormItemTable").find("tbody");
 
     for(var i=0; i<obj.length; i++){
         var html = '<tr role="row" class="odd">'
+            +'<td class="text-center">'
+            +'<input type="checkbox" name="checkItem" id="" style="width:18px;height:18px;">'
+            +'</td>'
             +'<td class="text-center">'
             +obj[i].name
             +'<div style="display: none;">'
@@ -395,7 +416,7 @@ function fnPlusItem(selector){
     var $selector = $(selector);
     var $dtSelector = $selector.parent().parent().find("td");
     var maximumSize = 999;
-    var itemCnt = parseInt($dtSelector.eq(2).find("span").text());
+    var itemCnt = parseInt($dtSelector.eq(3).find("span").text());
     var itemOriginPrice = parseInt(common.replaceAll($dtSelector.eq(0).find("input[name=itemOriginPrice]").val(), ",", ""));
     var itemNowPrice = parseInt(common.replaceAll($dtSelector.eq(3).find("span").text(), ",", ""));
     if(itemCnt > maximumSize){
@@ -404,8 +425,8 @@ function fnPlusItem(selector){
     }else{
         var cnt = itemCnt+1;
         var price = itemOriginPrice * cnt;
-        $dtSelector.eq(2).find("span").text(cnt);
-        $dtSelector.eq(3).find("span").text(common.setComma(price));
+        $dtSelector.eq(3).find("span").text(cnt);
+        $dtSelector.eq(4).find("span").text(common.setComma(price));
         fnCalculateTotalData($(selector).parent().parent().parent().parent());
     }
 }

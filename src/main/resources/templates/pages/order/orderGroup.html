@@ -268,7 +268,8 @@
                                         <th class="text-left modal-table-th" tabindex="0" rowspan="1" colspan="4" style="pointer-events:auto;">
                                             주문상품
                                             <div style="float:right">
-                                                <button type="button" class="btn btn-primary inner-btn" id="itemRegistPopupBtn" style="float:right">상품 추가</button>
+                                                <button type="button" class="btn btn-primary inner-btn" id="itemRegistPopupBtn" style="float:right; margin-left: 5px;">상품 추가</button>
+                                                <button type="button" class="btn btn-warning inner-btn" id="itemDeleteBtn" style="float:right;">상품 삭제</button>
                                             </div>
                                         </th>
                                     </tr>
@@ -277,13 +278,17 @@
                                             <div style="overflow-y:auto; height:290px;">
                                                 <table id="registFormItemTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
                                                     <colgroup>
+                                                        <col width="5%" />
                                                         <col width="30%" />
                                                         <col width="20%" />
-                                                        <col width="20%" />
+                                                        <col width="15%" />
                                                         <col width="20%" />
                                                     </colgroup>
                                                     <thead>
                                                     <tr role="row">
+                                                        <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
+                                                            <input type="checkbox" id="allCheck" style="width:18px;height:18px;">
+                                                        </th>
                                                         <th class="text-center bg-light-blue-gradient" tabindex="0" rowspan="1" colspan="1">
                                                             상품명
                                                         </th>
