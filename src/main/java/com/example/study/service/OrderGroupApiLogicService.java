@@ -5,6 +5,7 @@ import com.example.study.model.entity.OrderDetail;
 import com.example.study.model.entity.OrderGroup;
 import com.example.study.model.network.Header;
 import com.example.study.model.network.Pagination;
+import com.example.study.model.network.request.OrderDetailApiRequest;
 import com.example.study.model.network.request.OrderGroupApiRequest;
 import com.example.study.model.network.response.ItemApiResponse;
 import com.example.study.model.network.response.OrderDetailApiResponse;
@@ -36,6 +37,9 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
     @Autowired
     private OrderDetailRepository orderDetailRepository;
 
+    @Autowired
+    private ItemRepository itemRepository;
+
 
     @Override
     public Header<OrderGroupApiResponse> create(Header<OrderGroupApiRequest> request) {
@@ -56,7 +60,22 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
 
                     return orderGroup;
                 })
-                .map(newOrderGroup -> orderGroupRepository.save(newOrderGroup))
+                .map(newOrderGroup -> {
+                    orderGroupRepository.save(newOrderGroup);
+                    for(OrderDetailApiRequest orderDetailList : request.getData().getOrderDetailApiRequestList()){
+                        OrderDetail orderDetail = OrderDetail.builder()
+                                .status(orderDetailList.getStatus())
+                                .quantity(orderDetailList.getQuantity())
+                                .totalPrice(orderDetailList.getTotalPrice())
+                                .item(itemRepository.getOne(orderDetailList.getItemId()))
+                                .arrivalDate(LocalDateTime.now())
+                                .orderGroup(newOrderGroup)
+                                .build();
+                        orderDetailRepository.save(orderDetail);
+                    }
+                    return newOrderGroup;
+                })
+                //.map(newOrderGroup -> orderGroupRepository.save(newOrderGroup))
                 .map(newOrderGroup -> response(newOrderGroup))
                 .map(Header::OK)
                 .orElseGet(()->Header.ERROR("데이터 없음"));
