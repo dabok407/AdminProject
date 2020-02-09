@@ -32,6 +32,8 @@ public class OrderDetailApiResponse {
 
     private Long itemId;
 
+    private String name;
+
     private Long  orderGroupId;
 
 }

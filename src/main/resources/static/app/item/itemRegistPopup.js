@@ -407,7 +407,8 @@ function fnMultiSelectItem(){
         var price = $(item).parent().parent().find("td span[name='itemPrice']").text();
         obj["id"] = id;
         obj["name"] = name;
-        obj["price"] = price;
+        obj["quantity"] = 1;
+        obj["total_price"] = price;
         returnArray.push(obj);
     });
     window.opener.fnPopupCallback(returnArray);
@@ -423,7 +424,8 @@ function fnSingleSelectItem(itemObj){
     var price = itemObj.price;
     obj["id"] = id;
     obj["name"] = name;
-    obj["price"] = price;
+    obj["quantity"] = 1;
+    obj["total_price"] = price;
     returnArray.push(obj);
     window.opener.fnPopupCallback(returnArray);
     self.close();

@@ -1,5 +1,7 @@
 package com.example.study.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -52,6 +54,7 @@ public class OrderDetail {
 
     // OrderDetail N : 1 OrderGroup
     @ManyToOne
+    @JsonBackReference
     private OrderGroup orderGroup;
 
 }

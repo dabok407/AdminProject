@@ -133,16 +133,18 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
         Page<OrderGroup> orderGroups = orderGroupRepository.findAll(pageable);
 
         List<OrderGroupApiResponse> orderGroupApiResponseList = orderGroups.stream()
-                .map(orderGroup -> {
+                .map(orderGroup -> response(orderGroup)
+                    /*
+                    {
                     OrderGroupApiResponse orderGroupApiResponse = this.response(orderGroup);
-                    /*response(orderGroup)*/
                     List<OrderDetailApiResponse> orderDetails = orderGroup.getOrderDetailList().stream()
                             .map(detail -> this.response(detail))
                             .collect(Collectors.toList());
 
                     orderGroupApiResponse.setOrderDetailList(orderDetails);
                     return orderGroupApiResponse;
-                })
+                }*/
+                )
                 .collect(Collectors.toList());
 
         Pagination pagination = Pagination.builder()
@@ -170,6 +172,8 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
                 .arrivalDate(orderGroup.getArrivalDate())
                 .userId(orderGroup.getUser().getId())
                 .userAccount(orderGroup.getUser().getAccount())
+                .orderDetailList(response(orderGroup.getOrderDetailList()))
+                /*.castOrderDetailList(orderGroup.getOrderDetailList()) */
                 .build();
 
         return orderGroupApiResponse;
@@ -186,6 +190,23 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
                 .build();
 
         return orderDetailApiResponse;
+    }
+
+    public List<OrderDetailApiResponse> response(List<OrderDetail> orderDetailList){
+        List<OrderDetailApiResponse> returnList = new ArrayList<>();
+        for (OrderDetail list : orderDetailList){
+            OrderDetailApiResponse orderDetailApiResponse = OrderDetailApiResponse.builder()
+                    .id(list.getId())
+                    .status(list.getStatus())
+                    .totalPrice(list.getTotalPrice())
+                    .quantity(list.getQuantity())
+                    .name(list.getItem().getName())
+                    .itemId(list.getItem().getId())
+                    .arrivalDate(list.getArrivalDate())
+                    .build();
+            returnList.add(orderDetailApiResponse);
+        }
+        return returnList;
     }
 
 }

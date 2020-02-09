@@ -1,6 +1,9 @@
 package com.example.study.model.entity;
 
 import com.example.study.model.enumclass.OrderType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
@@ -66,5 +69,6 @@ public class OrderGroup {
 
     // OrderGroup 1 : N OrderDetail
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderGroup")
+    @JsonManagedReference
     private List<OrderDetail> orderDetailList;
 }

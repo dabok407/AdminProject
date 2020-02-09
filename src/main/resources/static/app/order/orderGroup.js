@@ -75,7 +75,7 @@
         searchStart(0, "Y")
     });
 
-    $('#itemRegistPopupBtn').click(function () {
+    $('#itemRegistPopupBtn, #itemModifyPopupBtn').click(function () {
         window.open("/pages/itemRegistPopup", "itemPopup","width=1300,height=690");
     });
 
@@ -113,10 +113,19 @@
     });
 
     // 등록 모달팝업 상품 삭제
-    $('#itemDeleteBtn').click(function(){
+    $('#itemRegistDeleteBtn').click(function(){
         var $table = $("#registFormItemTable");
 
-        $table.find("input[name=itemId]:checked").each(function(index, item) {
+        $table.find("input[name=checkItem]:checked").each(function(index, item) {
+            $(item).parent().parent().remove();
+        });
+    });
+
+    // 수정 모달팝업 상품 삭제
+    $('#itemModifyDeleteBtn').click(function(){
+        var $table = $("#modifyFormItemTable");
+
+        $table.find("input[name=checkItem]:checked").each(function(index, item) {
             $(item).parent().parent().remove();
         });
     });
@@ -344,13 +353,17 @@
                 var orderData = response.data;
                 var $selector = $('#modifyForm');
 
-                $selector.find("#mod_id").val(orderData.id);
-                $selector.find("#mod_account").val(orderData.account);
-                $selector.find("#mod_role").val(orderData.role);
-                $selector.find("#mod_login_fail_count").text(orderData.login_fail_count);
-                $selector.find("#mod_last_login_at").text(orderData.last_login_at);
-                $selector.find("#mod_registered_at").text(orderData.registered_at);
-                $selector.find("#mod_equal_pwd").val("success");
+                $selector.find("#mod_group_id").val(orderData.id);
+                $selector.find("#mod_user_account").val(orderData.user_account);
+                $selector.find("#mod_status").val(orderData.status);
+                $selector.find("#mod_order_type").val(orderData.order_type);
+                $selector.find("#mod_payment_type").val(orderData.payment_type);
+                $selector.find("#mod_total_price").val(orderData.total_price);
+                $selector.find("#mod_total_quantity").val(orderData.total_quantity);
+                $selector.find("#mod_rev_name").val(orderData.rev_name);
+                $selector.find("#mod_rev_address").val(orderData.rev_address);
+
+                fnOrderDetailAdd(orderData.order_detail_list, $('#modifyForm').find("#modifyFormItemTable > tbody"));
 
                 /*new Vue({
                     el : '#adminModifyTableDiv',
@@ -361,7 +374,7 @@
     }
 })(jQuery);
 
-// 목록 전체 선택, 해제
+// 등록 목록 전체 선택, 해제
 $("#registFormItemTable").find("#allCheck").click(function(){
     if($("#allCheck").prop("checked")) {
         $("#registFormItemTable").find("input[type=checkbox]").prop("checked",true);
@@ -370,10 +383,25 @@ $("#registFormItemTable").find("#allCheck").click(function(){
     }
 })
 
+// 상세 목록 전체 선택, 해제
+$("#modifyFormItemTable").find("#modAllCheck").click(function(){
+    if($("#modAllCheck").prop("checked")) {
+        $("#modifyFormItemTable").find("input[type=checkbox]").prop("checked",true);
+    } else {
+        $("#modifyFormItemTable").find("input[type=checkbox]").prop("checked",false);
+    }
+})
+
 // 상품 선택 callback
 function fnPopupCallback(obj){
     var $selector = $("#registFormItemTable").find("tbody");
+    fnOrderDetailAdd(obj, $selector);
+    var $selector = $("#modifyFormItemTable").find("tbody");
+    fnOrderDetailAdd(obj, $selector);
+}
 
+// 주문 상세 상품 목록 add
+function  fnOrderDetailAdd(obj, $selector) {
     for(var i=0; i<obj.length; i++){
         var html = '<tr role="row" class="odd">'
             +'<td class="text-center">'
@@ -383,19 +411,19 @@ function fnPopupCallback(obj){
             +obj[i].name
             +'<div style="display: none;">'
             +'<input name="itemId" value="'+obj[i].id+'">'
-            +'<input name="itemOriginPrice" value="'+obj[i].price+'">'
+            +'<input name="itemOriginPrice" value="'+common.setComma(obj[i].total_price)+'">'
             +'</div>'
             +'</td>'
             +'<td class="text-center">ORDERING</td>'
             +'<td class="text-right">'
-            +'<span name="itemCnt" style="padding-right:5px;">1</span>'
+            +'<span name="itemCnt" style="padding-right:5px;">'+obj[i].quantity+'</span>'
             +'&nbsp;&nbsp;'
             +'<button type="button" class="btn btn-default inner-btn" onclick="fnPlusItem(this)">+</button>'
             +'&nbsp;'
             +'<button type="button" class="btn btn-default inner-btn" onclick="fnMinusItem(this)">-</button>'
             +'</td>'
             +'<td class="text-right">'
-            +'<span name="itemTotalPrice">'+obj[i].price+'</span>'
+            +'<span name="itemTotalPrice">'+common.setComma(obj[i].total_price)+'</span>'
             +'</td>'
             +'<td class="text-center">'
             +'<button type="button" class="btn btn-warning inner-btn" onclick="fnDeleteItem(this)">삭제</button>'
@@ -404,6 +432,7 @@ function fnPopupCallback(obj){
         $selector.append(html);
     }
 }
+
 // 상품 삭제
 function fnDeleteItem(selector){
     var $selector = $(selector);
@@ -417,7 +446,7 @@ function fnPlusItem(selector){
     var $dtSelector = $selector.parent().parent().find("td");
     var maximumSize = 999;
     var itemCnt = parseInt($dtSelector.eq(3).find("span").text());
-    var itemOriginPrice = parseInt(common.replaceAll($dtSelector.eq(0).find("input[name=itemOriginPrice]").val(), ",", ""));
+    var itemOriginPrice = parseInt(common.replaceAll($dtSelector.eq(1).find("input[name=itemOriginPrice]").val(), ",", ""));
     var itemNowPrice = parseInt(common.replaceAll($dtSelector.eq(3).find("span").text(), ",", ""));
     if(itemCnt > maximumSize){
         alert("수량 최대치");
@@ -436,17 +465,17 @@ function fnMinusItem(selector){
     var $selector = $(selector);
     var $dtSelector = $selector.parent().parent().find("td");
     var minimumSize = 2;
-    var itemCnt = parseInt($dtSelector.eq(2).find("span").text());
-    var itemOriginPrice = parseInt(common.replaceAll($dtSelector.eq(0).find("input[name=itemOriginPrice]").val(), ",", ""));
-    var itemNowPrice = parseInt(common.replaceAll($dtSelector.eq(3).find("span").text(), ",", ""));
+    var itemCnt = parseInt($dtSelector.eq(3).find("span").text());
+    var itemOriginPrice = parseInt(common.replaceAll($dtSelector.eq(1).find("input[name=itemOriginPrice]").val(), ",", ""));
+    var itemNowPrice = parseInt(common.replaceAll($dtSelector.eq(4).find("span").text(), ",", ""));
     if(itemCnt < minimumSize){
         alert("수량 최소치");
         return;
     }else{
         var cnt = itemCnt-1;
         var price = itemOriginPrice * cnt;
-        $dtSelector.eq(2).find("span").text(cnt);
-        $dtSelector.eq(3).find("span").text(common.setComma(price));
+        $dtSelector.eq(3).find("span").text(cnt);
+        $dtSelector.eq(4).find("span").text(common.setComma(price));
         fnCalculateTotalData($(selector).parent().parent().parent().parent());
     }
 }
