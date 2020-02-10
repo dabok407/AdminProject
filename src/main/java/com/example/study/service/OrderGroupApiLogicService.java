@@ -1,6 +1,7 @@
 package com.example.study.service;
 
 import com.example.study.common.CommonFunction;
+import com.example.study.ifs.CrudInterface;
 import com.example.study.model.entity.OrderDetail;
 import com.example.study.model.entity.OrderGroup;
 import com.example.study.model.network.Header;
@@ -14,10 +15,12 @@ import com.example.study.repository.ItemRepository;
 import com.example.study.repository.OrderDetailRepository;
 import com.example.study.repository.OrderGroupRepository;
 import com.example.study.repository.UserRepository;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,7 +29,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest, OrderGroupApiResponse,OrderGroup> {
+public class OrderGroupApiLogicService implements CrudInterface<OrderGroupApiRequest, OrderGroupApiResponse> {
 
     @Autowired
     private UserRepository userRepository;
@@ -61,6 +64,7 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
                     return orderGroup;
                 })
                 .map(newOrderGroup -> {
+                    /*baseRepository.save(newOrderGroup);*/
                     orderGroupRepository.save(newOrderGroup);
                     for(OrderDetailApiRequest orderDetailList : request.getData().getOrderDetailApiRequestList()){
                         OrderDetail orderDetail = OrderDetail.builder()
@@ -68,7 +72,7 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
                                 .quantity(orderDetailList.getQuantity())
                                 .totalPrice(orderDetailList.getTotalPrice())
                                 .item(itemRepository.getOne(orderDetailList.getItemId()))
-                                .arrivalDate(LocalDateTime.now())
+                                /*.arrivalDate(LocalDateTime.now())*/
                                 .orderGroup(newOrderGroup)
                                 .build();
                         orderDetailRepository.save(orderDetail);
@@ -92,31 +96,91 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
     @Override
     public Header<OrderGroupApiResponse> update(Header<OrderGroupApiRequest> request) {
 
+        OrderGroupApiRequest body = request.getData();
+
+        Optional<OrderGroup> optional = orderGroupRepository.findById(body.getId());
+
+        return optional.map(orderGroup -> {
+            orderGroup.setStatus(body.getStatus())
+                    .setOrderType(body.getOrderType())
+                    .setRevAddress(body.getRevAddress())
+                    .setRevName(body.getRevName())
+                    .setPaymentType(body.getPaymentType())
+                    .setTotalPrice(body.getTotalPrice())
+                    .setTotalQuantity(body.getTotalQuantity())
+                    .setOrderAt(body.getOrderAt())
+                    .setArrivalDate(body.getArrivalDate())
+                    .setUser(userRepository.getOne(body.getUserId()))
+            ;
+            return orderGroup;
+        })
+        .map(orderGroup -> {
+            orderGroupRepository.save(orderGroup);
+            orderDetailRepository.deleteByOrderGroup(orderGroup);
+            for(OrderDetailApiRequest orderDetailList : request.getData().getOrderDetailApiRequestList()){
+                OrderDetail orderDetail = OrderDetail.builder()
+                        .id(orderDetailList.getId())
+                        .status(orderDetailList.getStatus())
+                        .quantity(orderDetailList.getQuantity())
+                        .totalPrice(orderDetailList.getTotalPrice())
+                        .item(itemRepository.getOne(orderDetailList.getItemId()))
+                        /*.arrivalDate(LocalDateTime.now())*/
+                        .orderGroup(orderGroup)
+                        .build();
+                orderDetailRepository.save(orderDetail);
+            }
+            return orderGroup;
+        })
+        .map(orderGroup -> response(orderGroup))                        // userApiResponse
+        .map(Header::OK)
+        .orElseGet(()->Header.ERROR("데이터 없음"));
+
+
+    }
+    /*public Header<OrderGroupApiResponse> update(Header<OrderGroupApiRequest> request) {
+
         return Optional.ofNullable(request.getData())
                 .map(body ->{
-                    return orderGroupRepository.findById(body.getId())
-                        .map(orderGroup -> {
-                            orderGroup
-                                    .setStatus(body.getStatus())
-                                    .setOrderType(body.getOrderType())
-                                    .setRevAddress(body.getRevAddress())
-                                    .setRevName(body.getRevName())
-                                    .setPaymentType(body.getPaymentType())
-                                    .setTotalPrice(body.getTotalPrice())
-                                    .setTotalQuantity(body.getTotalQuantity())
-                                    .setOrderAt(body.getOrderAt())
-                                    .setArrivalDate(body.getArrivalDate())
-                                    .setUser(userRepository.getOne(body.getUserId()))
-                            ;
-                            return orderGroup;
-                        })
-                        .map(changeOrderGroup -> orderGroupRepository.save(changeOrderGroup))
-                        .map(this::response)
-                        .map(Header::OK)
-                        .orElseGet(()->Header.ERROR("데이터 없음"));
+                    return orderGroupRepository.findById(body.getId());
                 })
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(orderGroup -> {
+                    OrderGroupApiRequest body = request.getData();
+                    orderGroup.setStatus(body.getStatus())
+                            .setOrderType(body.getOrderType())
+                            .setRevAddress(body.getRevAddress())
+                            .setRevName(body.getRevName())
+                            .setPaymentType(body.getPaymentType())
+                            .setTotalPrice(body.getTotalPrice())
+                            .setTotalQuantity(body.getTotalQuantity())
+                            .setOrderAt(body.getOrderAt())
+                            .setArrivalDate(body.getArrivalDate())
+                            .setUser(userRepository.getOne(body.getUserId()))
+                    ;
+                    return orderGroup;
+                })
+                .map(orderGroup -> {
+                    orderGroupRepository.save(orderGroup);
+                    for(OrderDetailApiRequest orderDetailList : request.getData().getOrderDetailApiRequestList()){
+                        OrderDetail orderDetail = OrderDetail.builder()
+                                .id(orderDetailList.getId())
+                                .status(orderDetailList.getStatus())
+                                .quantity(orderDetailList.getQuantity())
+                                .totalPrice(orderDetailList.getTotalPrice())
+                                .item(itemRepository.getOne(orderDetailList.getItemId()))
+                                .arrivalDate(LocalDateTime.now())
+                                .orderGroup(orderGroup)
+                                .build();
+                        orderDetailRepository.save(orderDetail);
+                    }
+                    return orderGroup;
+                })
+                *//*.map(changeOrderGroup -> orderGroupRepository.save(changeOrderGroup))*//*
+                .map(this::response)
+                .map(Header::OK)
                 .orElseGet(()->Header.ERROR("데이터 없음"));
-    }
+    }*/
 
     @Override
     public Header delete(Long id) {

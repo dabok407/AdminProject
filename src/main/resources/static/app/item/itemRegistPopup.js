@@ -405,7 +405,7 @@ function fnMultiSelectItem(){
         var id = $(this).val();
         var name = $(item).parent().parent().find("td span[name='itemName']").text();
         var price = $(item).parent().parent().find("td span[name='itemPrice']").text();
-        obj["id"] = id;
+        obj["item_id"] = id;
         obj["name"] = name;
         obj["quantity"] = 1;
         obj["total_price"] = price;
@@ -422,7 +422,7 @@ function fnSingleSelectItem(itemObj){
     var id = itemObj.id;
     var name = itemObj.name;
     var price = itemObj.price;
-    obj["id"] = id;
+    obj["item_id"] = id;
     obj["name"] = name;
     obj["quantity"] = 1;
     obj["total_price"] = price;

@@ -281,19 +281,33 @@
     // 주문 수정
     function modifyOrder(){
 
-        var pwdEqualCheck = $('#mod_equal_pwd').val();
+        var itemData = null;
+        var $itemTableList = $("#modifyFormItemTable").find("tbody tr");
+        var itemDataArryay = new Array();
+        $itemTableList.each(function(index, item) {
+            var itemObj = new Object();
+            var id = $(item).find("input[name=id]").val();
+            var itemId = $(item).find("input[name=itemId]").val();
+            var itemCnt = $(item).find("span[name=itemCnt]").text();
+            var itemTotalPrice = $(item).find("span[name=itemTotalPrice]").text();
+            itemObj["group_detail_id"] = id;
+            itemObj["item_id"] = itemId;
+            itemObj["status"] = "ORDERING";
+            itemObj["quantity"] = itemCnt;
+            itemObj["total_price"] = common.replaceAll(itemTotalPrice, ",", "");
+            itemDataArryay.push(itemObj);
+        });
 
-        if(pwdEqualCheck != "success"){
-            alert("비밀번호를 확인해주세요.");
-            return false;
-        }
+        /*itemData = JSON.stringify(itemDataArryay);*/
+        itemData = itemDataArryay;
+        var groupData = JSON.stringify(common.serializeObject("modifyForm", 'order_detail_api_request_list', itemData));
 
         $.ajax({
             url: "/api/orderGroup",
             type: 'PUT',
             contentType: 'application/json; charset=utf-8',
             /*data: JSON.stringify($('#registForm').serialize()),*/
-            data: JSON.stringify(common.serializeObject("modifyForm")),
+            data: groupData,
             dataType: 'json',
             async: true,
             beforeSend : function(xhr) {
@@ -410,7 +424,8 @@ function  fnOrderDetailAdd(obj, $selector) {
             +'<td class="text-center">'
             +obj[i].name
             +'<div style="display: none;">'
-            +'<input name="itemId" value="'+obj[i].id+'">'
+            +'<input name="group_detail_id" value="'+obj[i].id+'">'
+            +'<input name="itemId" value="'+obj[i].item_id+'">'
             +'<input name="itemOriginPrice" value="'+common.setComma(obj[i].total_price)+'">'
             +'</div>'
             +'</td>'
