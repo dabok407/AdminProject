@@ -154,11 +154,13 @@
     // 등록 from 값 초기화
     function registFormReset() {
         $('#registForm').find('input, select, checkbox, radio').val(null);
+        $("#registForm").find("#registFormItemTable > tbody > tr").remove()
     }
 
     // 수정 form 값 초기화
     function modifyFormReset() {
         $('#modifyForm').find('input, select, checkbox, radio').val(null);
+        $("#modifyForm").find("#modifyFormItemTable > tbody > tr").remove()
     }
 
     function searchStart(index, initialYn) {
@@ -319,6 +321,8 @@
                 var resultCode = response.result_code;
                 if(resultCode == "OK"){
                     alert("수정 되었습니다.");
+                    // 수정 폼 초기화
+                    modifyFormReset();
                     // 팝업 close
                     closeModifyPopup();
                     // 주문 조회
