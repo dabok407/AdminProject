@@ -377,6 +377,7 @@
                 $selector.find("#mod_order_type").val(orderData.order_type);
                 $selector.find("#mod_payment_type").val(orderData.payment_type);
                 $selector.find("#mod_total_price").val(orderData.total_price);
+                $selector.find("#mod_total_price_text").text(orderData.total_price);
                 $selector.find("#mod_total_quantity").val(orderData.total_quantity);
                 $selector.find("#mod_rev_name").val(orderData.rev_name);
                 $selector.find("#mod_rev_address").val(orderData.rev_address);
@@ -456,7 +457,7 @@ function  fnOrderDetailAdd(obj, $selector) {
 function fnDeleteItem(selector){
     var $selector = $(selector);
     $selector.parent().parent().remove();
-    fnCalculateTotalData($(selector).parent().parent().parent().parent());
+    fnCalculateTotalData($(selector).parents("table[id$=ItemTable]"));
 }
 
 // 상품 수량 plus
@@ -475,7 +476,7 @@ function fnPlusItem(selector){
         var price = itemOriginPrice * cnt;
         $dtSelector.eq(3).find("span").text(cnt);
         $dtSelector.eq(4).find("span").text(common.setComma(price));
-        fnCalculateTotalData($(selector).parent().parent().parent().parent());
+        fnCalculateTotalData($(selector).parents("table[id$=ItemTable]"));
     }
 }
 
@@ -495,7 +496,7 @@ function fnMinusItem(selector){
         var price = itemOriginPrice * cnt;
         $dtSelector.eq(3).find("span").text(cnt);
         $dtSelector.eq(4).find("span").text(common.setComma(price));
-        fnCalculateTotalData($(selector).parent().parent().parent().parent());
+        fnCalculateTotalData($(selector).parents("table[id$=ItemTable]"));
     }
 }
 
@@ -510,6 +511,7 @@ function fnCalculateTotalData(selector){
         totalCnt += parseInt(itemCnt);
         totalPrice += parseInt(itemTotalPrice);
     });
-    $("#reg_total_quantity").val(totalCnt);
-    $("#reg_total_price").val(totalPrice);
+    selector.parents("table").find("input[id$='total_quantity']").val(totalCnt);
+    selector.parents("table").find("input[id$='total_price']").val(totalPrice);
+    selector.parents("table").find("span[id$='total_price_text']").text(common.setComma(totalPrice));
 }
