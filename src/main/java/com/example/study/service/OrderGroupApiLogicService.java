@@ -189,7 +189,12 @@ public class OrderGroupApiLogicService implements CrudInterface<OrderGroupApiReq
                 .map(orderGroup -> {
                     orderGroupRepository.delete(orderGroup);
                     return Header.OK();
+                    /*return orderGroup;*/
                 })
+                /*.map(orderGroup -> {
+                    orderDetailRepository.deleteByOrderGroupId(orderGroup.getId());
+                    return Header.OK();
+                })*/
                 .orElseGet(()->Header.ERROR("데이터 없음"));
     }
 

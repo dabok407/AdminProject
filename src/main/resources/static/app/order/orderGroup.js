@@ -334,7 +334,7 @@
 
     // 주문 삭제
     function deleteOrder(){
-        var id = $("#mod_id").val();
+        var id = $("#mod_group_id").val();
         $.ajax({
             url: "/api/orderGroup/"+id,
             type: 'DELETE',

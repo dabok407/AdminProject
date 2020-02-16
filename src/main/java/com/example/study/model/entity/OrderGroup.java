@@ -68,7 +68,7 @@ public class OrderGroup {
 
 
     // OrderGroup 1 : N OrderDetail
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderGroup")
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "orderGroup")
     @JsonManagedReference
     private List<OrderDetail> orderDetailList;
 }

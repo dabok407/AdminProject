@@ -16,4 +16,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail,Long> {
 
     @Transactional
     int deleteByOrderGroup(OrderGroup orderGroup);
+
+
+    int deleteByOrderGroupId(Long orderGroupId);
 }
