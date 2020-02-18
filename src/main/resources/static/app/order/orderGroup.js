@@ -391,6 +391,59 @@
             }
         });
     }
+
+
+    $("#mod_user_account").keyup(function(){
+        var el =
+        $("#mod_user_account").autocomplete({
+            source : function(request, response){
+                $.ajax({
+                    type:"GET",
+                    url: "/api/user/like/"+$("#mod_user_account").val(),
+                    dataType:"json",
+                    success: function(data) {
+                        response(
+                            $.map(data.data, function(item) {
+                                return {
+                                    label: (item.account +"("+item.email+")"),
+                                    id : item.id,
+                                    account : item.account,
+                                    email : item.email
+                                }
+                            })
+                        );
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("오류가 발생 되었습니다.");
+                    }
+                });
+            },
+            focus: function( event, ui ) {
+                return false;
+            },
+            classes: {
+                "ui-autocomplete": "highlight"
+            },
+            minLength: 1,
+            select: function(event, ui) {
+                var userId = ui.item.id;
+                var account = ui.item.account;
+                $("#mod_user_account").val(account);
+                $("#mod_user_id").val(userId);
+            }
+        });
+        el.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            $(ul).css("z-index","99999");
+            $(ul).css("max-height","500px");
+            $(ul).css("overflow-y","auto");
+            $(ul).css("overflow-x","hidden");
+            return $( "<li>" )
+                .data( "ui-autocomplete-item", item )
+                .append( "<a>" + item.label + "</a>" )
+                .appendTo( ul );
+        };
+    });
+
 })(jQuery);
 
 // 등록 목록 전체 선택, 해제

@@ -147,6 +147,17 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest , UserA
         return Header.OK(userApiResponseList,pagination);
     }
 
+    public Header<List<UserApiResponse>> search(String account) {
+
+        List<User> users = userRepository.findByAccountContaining(account);
+
+        List<UserApiResponse> userApiResponseList = users.stream()
+                .map(user -> response(user))
+                .collect(Collectors.toList());
+
+        return Header.OK(userApiResponseList);
+    }
+
     private UserApiResponse response(User user){
         // user -> userApiResponse
 

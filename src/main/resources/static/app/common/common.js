@@ -223,3 +223,94 @@ common.replaceAll = function replaceAll(str, searchStr, replaceStr) {
     return str.split(searchStr).join(replaceStr);
 }
 
+
+common.autocomplete = function autocomplete(element, url, option) {
+    element = '#' + element;
+
+    var key = '';
+    option = $.extend({
+        minLength : 2,
+        dataListId : 0,
+        itemExtractor : function(row) {
+            return {
+                value : row.VALUE,
+                label : row.LABEL
+            };
+        },
+        filter : function(row) {
+            return true;
+        },
+        focus: function(event, ui) {
+            return false;
+        },
+        open: function(event, ui) {
+        },
+        select: function(event, ui) {
+        }
+    }, option || {});
+
+    option = $.extend({
+        source: function(request, response) {
+            $.ajax({
+                type:"GET",
+                url: url,
+                dataType:"json",
+                success: function(data) {
+                    response(
+                        $.map(data.data, function(row) {
+                            if(option.filter(row) !== true) {
+                                return null;
+                            } else {
+                                var item = option.itemExtractor(row);
+                                item.label = item.label
+                                    .replace(/\>/g, '&gt;')
+                                    .replace(/\</g, '&lt;')
+                                ;
+                                return item;
+                            }
+                        })
+                    );
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("오류가 발생 되었습니다.");
+                }
+            });
+
+            /*uxl.callFunction(url , {  data:option.data
+                , loading:false
+                , success:function(result) {
+                    var dataList = result.getDataList(option.dataListId) || {};
+                    response($.map(dataList.rows || {}
+                        , function(row) {
+                            if(option.filter(row) !== true) {
+                                return null;
+                            } else {
+                                var item = option.itemExtractor(row);
+                                item.label = item.label
+                                    .replace(/\>/g, '&gt;')
+                                    .replace(/\</g, '&lt;')
+                                ;
+                                return item;
+                            }
+                        })
+                    );
+                }
+                , async:true
+            });*/
+
+        }
+    }, option);
+
+    var open = option.open;
+    option.open = function(event, ui) {
+        open(event, ui);
+    };
+
+    var el = $(element).autocomplete(option);
+
+    el.autocomplete._renderItem = function(ul, item) {
+        console.log(ul);
+        console.log(item);
+        return $('<li></li>').data('item.autocomplete', item ).append('<a><label style="white-space: nowrap;">' + item.label + '</label></a>').appendTo(ul);
+    };
+};

@@ -66,4 +66,9 @@ public class UserApiController implements CrudInterface<UserApiRequest, UserApiR
         log.info("{}",pageable);
         return userApiLogicService.search(pageable, userApiRequest);
     }
+
+    @GetMapping("like/{account}")
+    public Header<List<UserApiResponse>> findLikeAll(@PathVariable String account){
+        return userApiLogicService.search(account);
+    }
 }
