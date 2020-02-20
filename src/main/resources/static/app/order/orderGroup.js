@@ -167,7 +167,22 @@
 
         var pageSize = 10;
         var paramUrl = "";
-
+        var account = $("#user_account").val();
+        var status = $("#status").val();
+        var revName = $("#revName").val();
+        var paymentType = $("#paymentType").val();
+        if(account != "" && account != null){
+            paramUrl += "&user.account="+account;
+        }
+        if(status != "" && status != null){
+            paramUrl += "&status="+status;
+        }
+        if(revName != "" && revName != null){
+            paramUrl += "&revName="+revName;
+        }
+        if(paymentType != "" && paymentType != null){
+            paramUrl += "&paymentType="+paymentType;
+        }
         if(initialYn != "" && initialYn != null){
             paramUrl += "&initialYn=Y";
         }else{

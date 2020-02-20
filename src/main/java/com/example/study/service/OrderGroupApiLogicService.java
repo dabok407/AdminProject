@@ -1,6 +1,7 @@
 package com.example.study.service;
 
 import com.example.study.common.CommonFunction;
+import com.example.study.common.CommonObjectUtils;
 import com.example.study.ifs.CrudInterface;
 import com.example.study.model.entity.OrderDetail;
 import com.example.study.model.entity.OrderGroup;
@@ -11,6 +12,7 @@ import com.example.study.model.network.request.OrderGroupApiRequest;
 import com.example.study.model.network.response.ItemApiResponse;
 import com.example.study.model.network.response.OrderDetailApiResponse;
 import com.example.study.model.network.response.OrderGroupApiResponse;
+import com.example.study.model.specs.OrderGroupSpecification;
 import com.example.study.repository.ItemRepository;
 import com.example.study.repository.OrderDetailRepository;
 import com.example.study.repository.OrderGroupRepository;
@@ -23,9 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -199,7 +199,22 @@ public class OrderGroupApiLogicService implements CrudInterface<OrderGroupApiReq
     }
 
     public Header<List<OrderGroupApiResponse>> search(Pageable pageable, OrderGroupApiRequest orderGroupApiRequest, String initialYn){
-        Page<OrderGroup> orderGroups = orderGroupRepository.findAll(pageable);
+
+        Map<String, Object> searchRequest = CommonObjectUtils.convertObjectToMap(orderGroupApiRequest);
+        Map<String, Object> searchKeys = new HashMap<>();
+
+        for (String key : searchRequest.keySet()) {
+            String value = String.valueOf(searchRequest.get(key));
+            if(value != null && !value.isEmpty() && !"null".equals(value)){
+                searchKeys.put(key, searchRequest.get(key));
+            }
+        }
+
+        Page<OrderGroup> orderGroups =  searchKeys.isEmpty() ?
+                orderGroupRepository.findAll(pageable) :
+                orderGroupRepository.findAll(OrderGroupSpecification.searchWith(searchKeys), pageable);
+
+        /*Page<OrderGroup> orderGroups = orderGroupRepository.findAll(pageable);*/
 
         List<OrderGroupApiResponse> orderGroupApiResponseList = orderGroups.stream()
                 .map(orderGroup -> response(orderGroup)

@@ -38,6 +38,10 @@ public class OrderGroupApiRequest {
 
     private Long userId;
 
+    private String userAccount;
+
+    private UserApiRequest user;
+
     private List<OrderDetailApiRequest> orderDetailApiRequestList;
 
 
