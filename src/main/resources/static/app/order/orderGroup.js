@@ -483,8 +483,10 @@ $("#modifyFormItemTable").find("#modAllCheck").click(function(){
 function fnPopupCallback(obj){
     var $selector = $("#registFormItemTable").find("tbody");
     fnOrderDetailAdd(obj, $selector);
+    fnCalculateTotalData($("#registFormItemTable"));
     var $selector = $("#modifyFormItemTable").find("tbody");
     fnOrderDetailAdd(obj, $selector);
+    fnCalculateTotalData($("#modifyFormItemTable"));
 }
 
 // 주문 상세 상품 목록 add
@@ -524,8 +526,9 @@ function  fnOrderDetailAdd(obj, $selector) {
 // 상품 삭제
 function fnDeleteItem(selector){
     var $selector = $(selector);
+    var $parentSelector = $selector.parents("table[id$=ItemTable]");
     $selector.parent().parent().remove();
-    fnCalculateTotalData($(selector).parents("table[id$=ItemTable]"));
+    fnCalculateTotalData($parentSelector);
 }
 
 // 상품 수량 plus
@@ -579,7 +582,19 @@ function fnCalculateTotalData(selector){
         totalCnt += parseInt(itemCnt);
         totalPrice += parseInt(itemTotalPrice);
     });
-    selector.parents("table").find("input[id$='total_quantity']").val(totalCnt);
+
+    if($(selector)[0].id.indexOf('modify') != -1){
+        $("#mod_total_quantity").val(totalCnt);
+        $("#mod_total_price").val(totalPrice);
+        $("#mod_total_price_text").text(common.setComma(totalPrice));
+    }else{
+        $("#reg_total_quantity").val(totalCnt);
+        $("#reg_total_price").val(totalPrice);
+        $("#reg_total_price_text").text(common.setComma(totalPrice));
+    }
+
+    /*selector.parents("table").find("input[id$='total_quantity']").val(totalCnt);
     selector.parents("table").find("input[id$='total_price']").val(totalPrice);
-    selector.parents("table").find("span[id$='total_price_text']").text(common.setComma(totalPrice));
+    selector.parents("table").find("span[id$='total_price_text']").text(common.setComma(totalPrice));*/
+
 }
